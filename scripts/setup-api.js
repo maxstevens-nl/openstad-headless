@@ -1,6 +1,5 @@
 const fs = require('fs');
-const util = require('util');
-const apiDb = require('promise-mysql');
+const apiDb = require('mysql2/promise');
 const execute = require('./execute');
 
 module.exports = async function setupApi(actions) {
@@ -8,20 +7,18 @@ module.exports = async function setupApi(actions) {
   console.log('==============================');
   console.log('Setup API');
 
-  let connection;
+    console.log(process.env.API_DB_DIALECT);
+
+  let connection = await apiDb.createConnection({
+        host     : process.env.API_DB_HOST,
+        port     : process.env.API_DB_PORT,
+        user     : process.env.API_DB_USERNAME,
+        password : process.env.API_DB_PASSWORD,
+    });
 
   let doCreateDB;
   try {
-    
-    connection = await apiDb.createConnection({
-      host     : process.env.API_DB_HOST,
-      user     : process.env.API_DB_USERNAME,
-      password : process.env.API_DB_PASSWORD,
-      dialect  : process.env.API_DB_DIALECT,
-    });
-    
     await connection.query(`USE \`${process.env.API_DB_NAME}\`;`);
-
   } catch(err) {
     doCreateDB = true;
   }
@@ -86,13 +83,13 @@ ADMIN_DOMAIN=${process.env.ADMIN_DOMAIN}
       console.log('------------------------------');
       console.log('Create config file');
       console.log('API_FIXED_AUTH_KEY:', process.env.API_FIXED_AUTH_KEY);
-      await fs.writeFileSync('./apps/api-server/.env', apiConfig);
+      fs.writeFileSync('./apps/api-server/.env', apiConfig);
     }
     
     // npm i
     if (actions['npm install']) {
       console.log('------------------------------');
-      console.log('Execute `npm i`');
+      console.log('Executing `npm i`');
       await execute('npm', ['i'], { cwd: './apps/api-server' });
     }
     

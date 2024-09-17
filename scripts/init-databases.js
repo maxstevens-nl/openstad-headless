@@ -3,10 +3,6 @@ const execute = require('./execute');
 
 async function init() {
   try {
-
-    // configure
-    const config = require('./config');
-
     // init api db
     console.log('------------------------------');
     console.log('Init API database');

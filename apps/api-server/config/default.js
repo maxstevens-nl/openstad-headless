@@ -24,6 +24,7 @@ if (!process.env.DOMAIN && !process.env.API_DOMAIN) {
   process.env.DOMAIN = url && url.hostname;
 }
 
+
 let defaultConfig = {
 
 	projectName: process.env.NAME || process.env.API_NAME || 'OpenStad API',
@@ -169,5 +170,7 @@ Als de webmaster de website gesloten heeft is deze in principe nog wel te bezoek
   }
 
 }
+
+console.log(process.env.DB_DIALECT, process.env.API_DB_DIALECT, process.env.API_DATABASE_DIALECT, 'mysql')
 
 module.exports = defaultConfig;

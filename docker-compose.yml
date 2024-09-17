@@ -1,52 +1,4 @@
-version: '3.4'
 services:
-  openstad-mysql:
-    image: mysql:8.4
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE:-openstad-no-db}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - AUTH_DB_NAME=${AUTH_DB_NAME}
-      - API_DB_NAME=${API_DB_NAME}
-    command:
-      - mysqld
-      - --mysql_native_password=ON
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-    ports:
-      - 3306:3306
-    volumes:
-      # - ./export.sql:/docker-entrypoint-initdb.d/99-export.sql
-      - ./scripts/init-sql.sh:/docker-entrypoint-initdb.d/init-sql.sh
-      - openstad-mysql-data:/var/lib/mysql
-    healthcheck:
-      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
-      timeout: 20s
-      retries: 10
-
-  openstad-redis:
-    image: redis:latest
-    restart: always
-    ports:
-      - '6379:6379'
-    healthcheck:
-      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
-      timeout: 20s
-      retries: 10
-
-  openstad-mongo:
-    image: mongo
-    restart: always
-    volumes:
-      - openstad-mongo-data:/var/lib/mongo
-
-  openstad-mailpit:
-    image: axllent/mailpit:v1.15
-    ports:
-      - 1025:1025 # smtp server
-      - 8025:8025 # web ui
-
   openstad-api-server:
     build:
       target: development
@@ -57,11 +9,11 @@ services:
         - PORT=${API_PORT}
     image: openstad/headless-api-server:${RELEASE_VERSION:-latest}
     # TODO: dit moet conditional: alleen als we deze db gebruiken
-    depends_on:
-      openstad-mysql:
-        condition: service_healthy
-      openstad-redis:
-        condition: service_healthy
+    # depends_on:
+    #   openstad-mysql:
+    #     condition: service_healthy
+    #   openstad-redis:
+    #     condition: service_healthy
     container_name: openstad-api-server
     restart: unless-stopped
     environment:
@@ -128,9 +80,9 @@ services:
         - PORT=${AUTH_PORT}
     image: openstad/headless-auth-server:${RELEASE_VERSION:-latest}
     # TODO: dit moet conditional: alleen als we deze db gebruiken
-    depends_on:
-      openstad-mysql:
-        condition: service_healthy
+    # depends_on:
+    #   openstad-mysql:
+    #     condition: service_healthy
     container_name: openstad-auth-server
     restart: unless-stopped
     environment:
@@ -179,9 +131,9 @@ services:
         - PORT=${IMAGE_PORT_API}
     image: openstad/headless-image-server:${RELEASE_VERSION:-latest}
     # TODO: dit moet conditional: alleen als we deze db gebruiken
-    depends_on:
-      openstad-mysql:
-        condition: service_healthy
+    # depends_on:
+    #   openstad-mysql:
+    #     condition: service_healthy
     container_name: openstad-image-server
     restart: unless-stopped
     environment:
@@ -244,11 +196,8 @@ services:
         - APP=cms-server
         - PORT=${CMS_PORT}
     image: openstad/headless-cms-server:${RELEASE_VERSION:-latest}
-    depends_on:
-      openstad-redis:
-        condition: service_healthy
-    # TODO: dit moet conditional: alleen als we deze db gebruiken
-    #   openstad-mongo:
+    # depends_on:
+    #   openstad-redis:
     #     condition: service_healthy
     container_name: openstad-cms-server
     restart: unless-stopped
@@ -271,8 +220,8 @@ services:
       - openstad-cms-server-init:/opt/openstad-headless/apps/cms-server/init
 
 volumes:
-  openstad-mysql-data: {}
-  openstad-mongo-data: {}
+  # openstad-mysql-data: {}
+  # openstad-mongo-data: {}
   openstad-api-server-node_modules: {}
   openstad-api-server-init: {}
   openstad-auth-server-node_modules: {}

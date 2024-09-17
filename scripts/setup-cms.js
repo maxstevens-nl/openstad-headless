@@ -33,7 +33,7 @@ API_KEY=${process.env.API_FIXED_AUTH_KEY}
     // npm i
     if (actions['npm install']) {
       console.log('------------------------------');
-      console.log('Execute `npm i`');
+      console.log('Executing `npm i`');
       await execute('npm', ['i'], { cwd: './apps/cms-server' });
     }
     

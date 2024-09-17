@@ -1,6 +1,4 @@
 const fs = require('fs');
-const util = require('util');
-const imgDb = require('promise-mysql');
 const execute = require('./execute');
 
 module.exports = async function setupAdminServer(actions) {
@@ -31,7 +29,7 @@ PORT=${process.env.ADMIN_PORT}
     // npm i
     if (actions['npm install']) {
       console.log('------------------------------');
-      console.log('Execute `npm i`');
+      console.log('Executing `npm i`');
       await execute('npm', ['i'], { cwd: './apps/admin-server' });
     }
     

@@ -1,6 +1,4 @@
 const fs = require('fs');
-const util = require('util');
-const imgDb = require('promise-mysql');
 const execute = require('./execute');
 
 module.exports = async function setupImageServer(actions) {
@@ -34,7 +32,7 @@ THROTTLE_CC_REQUESTS=${process.env.IMAGE_THROTTLE_CC_REQUESTS}
     // npm i
     if (actions['npm install']) {
       console.log('------------------------------');
-      console.log('Execute `npm i`');
+      console.log('Executing `npm i`');
       await execute('npm', ['i'], { cwd: './apps/image-server' });
     }
 

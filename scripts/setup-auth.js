@@ -1,6 +1,5 @@
 const fs = require('fs').promises;
-const util = require('util');
-const authDb = require('promise-mysql');
+const authDb = require('mysql2/promise');
 const execute = require('./execute');
 
 module.exports = async function setupAuthServer(actions) {
@@ -17,7 +16,6 @@ module.exports = async function setupAuthServer(actions) {
       host     : process.env.AUTH_DB_HOST,
       user     : process.env.AUTH_DB_USERNAME,
       password : process.env.AUTH_DB_PASSWORD,
-      dialect  : process.env.AUTH_DB_DIALECT,
     });
 
     await connection.query(`USE \`${process.env.AUTH_DB_NAME}\`;`);
@@ -82,7 +80,7 @@ SESSION_SECRET=${process.env.AUTH_SESSION_SECRET}
     // npm i
     if (actions['npm install']) {
       console.log('------------------------------');
-      console.log('Execute `npm i`');
+      console.log('Executing `npm i`');
       await execute('npm', ['i'], { cwd: './apps/auth-server' });
     }
     

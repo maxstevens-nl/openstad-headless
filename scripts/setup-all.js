@@ -26,8 +26,6 @@ let modules = [
 
 async function init() {
 
-  await config.create();
-
   let actions = {
     'create config': true,
     'npm install': true,
@@ -37,6 +35,8 @@ async function init() {
     'build': true,
   }
   
+    let writeTopLevelEnv = true;
+
   // command line arguments
   process.argv.forEach((entry) => {
     let match = entry.match(/--no-npm-install/);
@@ -47,7 +47,16 @@ async function init() {
     if (match) {
       actions['create certs'] = false;
     }
+    match = entry.match(/--no-write-env/);
+    if (match) {
+      writeTopLevelEnv = false;
+    }
   });
+
+  config.setupEnvVars();
+  if (writeTopLevelEnv) {
+    await config.writeEnvFile();
+  }
 
   try {
     for (let i = 0; i < modules.length; i++) {
