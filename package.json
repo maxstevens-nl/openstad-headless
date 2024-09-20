@@ -7,6 +7,18 @@
     "create-docker-config": "node ./scripts/create-docker-config.js",
     "setup": "node ./scripts/setup-all.js",
     "start": "node ./scripts/start-all.js",
+
+    "build:api": "npm run build-packages --prefix ./apps/api-server",
+    "start:api": "npm run start --prefix ./apps/api-server",
+
+    "build:auth": "npm run build --prefix ./apps/auth-server",
+    "start:auth": "npm run start --prefix ./apps/auth-server",
+
+    "start:images": "npm run start --prefix ./apps/image-server",
+
+    "build:admin": "npm run build --prefix ./apps/admin-server",
+    "start:admin": "npm run start --prefix ./apps/admin-server",
+
     "init-databases": "node ./scripts/init-databases.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

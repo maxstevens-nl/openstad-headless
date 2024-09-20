@@ -9,19 +9,23 @@ const {
 } = require('./lib/build-package');
 const fs = require('fs');
 const { hashElement } = require('folder-hash');
+const path = require('path');
 
 async function buildAllPackages() {
   // Calculate hash over all packages
 
+  const rootDir = path.resolve(__dirname, '../../../');
+
   // Check if there was already a hash calculated, if so, and it matches current hash, skip build
-  const hashFile = '../../.packages-build-hash';
+  const hashFile = path.resolve(rootDir, '.packages-build-hash')
   let oldHash = null;
 
   if (fs.existsSync(hashFile)) {
     oldHash = fs.readFileSync(hashFile, 'utf8');
   }
 
-  const currentHash = await hashElement('../../packages', {
+  const packagesFolder = path.resolve(rootDir, 'packages');
+  const currentHash = await hashElement(packagesFolder, {
     folders: {
       exclude: ['.*', 'node_modules', 'dist', 'build', 'coverage', 'public'],
     },
