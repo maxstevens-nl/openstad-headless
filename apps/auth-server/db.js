@@ -11,8 +11,6 @@ if (process.env.MYSQL_CA_CERT) {
   }
 }
 
-console.log(process.env.DB_HOST, process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, process.env.DB_PORT);
-
 let sequelize = new Sequelize({
 
   host:     process.env.DB_HOST,
