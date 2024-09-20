@@ -82,15 +82,8 @@ const argv = require('yargs')
       describe: 'Port number the service will listen to',
       type: 'number',
       group: 'Image service',
-      default: process.env.PORT_API || 9999
-    },
-    'portImageSteam': {
-      alias: 'pis',
-      describe: 'Port number the Image server will listen to',
-      type: 'number',
-      group: 'Image service',
-      default: process.env.PORT_IMAGE_SERVER || 13337
-    },
+      default: process.env.PORT_API || process.env.PORT || 9999
+    }
   })
   .help()
   .argv;
