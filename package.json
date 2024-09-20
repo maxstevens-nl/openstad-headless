@@ -14,7 +14,7 @@
     "build:auth": "npm run build --prefix ./apps/auth-server",
     "start:auth": "npm run start --prefix ./apps/auth-server",
 
-    "start:images": "npm run start --prefix ./apps/image-server",
+    "start:image": "npm run start --prefix ./apps/image-server",
 
     "build:admin": "npm run build --prefix ./apps/admin-server",
     "start:admin": "npm run start --prefix ./apps/admin-server",
