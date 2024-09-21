@@ -164,7 +164,7 @@ exports.authorization = [
   login.ensureLoggedIn(),
   server.authorization((clientId, redirectURI, scope, done) => {
 
-    console.log("OAuth middleware handler", clientId, redirectURI, scope);
+    console.log("===> OAuth middleware handler, redirect step 2", clientId, redirectURI, scope);
 
     db.Client
       .findOne({where: {clientId: clientId}})
@@ -179,7 +179,7 @@ exports.authorization = [
         const allowedDomains = client.allowedDomains ? client.allowedDomains : false;
         const redirectUrlHost = new URL(redirectURI).hostname;
 
-        //console.log('===> allowedDomains', allowedDomains, redirectUrlHost);
+        console.log('===> allowedDomains', allowedDomains, redirectUrlHost);
 
         // throw error if allowedDomains is empty or the redirectURI's host is not present in the allowed domains
         if (allowedDomains && allowedDomains.indexOf(redirectUrlHost) !== -1) {

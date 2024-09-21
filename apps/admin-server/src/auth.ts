@@ -65,6 +65,8 @@ async function authMiddleware(req: NextRequest, res: NextResponse) {
   const session = await getSession(req, res);
   let jwt = session[`project-${targetProjectId}`] || session[`project-1`];
 
+  console.log("===> auth middleware", session);
+
   // store login token
   const searchParams = req.nextUrl?.searchParams;
   let openstadlogintoken = searchParams.get('openstadlogintoken');
@@ -78,12 +80,18 @@ async function authMiddleware(req: NextRequest, res: NextResponse) {
     query = query.replace(/openstadlogintoken=(?:.(?!&|$))+./, '');
     if (query == '?') query = '';
     let newUrl = `${process.env.URL}${path}${query}`;
+
+    console.log("===> redirect step 4 - login token", req.nextUrl.pathname, newUrl, "jwt", jwt);
+
     return NextResponse.redirect( newUrl, { headers: res.headers });
   }
+
 
   if (!(req.nextUrl.pathname.startsWith('/_'))) { // not on internal urls
 
     let forceNewLogin = false;
+
+    console.log("===> redirect step 5", jwt);
 
     // check login token
     if (jwt) {
@@ -149,6 +157,8 @@ async function authMiddleware(req: NextRequest, res: NextResponse) {
       });
     }
 
+  console.log("===> auth middleware finished", session);
+
   return res;
 
 }
@@ -162,6 +172,7 @@ async function signIn(req: NextRequest, res: NextResponse, projectId:number = 1,
   if (path == '/') path = '/projects';
   let redirectUri = `${process.env.URL}${path}?openstadlogintoken=[[jwt]]`;
   let loginUrl = `${process.env.API_URL}/auth/project/${projectId}/login?useAuth=default&redirectUri=${redirectUri}${ forceNewLogin ? '&forceNewLogin=1' : '' }`;
+  console.log("===> signing in", loginUrl);
   return NextResponse.redirect(loginUrl, { headers: res.headers });
 }
 

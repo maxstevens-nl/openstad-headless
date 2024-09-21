@@ -10,6 +10,12 @@ export default async function middleware(req: NextRequest) {
   if (req.nextUrl.pathname.startsWith('/_next')) return res; // internal urls
   if (req.nextUrl.pathname.startsWith('/favicon') ) return res;
 
+  if (req.nextUrl.searchParams.get("openstadlogintoken")) {
+      console.log("===> redirect step 4", req.nextUrl.pathname, session.user);
+  } else {
+      console.log("===> redirect step 5", req.nextUrl.pathname, session.user);
+  }
+
   // default page
   if (req.nextUrl.pathname.match(/^\/?$/)) { // home
     if (session.user) {

@@ -277,6 +277,7 @@ router
     });
   })
   .get(function (req, res, next) {
+    console.log("===> redirect step 3", req.redirectUrl, req.query.returnTo);
     res.redirect(req.redirectUrl);
   });
 
