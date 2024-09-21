@@ -3,8 +3,6 @@ const URL    = require('url').URL;
 
 module.exports = function( req, res, next ) {
 
-    console.log("Security Headers Middleware", req);
-
 	let url = req.headers && req.headers.origin;
 
 	let domain = ''
