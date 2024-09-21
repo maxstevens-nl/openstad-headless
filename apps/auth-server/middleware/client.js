@@ -173,6 +173,8 @@ exports.checkUniqueCodeAuth = (errorCallback) => {
         .then((codeResponse) => {
           const userHasPrivilegedRole = privilegedRoles.indexOf(req.user.role) > -1;
 
+          console.log("checkUniqueCodeAuth: ", codeResponse, userHasPrivilegedRole);
+
           // if uniquecode exists or user has priviliged role
           if (codeResponse || userHasPrivilegedRole) {
             next();
@@ -181,7 +183,7 @@ exports.checkUniqueCodeAuth = (errorCallback) => {
           }
         })
         .catch((error) => {
-          console.log('error',error);
+          console.log('checkUniqueCodeAuth error:', error);
 
           if (errorCallback) {
             try {

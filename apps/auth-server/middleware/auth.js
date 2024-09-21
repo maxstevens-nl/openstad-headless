@@ -17,6 +17,8 @@ exports.validateLogin = async(req, res, next) => {
 }
 
 exports.check = (req, res, next) => {
+  console.log("isAuthenticated", req.isAuthenticated, req.isAuthenticated());
+
   if (!req.isAuthenticated || !req.isAuthenticated()) {
 
     let url = '/login?clientId=' + req.client.clientId;

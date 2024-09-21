@@ -164,6 +164,8 @@ exports.authorization = [
   login.ensureLoggedIn(),
   server.authorization((clientId, redirectURI, scope, done) => {
 
+    console.log("OAuth middleware handler", clientId, redirectURI, scope);
+
     db.Client
       .findOne({where: {clientId: clientId}})
       .then((client) => {

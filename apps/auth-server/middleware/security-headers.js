@@ -10,20 +10,20 @@ module.exports = function( req, res, next ) {
 		domain = new URL(url).hostname;
 	} catch(err) {	}
 
-  let allowedDomains = (req.client && req.client.allowedDomains) || process.env.ALLOWED_ADMIN_DOMAINS;
+    let allowedDomains = (req.client && req.client.allowedDomains) || process.env.ALLOWED_ADMIN_DOMAINS;
 
-	if ( !allowedDomains || allowedDomains.indexOf(domain) === -1) {
-		url = config.url || req.protocol + '://' + req.hostname;
-	}
+    if ( !allowedDomains || allowedDomains.indexOf(domain) === -1) {
+        url = config.url || req.protocol + '://' + req.hostname;
+    }
 
-	if (config.dev && config.dev['Header-Access-Control-Allow-Origin'] && process.env.NODE_ENV == 'development') {
-    res.header('Access-Control-Allow-Origin', config.dev['Header-Access-Control-Allow-Origin'] );
-  } else {
-    res.header('Access-Control-Allow-Origin', url );
-  }
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,PATCH');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, x-http-method-override');
-  res.header('Access-Control-Allow-Credentials', 'true');
+    if (config.dev && config.dev['Header-Access-Control-Allow-Origin'] && process.env.NODE_ENV == 'development') {
+        res.header('Access-Control-Allow-Origin', config.dev['Header-Access-Control-Allow-Origin']);
+    } else {
+        res.header('Access-Control-Allow-Origin', url);
+    }
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,PATCH');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, x-http-method-override');
+    res.header('Access-Control-Allow-Credentials', 'true');
 
 	if (process.env.NODE_ENV != 'development') {
 		res.header('Content-type', 'application/json; charset=utf-8');

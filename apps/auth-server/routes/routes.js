@@ -290,6 +290,8 @@ module.exports = function (app) {
 
     // Handle 404
     app.use(function (req, res) {
+        console.log("404, no match found", req.url);
+
         res.status(404).render('errors/404');
     });
 
