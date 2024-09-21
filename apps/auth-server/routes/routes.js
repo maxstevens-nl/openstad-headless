@@ -268,7 +268,10 @@ module.exports = function (app) {
 
     app.use('/dialog', [bruteForce.global]);
 
-    app.get('/dialog/authorize', clientMw.withOne, authMw.check, userMw.withRoleForClient, clientMw.checkRequiredUserFields, clientMw.check2FA, clientMw.checkPhonenumberAuth(), clientMw.checkUniqueCodeAuth((req, res) => {
+    app.get('/dialog/authorize', (req, res, next) => {
+        console.log("dialog/authorize matched", req);
+        next();
+    }, clientMw.withOne, authMw.check, userMw.withRoleForClient, clientMw.checkRequiredUserFields, clientMw.check2FA, clientMw.checkPhonenumberAuth(), clientMw.checkUniqueCodeAuth((req, res) => {
         return res.redirect('/login?clientId=' + req.query.client_id);
     }), oauth2Controller.authorization);
 
