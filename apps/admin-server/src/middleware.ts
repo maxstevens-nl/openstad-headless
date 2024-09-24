@@ -27,6 +27,7 @@ export default async function middleware(req: NextRequest) {
 
   // signin
   if (req.nextUrl.pathname.match(/^\/signin$/i)) {
+    console.log("===> redirect start", req.nextUrl.pathname, session.user);
     return NextResponse.redirect(`${process.env.API_URL}/auth/project/1/login?useAuth=default&redirectUri=${process.env.URL}/projects`);
   }
 

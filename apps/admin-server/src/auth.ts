@@ -100,8 +100,10 @@ async function authMiddleware(req: NextRequest, res: NextResponse) {
         let response = await fetch(url, {
           headers: { Authorization: `Bearer ${jwt}` },
         })
+        console.log("===> auth middleware; jwt found; api-auth-url, response:", url, response);
         if (!response.ok) throw new Error('TokenValidationFailed')
         let result:OpenstadProfile = await response.json();
+        console.log("===> auth middleware; response json", result);
         if (!result.id) throw 'no user'
         if ( !( req.nextUrl.pathname.match(/^\/(?:projects)?\/?$/) && hasRole(result, 'member') ) // project overview is available for members; anything else requires
              && result.role != 'superuser'

@@ -105,6 +105,7 @@ router
       let url = `${req.authConfig.serverUrl}/dialog/authorize`;
       if (req.query.loginPriviliged) url = `${req.authConfig.serverUrl}/auth/admin/login`;
       url = `${url}?redirect_uri=${redirectUri}&response_type=code&client_id=${req.authConfig.clientId}&scope=offline`;
+      console.log("===> Redirect step 1; redirecting to auth server because we called the login route");
       return res.redirect(url);
     }else if(req.query.redirectUri){
       return next(createError(403, 'redirectUri not found in allowlist.'));
