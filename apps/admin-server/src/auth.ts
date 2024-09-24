@@ -97,10 +97,11 @@ async function authMiddleware(req: NextRequest, res: NextResponse) {
     if (jwt) {
       try {
         let url = `${process.env.API_URL_INTERNAL || process.env.API_URL}/auth/project/${targetProjectId}/me`
+        console.log("===> auth middleware; jwt found; api-auth-url", url);
         let response = await fetch(url, {
           headers: { Authorization: `Bearer ${jwt}` },
-        })
-        console.log("===> auth middleware; jwt found; api-auth-url, response:", url, response);
+        }).catch(err => { console.log("===> auth middleware failed;", err); throw new Error('TokenValidationFailed') });
+        console.log("===> auth middleware; jwt found; response:", response);
         if (!response.ok) throw new Error('TokenValidationFailed')
         let result:OpenstadProfile = await response.json();
         console.log("===> auth middleware; response json", result);
