@@ -24,6 +24,8 @@
     "build:admin": "npm run build --prefix ./apps/admin-server",
     "start:admin": "npm run start --prefix ./apps/admin-server",
 
+    "start:cms": "npm run start --prefix ./apps/cms-server",
+
     "init-databases": "node ./scripts/init-databases.js"
   },
   "engines": {
