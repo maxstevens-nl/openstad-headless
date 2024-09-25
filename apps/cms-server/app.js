@@ -15,6 +15,7 @@ const basicAuth = require('express-basic-auth');
 const path = require('node:path');
 
 let projects = {};
+/** @type {Object<string, import('redis').RedisClientType>} */
 let subscriptions = {}
 const apostropheServer = {};
 
@@ -67,13 +68,14 @@ async function setupProject(project) {
     let subscriber = await messageStreaming.getSubscriber();
     if (subscriber) {
       subscriptions[project.id] = subscriber;
-      await subscriptions[project.id].subscribe(`project-${project.id}-update`, message => {
+      await subscriptions[project.id].subscribe(`project-${project.id}-update`, async (message) => {
         if (apostropheServer[project.domain]) {
           // restart the server with the new settings
           apostropheServer[project.domain].apos.destroy();
           delete apostropheServer[project.domain];
         }
-        loadProject(project.id)
+
+        await loadProject(project.id)
       });
     } else {
       console.log('No subscriber found');
@@ -84,7 +86,7 @@ async function setupProject(project) {
 
 async function loadProject(projectId) {
   const project = await projectService.fetchOne(projectId);
-  setupProject(project)
+  await setupProject(project)
 }
 
 async function loadProjects() {
@@ -105,12 +107,8 @@ async function loadProjects() {
       let subscriber = await messageStreaming.getSubscriber();
       if (subscriber) {
         subscriptions['all'] = subscriber;
-        await subscriptions['all'].subscribe(`project-urls-update`, message => {
-          loadProjects();
-        });
-        await subscriptions['all'].subscribe(`new-project`, message => {
-          loadProjects();
-        });
+        await subscriptions['all'].subscribe(`project-urls-update`, () => loadProjects());
+        await subscriptions['all'].subscribe(`new-project`, () => loadProjects());
       } else {
         console.log('No subscriber found');
       }
@@ -137,7 +135,6 @@ function cleanUpProjects() {
         }
 
         delete apostropheServer[runningDomain];
-
       }
     });
   }

@@ -20,7 +20,7 @@ router
 
       userNickName = user.nickName || '';
     } catch (error) {
-      next(error);
+      return next(error);
     }
 
     const data = {

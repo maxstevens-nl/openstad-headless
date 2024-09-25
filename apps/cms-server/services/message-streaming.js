@@ -1,5 +1,6 @@
 const redis = require('redis');
 
+/** @type {redis.RedisClientType|null} */
 let client = null;
 
 async function getClient() {
