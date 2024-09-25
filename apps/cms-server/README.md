@@ -35,4 +35,3 @@ Moving from ApostropheCMS v2 a few things changed:
 - Arraging is now then under key group:
 - less is no longer supported, have to migrate  over to sass
 - To link directly to a static file in a module now, make sure it's in public dir and link to it as such, assuming images is a direcotry in the ui/public directory. Example: lib/modules/agenda-widget/ui/public/img/bg.png : /modules/agenda-widget/img/bg.png
->>>>>>> 630f01edb20a155fd0ba20304633ac97c486d8c4
