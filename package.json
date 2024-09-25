@@ -8,6 +8,8 @@
     "setup": "node ./scripts/setup-all.js",
     "start": "node ./scripts/start-all.js",
 
+    "dev": "node ./scripts/start-all.js",
+
     "build:api": "npm run build-packages --prefix ./apps/api-server",
     "start:api": "npm run start --prefix ./apps/api-server",
 
@@ -21,6 +23,9 @@
 
     "init-databases": "node ./scripts/init-databases.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "^18"
   },
   "repository": {
     "type": "git",
