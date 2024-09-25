@@ -67,7 +67,7 @@ export default function CreateUser() {
       <div className="container py-6">
         <div className="p-6 bg-white rounded-md">
           <Form {...form}>
-            <Heading size="xl">User toevoegen</Heading>
+            <Heading size="xl">Gebruiker toevoegen</Heading>
             <Separator className="my-4" />
             <form
               onSubmit={form.handleSubmit(onSubmit)}
