@@ -433,8 +433,12 @@ app.use(async function (req, res, next){
 
 setInterval(loadProjects, REFRESH_PROJECTS_INTERVAL);
 
+console.log("Apos release id: ", process.env.APOS_RELEASE_ID);
+
 if (process.env.RAILWAY_GIT_COMMIT_SHA) {
     process.env.APOS_RELEASE_ID = process.env.RAILWAY_GIT_COMMIT_SHA;
 }
+
+console.log("Apos release id from railway git commit sha: ", process.env.APOS_RELEASE_ID);
 
 app.listen(process.env.PORT || 3000);
