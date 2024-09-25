@@ -6,23 +6,25 @@
   "scripts": {
     "create-docker-config": "node ./scripts/create-docker-config.js",
     "setup": "node ./scripts/setup-all.js",
-    "start": "node ./scripts/start-all.js",
+    "start": "concurrently npm:start:*",
+    "dev": "concurrently npm:dev:*",
 
-    "dev": "node ./scripts/start-all.js",
-
+    "dev:api": "cd apps/api-server && nodemon server.js",
     "build:api": "npm run build-packages --prefix ./apps/api-server",
     "start:api": "npm run start --prefix ./apps/api-server",
 
+    "dev:auth": "cd apps/auth-server && nodemon app.js",
     "build:auth": "npm run build --prefix ./apps/auth-server",
     "start:auth": "npm run start --prefix ./apps/auth-server",
 
+    "dev:image": "cd apps/image-server && nodemon server.js",
     "start:image": "npm run start --prefix ./apps/image-server",
 
+    "dev:admin": "npm run dev --prefix ./apps/admin-server",
     "build:admin": "npm run build --prefix ./apps/admin-server",
     "start:admin": "npm run start --prefix ./apps/admin-server",
 
-    "init-databases": "node ./scripts/init-databases.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "init-databases": "node ./scripts/init-databases.js"
   },
   "engines": {
     "node": "^18"
@@ -41,14 +43,14 @@
     "apps/*",
     "packages/*"
   ],
-  "private": true,
-  "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-    "prettier": "3.0.3",
-    "mysql2": "^3.11.3"
-  },
   "dependencies": {
     "react-leaflet": "^4.2.1",
     "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "concurrently": "^9.0.1",
+    "mysql2": "^3.11.3",
+    "prettier": "3.0.3"
   }
 }
