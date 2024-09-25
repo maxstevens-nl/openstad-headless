@@ -57,6 +57,8 @@ async function setupProject(project) {
 
   const domain = url.host + (url.path && url.path != '/' ? url.path : '');
 
+  console.log("Setting up project: ", domain);
+
   // for convenience and speed we set the domain name as the key
   projects[domain] = project;
 
@@ -91,6 +93,8 @@ async function loadProjects() {
     projects = {};
 
     const allProjects = await projectService.fetchAll();
+
+    console.log(allProjects);
 
     allProjects.forEach(async project => {
       setupProject(project)
