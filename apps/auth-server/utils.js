@@ -5,13 +5,30 @@ const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const jwt  = require('jsonwebtoken');
 
-const certPath = process.env.TEST_CERTS ? 'test/test-certs/' : 'certs/';
+/** @type {string|Buffer} */
+let secretOrPrivateKey;
 
-/** Private certificate used for signing JSON WebTokens */
-const privateKey =  fs.readFileSync(path.join(__dirname, certPath, 'privatekey.pem'));
+/** @type {string|Buffer} */
+let secretOrPublicKey;
 
-/** Public certificate used for verification.  Note: you could also use the private key */
-const publicKey =  fs.readFileSync(path.join(__dirname, certPath, 'certificate.pem'));
+/** @type {string} */
+let signAlgorithm;
+
+if (process.env.JWT_SECRET) {
+    secretOrPrivateKey = process.env.JWT_SECRET;
+    secretOrPublicKey = process.env.JWT_SECRET;
+    signAlgorithm = 'HS256';
+} else {
+    const certPath = process.env.TEST_CERTS ? 'test/test-certs/' : 'certs/';
+
+    /** Private certificate used for signing JSON WebTokens */
+    secretOrPrivateKey = fs.readFileSync(path.join(__dirname, certPath + '/privatekey.pem'));
+
+    /** Public certificate used for verification.  Note: you could also use the private key */
+    secretOrPublicKey = fs.readFileSync(path.join(__dirname, certPath + '/certificate.pem'));
+
+    signAlgorithm = 'RS256';
+}
 
 /**
  * Creates a signed JSON WebToken and returns it.  Utilizes the private certificate to create
@@ -28,8 +45,8 @@ exports.createToken = ({ exp = 3600, sub = '' } = {}) => {
     jti : uuidv4(),
     sub,
     exp : Math.floor(Date.now() / 1000) + exp,
-  }, privateKey, {
-    algorithm: 'RS256',
+  }, secretOrPrivateKey, {
+    algorithm: signAlgorithm,
   });
 
   return token;
@@ -41,4 +58,4 @@ exports.createToken = ({ exp = 3600, sub = '' } = {}) => {
  * @throws  {Error} Error if the token could not be verified
  * @returns {Object} The token decoded and verified
  */
-exports.verifyToken = token => jwt.verify(token, publicKey);
+exports.verifyToken = token => jwt.verify(token, secretOrPublicKey);
