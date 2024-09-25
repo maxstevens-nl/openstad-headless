@@ -6,7 +6,6 @@ const app = express();
 const _ = require('lodash');
 const projectService = require('./services/projects');
 const aposConfig = require('./lib/apos-config');
-const { refresh } = require('less');
 const REFRESH_PROJECTS_INTERVAL = 60000 * 5;
 const Url = require('node:url');
 const messageStreaming = require('./services/message-streaming');
@@ -54,7 +53,7 @@ async function setupProject(project) {
     project.domain = project.url;
     project.url = protocol + project.url;
   }
-  let url = Url.parse(project.url);
+  let url = new URL(project.url);
 
   const domain = url.host + (url.path && url.path != '/' ? url.path : '');
 
@@ -68,7 +67,7 @@ async function setupProject(project) {
     let subscriber = await messageStreaming.getSubscriber();
     if (subscriber) {
       subscriptions[project.id] = subscriber;
-      await subscriptions[project.id].subscribe(`project-${project.id}-update`, async (message) => {
+      await subscriptions[project.id].subscribe(`project-${project.id}-update`, async () => {
         if (apostropheServer[project.domain]) {
           // restart the server with the new settings
           apostropheServer[project.domain].apos.destroy();
@@ -151,16 +150,14 @@ async function doStartServer(domain, req, res) {
 }
 
 async function run(id, projectData, options, callback) {
-
-
   // Get host from projectData url
-  const url = Url.parse(projectData.url);
+  const url = new URL(projectData.url);
   const protocol = process.env.FORCE_HTTP ? 'http://' : 'https://';
   projectData.url = protocol + url.hostname + (url.port ? ':' + url.port : '');
 
-  const project = {
+  const projectConfig = {
     ...aposConfig,
-    baseUrl: /*process.env.OVERWRITE_DOMAIN ? process.env.OVERWRITE_DOMAIN : */projectData.url,
+    baseUrl: projectData.url,
     options: projectData,
     project: projectData,
     _id: id,
@@ -173,26 +170,13 @@ async function run(id, projectData, options, callback) {
     // Apply the MongoDB prefix (if given) to the database name,
     // and ensure we don't exceed the MongoDB database name length limit
     const dbPrefix = process.env.MONGODB_PREFIX ? process.env.MONGODB_PREFIX + (!process.env.MONGODB_PREFIX.endsWith('_') ? '_' : '') : '';
-    const dbName = (dbPrefix + (project.shortName)).substring(0, 63);
+    const dbName = (dbPrefix + (projectConfig.shortName)).substring(0, 63);
 
-    project.mongo.uri = process.env.MONGODB_URI.replace("{database}", dbName);
+    projectConfig.mongo.uri = process.env.MONGODB_URI.replace("{database}", dbName);
   }
-
-  const config = project;
-
-  let assetsIdentifier;
-
-  // for dev projects grab the assetsIdentifier from the first project in order to share assets
-
-  if (Object.keys(apostropheServer).length > 0) {
-    const firstProject = apostropheServer[Object.keys(apostropheServer)[0]];
-    // assetsIdentifier = firstProject.assets.generation;
-  }
-
-  const projectConfig = config;
 
   projectConfig.afterListen = function () {
-    apos._id = project._id;
+    apos._id = projectConfig._id;
     if (callback) {
       return callback(null, apos);
     }
@@ -269,7 +253,7 @@ app.use(async function (req, res, next) {
 });
 
 async function serveSite (req, res, siteConfig, forceRestart) {
-  const dbName = siteConfig.config && siteConfig.config.cms && siteConfig.config.cms.dbName ? siteConfig.config.cms.dbName : '';
+  // const dbName = siteConfig.config && siteConfig.config.cms && siteConfig.config.cms.dbName ? siteConfig.config.cms.dbName : '';
   const domain = siteConfig.domain;
 
   try {
@@ -385,7 +369,7 @@ app.use((req, res, next) => {
 app.use('/:privileged(admin)?/login', function (req, res, next) {
   const domainAndPath = req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
   const i = req.url.indexOf('?');
-  let query = req.url.substr(i + 1);
+  let query = req.url.substring(i + 1);
   const protocol = req.headers['x-forwarded-proto'] || req.protocol;
   const url = protocol + '://' + domainAndPath + '/auth/login';
   if (req.params.privileged) {
@@ -414,7 +398,7 @@ app.get('/auth/login', (req, res, next) => {
 app.use('/logout', function (req, res, next) {
   const domainAndPath = req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
   const i = req.url.indexOf('?');
-  let query = req.url.substr(i + 1);
+  let query = req.url.substring(i + 1);
   const protocol = req.headers['x-forwarded-proto'] || req.protocol;
   const url = protocol + '://' + domainAndPath + '/auth/logout';
   return res.redirect(url && query ? url + '?' + query : url);
@@ -448,5 +432,9 @@ app.use(async function (req, res, next){
 });
 
 setInterval(loadProjects, REFRESH_PROJECTS_INTERVAL);
+
+if (process.env.RAILWAY_GIT_COMMIT_SHA) {
+    process.env.APOS_RELEASE_ID = process.env.RAILWAY_GIT_COMMIT_SHA;
+}
 
 app.listen(process.env.PORT || 3000);
