@@ -16,7 +16,7 @@ import '@utrecht/design-tokens/dist/root.css';
 import {
   Paragraph, Link, Heading, Heading2, ButtonGroup, ButtonLink,
 } from '@utrecht/component-library-react';
-import React from 'react';
+import React, { useState } from 'react';
 import { Likes, LikeWidgetProps } from '@openstad-headless/likes/src/likes';
 import {
   Comments,
@@ -98,6 +98,7 @@ function ResourceDetail({
   documentsDesc = '',
   ...props
 }: ResourceDetailWidgetProps) {
+  const [refreshComments, setRefreshComments] = useState(false);
 
   let resourceId: string | undefined = String(getResourceId({
     resourceId: parseInt(props.resourceId || ''),
@@ -174,6 +175,7 @@ function ResourceDetail({
               {displayImage && (
                 <Carousel
                   items={resourceImages}
+                  buttonText={{ next: 'Volgende afbeelding', previous: 'Vorige afbeelding' }}
                   itemRenderer={(i) => (
                     <Image
                       src={i.url}
@@ -250,7 +252,7 @@ function ResourceDetail({
                 <>
                   <Heading level={2} appearance="utrecht-heading-2">Plaats</Heading>
                   <ResourceDetailMap
-                    resourceId={props.resourceId || '0'}
+                    resourceId={resource.id || resourceId || '0'}
                     resourceIdRelativePath={props.resourceIdRelativePath || 'openstadResourceId'}
                     {...props}
                     center={resource.location}
@@ -358,24 +360,30 @@ function ResourceDetail({
         <section className="resource-detail-comments-container">
           <Comments
             {...props}
+            key={refreshComments ? 'refresh1' : 'no-refresh1'}
+            setRefreshComments={setRefreshComments}
             resourceId={resourceId || ''}
             title={props.commentsWidget?.title}
             emptyListText={props.commentsWidget?.emptyListText}
             formIntro={props.commentsWidget?.formIntro}
             placeholder={props.commentsWidget?.placeholder}
             loginText={props.commentsWidget?.loginText}
+            closedText={props.commentsWidget?.closedText}
             sentiment={useSentiments[0]}
           />
 
           {useSentiments?.length > 1 && (
             <Comments
               {...props}
+              key={refreshComments ? 'refresh2' : 'no-refresh2'}
+              setRefreshComments={setRefreshComments}
               resourceId={resourceId || ''}
               title={props.commentsWidget_multiple?.title}
               emptyListText={props.commentsWidget_multiple?.emptyListText}
               formIntro={props.commentsWidget_multiple?.formIntro}
               placeholder={props.commentsWidget_multiple?.placeholder}
               loginText={props.commentsWidget_multiple?.loginText}
+              closedText={props.commentsWidget_multiple?.closedText}
               sentiment={useSentiments[1]}
             />
           )}
