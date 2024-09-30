@@ -6,8 +6,8 @@
   "scripts": {
     "create-docker-config": "node ./scripts/create-docker-config.js",
     "setup": "node ./scripts/setup-all.js",
-    "start": "concurrently npm:start:*",
-    "dev": "concurrently npm:dev:*",
+    "start": "concurrently npm:start:* --kill-others",
+    "dev": "concurrently npm:dev:* --kill-others",
 
     "dev:api": "cd apps/api-server && nodemon server.js",
     "build:api": "npm run build-packages --prefix ./apps/api-server",
@@ -24,6 +24,7 @@
     "build:admin": "npm run build --prefix ./apps/admin-server",
     "start:admin": "npm run start --prefix ./apps/admin-server",
 
+    "dev:cms": "npm run dev --prefix ./apps/cms-server",
     "start:cms": "npm run start --prefix ./apps/cms-server",
 
     "init-databases": "node ./scripts/init-databases.js"
