@@ -19,7 +19,14 @@ const apostropheServer = {};
 let startUpIsBusy = false;
 let startUpQueue = [];
 
-app.use(express.static(path.join(__dirname, 'public')));
+
+const publicPath = path.join(__dirname, 'public');
+
+// list files in directory
+const files = require('fs').readdirSync(publicPath);
+console.log("===> files in public dir", files);
+
+app.use(express.static(publicPath));
 
 app.use('/:sitePrefix?/config-reset', async function (_, __, next) {
   await loadProjects();
