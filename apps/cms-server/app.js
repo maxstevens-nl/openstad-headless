@@ -19,13 +19,14 @@ const apostropheServer = {};
 let startUpIsBusy = false;
 let startUpQueue = [];
 
-
-const publicPath = process.env.PUBLIC_PATH ?? path.join(__dirname, 'public');
+const apostropheRootDir = process.env.APOS_ROOT_DIR ?? __dirname;
 
 // list files in directory
-const files = require('fs').readdirSync(publicPath);
-console.log("===> files in public dir", publicPath, files);
+// const files = require('fs').readdirSync(publicPath);
+// console.log("===> files in public dir", publicPath, files);
 
+const publicPath = path.join(apostropheRootDir, 'public');
+console.log("apos root dir:", apostropheRootDir, publicPath);
 app.use(express.static(publicPath));
 
 app.use('/:sitePrefix?/config-reset', async function (_, __, next) {
@@ -170,6 +171,7 @@ async function run(id, projectData, _, callback) {
     shortName: 'openstad-' + projectData.id,
     mongo: {},
     prefix: projectData.sitePrefix ? '/' + projectData.sitePrefix : false,
+    rootDir: apostropheRootDir,
   };
 
   if (process.env.MONGODB_URI) {
