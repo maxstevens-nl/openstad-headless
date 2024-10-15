@@ -6,7 +6,6 @@ const app = express();
 const projectService = require('./services/projects');
 const aposConfig = require('./lib/apos-config');
 const REFRESH_PROJECTS_INTERVAL = 60000 * 5;
-const Url = require('node:url');
 const messageStreaming = require('./services/message-streaming');
 
 const basicAuth = require('express-basic-auth');
@@ -35,8 +34,8 @@ function createReturnUrl(req) {
   let returnUrl = protocol + '://' + req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
   if (req.query.returnTo && typeof req.query.returnTo === 'string') {
     // only get the pathname to prevent external redirects
-    let pathToReturnTo = Url.parse(req.query.returnTo, true);
-    pathToReturnTo = pathToReturnTo.path;
+    let pathToReturnTo = new URL(req.query.returnTo, true);
+    pathToReturnTo = pathToReturnTo.pathname;
     returnUrl = returnUrl + pathToReturnTo;
   }
   return returnUrl;
