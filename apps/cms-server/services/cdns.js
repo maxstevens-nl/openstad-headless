@@ -19,10 +19,11 @@ exports.contructComponentsCdn = async function () {
       let info = stdout && stdout.toString();
       info = JSON.parse(info);
       let version = info['dist-tags'][tag];
+            console.log("===> version", version);
       if (!version) {
         // fallback
         let packageFile =
-          await fs.readFile(`${__dirname}/../package.json`).toString() || '';
+          await fs.readFile(`${__dirname}/../package.json`).then((buffer) => buffer.toString()) || '';
         let match =
           packageFile &&
           packageFile.match(
@@ -62,8 +63,7 @@ exports.contructReactAdminCdn = async function () {
       let version = info['dist-tags'][tag];
       if (!version) {
         // fallback
-        let packageFile =
-          await fs.readFile(`${__dirname}/../package.json`).toString() || '';
+        let packageFile = fs.readFile(`${__dirname}/../package.json`).toString() || '';
         let match =
           packageFile &&
           packageFile.match(
@@ -92,7 +92,7 @@ async function getTag() {
   let tag = 'alpha';
 
   try {
-    let { stdout, stderr } = await exec('git rev-parse --abbrev-ref HEAD');
+    const { stdout } = await exec('git rev-parse --abbrev-ref HEAD');
     branch = stdout && stdout.toString().trim();
   } catch (error) {
     // As a fallback we check for the CDN_DIST_TAG env variable
