@@ -24,9 +24,6 @@ const authMw = require('../middleware/auth');
 const passwordResetMw = require('../middleware/passwordReset');
 const logMw = require('../middleware/log');
 
-//UTILS
-const getClientIdFromRequest = require('../utils/getClientIdFromRequest');
-
 //MODELS
 const db = require('../db');
 

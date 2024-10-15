@@ -47,8 +47,6 @@ exports.withOne = (req, res, next) => {
 
 
 exports.create = async (req, res, next) => {
-
-  const promises = [];
   const amountOfCodes = req.query.amount ? req.query.amount : 1;
 
   const amountOfCodesPerSecond = 250; // TODO: configurable
@@ -69,11 +67,11 @@ exports.create = async (req, res, next) => {
             code: generateCode(),
             clientId: req.client.id
           })
-          .then(result => {
+          .then(() => {
             task.generatedCodes++;
             return Tasks.save(taskId, task);
           })
-          .then(result => resolve() )
+          .then(() => resolve() )
           .catch( async err => {
             task.error = err;
             await Tasks.save(taskId, task);
@@ -89,11 +87,9 @@ exports.create = async (req, res, next) => {
 }
 
 exports.reset = (req, res, next) => {
-  const { userId } = req.body;
-
   req.code
     .update({userId: null})
-    .then((code) => {
+    .then(() => {
       next();
     })
     .catch((err) => {

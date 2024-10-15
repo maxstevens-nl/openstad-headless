@@ -9,11 +9,6 @@ const db = require('../db');
 // (http://tools.ietf.org/html/rfc6750)
 
 /**
- * Tokens in-memory data structure which stores all of the access tokens
- */
-let tokens = Object.create(null);
-
-/**
  * Returns an access token if it finds one, otherwise returns null if one is not found.
  * @param   {String}  token - The token to decode to get the id of the access token to find.
  * @returns {Promise} resolved with the token if found, otherwise resolved with undefined
@@ -152,8 +147,4 @@ exports.removeExpired = () => {
  * Removes all access tokens.
  * @returns {Promise} resolved with all removed tokens returned
  */
-exports.removeAll = () => {
-  //const deletedTokens = tokens;
-  //tokens              = Object.create(null);
- // return Promise.resolve(deletedTokens);
-};
+exports.removeAll = () => {};

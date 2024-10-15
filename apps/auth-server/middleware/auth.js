@@ -1,5 +1,4 @@
 const { body, validationResult }  = require('express-validator')
-const loginFields = require('../config/user').loginFields;
 const db = require('../db');
 
 exports.validateLogin = async(req, res, next) => {

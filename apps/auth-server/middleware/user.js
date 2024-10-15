@@ -142,7 +142,7 @@ exports.validateUser = async(req, res, next) => {
 }
 
 exports.create =  (req, res, next) => {
-  let { name, email, streetName, houseNumber, suffix, postcode, city, phoneNumber, hashedPhoneNumber, password } = req.body;
+  let { name, email, streetName, houseNumber, suffix, postcode, city, phoneNumber, password } = req.body;
 
   db.User
     .create({

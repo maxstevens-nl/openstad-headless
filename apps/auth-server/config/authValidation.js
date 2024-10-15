@@ -1,4 +1,3 @@
-
 /**
  * Using schema based validation with Express Validator.
  * Express validator documentation is not very complete.

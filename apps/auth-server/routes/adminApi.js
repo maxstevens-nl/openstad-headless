@@ -6,15 +6,10 @@ const adminApiRoleController          = require('../controllers/admin/api/role')
 const adminApiUniqueCodeController    = require('../controllers/admin/api/uniqueCode');
 
 //MIDDLEWARE
-const adminMiddleware          = require('../middleware/admin');
 const clientMw      				   = require('../middleware/client');
 const userMw           				 = require('../middleware/user');
-const tokenMw                  = require('../middleware/token');
-const authMw                   = require('../middleware/auth');
-const passwordResetMw          = require('../middleware/passwordReset');
 const roleMw                   = require('../middleware/role');
 const codeMw                   = require('../middleware/code');
-const logMw                    = require('../middleware/log');
 const securityHeadersMw        = require('../middleware/security-headers');
 
 module.exports = (app) => {
@@ -62,7 +57,7 @@ module.exports = (app) => {
   app.post('/api/admin/unique-code/:codeId/reset',    codeMw.withOne,     codeMw.reset, adminApiUniqueCodeController.reset);
 
   // only use this error handler middleware in "/api" based routes in order to output the errors as JSON instead of HTML
-  app.use("/api/admin/", function(err, req, res, next){
+  app.use("/api/admin/", function(err, _, res) {
     console.log('===> err', err);
 
     // use the error's status or default to 500

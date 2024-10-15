@@ -3,12 +3,7 @@ const path              = require('path');
 const nodemailer        = require('nodemailer');
 const Promise           = require("bluebird");
 const dateFilter        = require('../nunjucks/dateFilter');
-const currencyFilter    = require('../nunjucks/currency');
-const limitTo           = require('../nunjucks/limitTo');
-const jsonFilter        = require('../nunjucks/json');
-const timestampFilter   = require('../nunjucks/timestamp');
 const mjml2html         = require('mjml');
-
 
 const formatTransporter = function ({ host, port, secure, auth }) {
   return {

@@ -7,7 +7,6 @@ var defaultFormat = 'Do MMMM, YYYY';
 
 moment.locale('nl');
 
-
 // Examples:
 // {{ var | date }}
 // {{ var | date('YYYY-MM-DD') }}

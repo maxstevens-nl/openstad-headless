@@ -1,5 +1,3 @@
-const fs = require('fs').promises;
-
 const removeProtocol = (url) => {
   return url ? url.replace('http://', '').replace('https://', '').replace(/\/$/, "") : '';
 }
@@ -149,11 +147,3 @@ module.exports = async function seed(db) {
   }
   
 }
-
-
-
-
-
-
-
-

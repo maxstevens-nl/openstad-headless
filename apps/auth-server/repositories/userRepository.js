@@ -1,7 +1,6 @@
 const db = require('../db');
 
 exports.getUserByClientAndRoles = function(email, clientId, roles) {
-
   return db.User
     .findOne({where: { email }})
     .then( user => {
@@ -9,5 +8,4 @@ exports.getUserByClientAndRoles = function(email, clientId, roles) {
         .getRoleForClient(clientId)
         .then( userrole => roles.find(role => role.name == userrole.name) ? user : undefined );
     })
-
 }

@@ -20,19 +20,6 @@ module.exports = async function seed(db) {
   let adminClientSecret = process.env.AUTH_ADMIN_CLIENT_SECRET
     ? process.env.AUTH_ADMIN_CLIENT_SECRET
     : rack();
-  let headlessClientId = process.env.AUTH_HEADLESS_CLIENT_ID
-    ? process.env.AUTH_HEADLESS_CLIENT_ID
-    : rack();
-  let headlessClientSecret = process.env.AUTH_HEADLESS_CLIENT_SECRET
-    ? process.env.AUTH_HEADLESS_CLIENT_SECRET
-    : rack();
-
-  let adminUrl = process.env.ADMIN_URL
-    ? process.env.ADMIN_URL
-    : process.env.APP_URL;
-  let headlessUrl = process.env.HEADLESS_URL
-    ? process.env.HEADLESS_URL
-    : "http://localhost:3000";
 
   let allowedDomains = process.env.NODE_ENV === "development" ? ["localhost"] : [];
   let apiDomain = process.env.API_DOMAIN || removeProtocol(process.env.API_URL) || '';
