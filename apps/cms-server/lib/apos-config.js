@@ -1,6 +1,9 @@
 module.exports = {
   modules: {
     '@apostrophecms/seo': {},
+    '@apostrophecms/db': {
+       options: {}
+    },
     '@apostrophecms/rich-text-widget': {
       options: {
         className: 'bp-rich-text'

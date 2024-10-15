@@ -162,6 +162,7 @@ async function run(id, projectData, _, callback) {
   const protocol = process.env.FORCE_HTTP ? 'http://' : 'https://';
   projectData.url = protocol + url.hostname + (url.port ? ':' + url.port : '');
 
+  /** @type {import('apostrophe').AposConstructor} */
   const projectConfig = {
     ...aposConfig,
     baseUrl: projectData.url,
@@ -169,7 +170,6 @@ async function run(id, projectData, _, callback) {
     project: projectData,
     _id: id,
     shortName: 'openstad-' + projectData.id,
-    mongo: {},
     prefix: projectData.sitePrefix ? '/' + projectData.sitePrefix : false,
     rootDir: apostropheRootDir,
   };
@@ -182,8 +182,10 @@ async function run(id, projectData, _, callback) {
     const dbPrefix = process.env.MONGODB_PREFIX ? process.env.MONGODB_PREFIX + (!process.env.MONGODB_PREFIX.endsWith('_') ? '_' : '') : '';
     const dbName = (dbPrefix + (projectConfig.shortName)).substring(0, 63);
 
-    projectConfig.mongo.uri = process.env.MONGODB_URI.replace("{database}", dbName);
+    projectConfig.modules['@apostrophecms/db'].options.uri = process.env.MONGODB_URI.replace("{database}", dbName);
   }
+
+    console.log("projectConfig.mongo.uri", projectConfig.modules['@apostrophecms/db'].options.uri);
 
   projectConfig.afterListen = function () {
     apos._id = projectConfig._id;
