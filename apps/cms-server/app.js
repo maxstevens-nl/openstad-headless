@@ -66,14 +66,14 @@ async function setupProject(project) {
     let subscriber = await messageStreaming.getSubscriber();
     if (subscriber) {
       subscriptions[project.id] = subscriber;
-      await subscriptions[project.id].subscribe(`project-${project.id}-update`, async () => {
+      await subscriptions[project.id].subscribe(`project-${project.id}-update`, () => {
         if (apostropheServer[project.domain]) {
           // restart the server with the new settings
           apostropheServer[project.domain].apos.destroy();
           delete apostropheServer[project.domain];
         }
 
-        await loadProject(project.id)
+        loadProject(project.id)
       });
     } else {
       console.log('No subscriber found');
@@ -84,7 +84,7 @@ async function setupProject(project) {
 
 async function loadProject(projectId) {
   const project = await projectService.fetchOne(projectId);
-  await setupProject(project)
+  setupProject(project)
 }
 
 async function loadProjects() {
@@ -95,9 +95,9 @@ async function loadProjects() {
 
     console.log(allProjects);
 
-    await Promise.all(allProjects.map(project => 
+    allProjects.forEach(project => 
       setupProject(project)
-    ));
+    );
 
     // add event subscription
     if (!subscriptions['all']) {
