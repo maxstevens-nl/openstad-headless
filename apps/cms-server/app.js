@@ -192,6 +192,8 @@ async function run(id, projectData, _, callback) {
     }
   };
 
+    console.log("apos config", JSON.stringify(projectConfig));
+
   const apos = await apostrophe(
     projectConfig,
   );
