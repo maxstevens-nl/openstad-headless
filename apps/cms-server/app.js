@@ -20,7 +20,7 @@ let startUpIsBusy = false;
 let startUpQueue = [];
 
 
-const publicPath = path.join(__dirname, 'public');
+const publicPath = process.env.PUBLIC_PATH ?? path.join(__dirname, 'public');
 
 // list files in directory
 const files = require('fs').readdirSync(publicPath);
