@@ -1,13 +1,6 @@
 const dns = require('dns');
 const db = require('../db');
-const k8s = require('@kubernetes/client-node');
 const ip = require('ip');
-
-const getK8sApi = () => {
-  const kc = new k8s.KubeConfig();
-  kc.loadFromCluster();
-  return kc.makeApiClient(k8s.NetworkingV1Api);
-};
 
 const lookupPromise = async (domain) => {
   return new Promise((resolve, reject) => {
@@ -197,6 +190,13 @@ const checkHostStatus = async (conditions) => {
 
   // Todo: some output?
   console.log('all projects checked');
+
+  const getK8sApi = () => {
+    const k8s = require('@kubernetes/client-node');
+    const kc = new k8s.KubeConfig();
+    kc.loadFromCluster();
+    return kc.makeApiClient(k8s.NetworkingV1Api);
+  };
 };
 
 module.exports = checkHostStatus;
