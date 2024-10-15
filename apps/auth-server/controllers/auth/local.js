@@ -138,14 +138,17 @@ exports.logout = async (req, res) => {
 
   try {
     const redirectUrlHost = redirectURL ? new URL(redirectURL).hostname : false;
-    redirectURL = redirectUrlHost && allowedDomains && allowedDomains.indexOf(redirectUrlHost) !== -1 ? redirectURL : false;
+    redirectURL = (redirectUrlHost && allowedDomains && allowedDomains.indexOf(redirectUrlHost) !== -1) ? redirectURL : false;
   } catch (e) {
+    console.log("===> error while logging out", e);
     redirectURL = null;
   }
 
   if (!redirectURL) {
     redirectURL =  config && config.logoutUrl ? config.logoutUrl : req.client.redirectUrl
   }
+
+  console.log("===> logging out user", req.user, redirectURL, allowedDomains);
 
   res.redirect(redirectURL);
 
