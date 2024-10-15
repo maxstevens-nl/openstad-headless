@@ -148,7 +148,14 @@ exports.logout = async (req, res) => {
     redirectURL =  config && config.logoutUrl ? config.logoutUrl : req.client.redirectUrl
   }
 
-  console.log("===> logging out user", req.user, redirectURL, allowedDomains);
+  const log = {
+    user: req.user,
+    'req.query.redirectUrl': req.query.redirectUrl,
+    'config.logoutUrl': config.logoutUrl,
+    'redirectURL': redirectURL,
+    'allowedDomains': allowedDomains
+  }
+  console.log("===> logging out user", JSON.stringify(log));
 
   res.redirect(redirectURL);
 
