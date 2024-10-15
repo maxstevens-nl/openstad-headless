@@ -44,6 +44,8 @@ function createReturnUrl(req) {
 async function setupProject(project) {
   if (!project.url) return;
 
+  console.log(project.url, process.env.FORCE_HTTP);
+
   // We are no longer saving the protocol in the database, but we need a
   // protocol to be able to use `Url.parse` to get the host.
   if (!project.url.startsWith('http://') && !project.url.startsWith('https://')) {
@@ -179,6 +181,8 @@ async function run(id, projectData, _, callback) {
     }
   };
 
+    console.log("Running project", projectData);
+
   const apos = await apostrophe(
     projectConfig,
   );
@@ -260,7 +264,7 @@ async function serveSite(req, res, siteConfig, forceRestart) {
     }
 
     if (!projects[domain]) {
-      console.log('Project not found: ', domain, req.originalUrl);
+      console.log('Project not found: ', siteConfig, req.originalUrl);
       return res.status(404).json({ error: 'Project not found' });
     }
 

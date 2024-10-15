@@ -111,13 +111,12 @@ more_set_headers "Referrer-Policy: same-origin";`
 };
 
 const checkHostStatus = async (conditions) => {
-  const isOnK8s = !!process.env.KUBERNETES_NAMESPACE;
   const namespace = process.env.KUBERNETES_NAMESPACE;
+  const isOnK8s = Boolean(namespace);
   const where = conditions ? conditions : {};
   const serverIp = process.env.PUBLIC_IP ? process.env.PUBLIC_IP : ip.address();
 
   if (isOnK8s) {
-
     console.log('Server IP should be: ', serverIp, ' IP from env value is: ', process.env.PUBLIC_IP, ' npm thinks it is:', ip.address());
 
     const projects = await db.Project.findAll({where});

@@ -162,6 +162,8 @@ router
 
     try {
 
+            console.log("OIDC fetching user", req.userAccessToken, req.authConfig);
+
       // get userdata from auth server
       req.userData = await service.fetchUserData({
         authConfig: req.authConfig,

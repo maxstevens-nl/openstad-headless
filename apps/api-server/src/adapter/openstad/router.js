@@ -154,6 +154,7 @@ router
       req.redirectUrl = redirectUrl;
       return next();
     } else {
+      console.log("===> redirect domain not allowed", redirectUrl, req.project.url, req.project.config.allowedDomains);
       res.status(500).json({
         status: 'Redirect domain not allowed'
       });

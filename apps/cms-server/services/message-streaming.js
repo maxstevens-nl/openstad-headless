@@ -4,7 +4,6 @@ const redis = require('redis');
 let client = null;
 
 async function getClient() {
-
   if (client) {
     return client.duplicate();
   }
@@ -13,7 +12,7 @@ async function getClient() {
     client = await redis.createClient({ url: process.env.MESSAGESTREAMING_REDIS_URL })
       .connect();
   } catch(err) {
-    // console.log(err);
+    console.log(err);
   }
 
   return client;

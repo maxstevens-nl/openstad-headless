@@ -16,6 +16,7 @@ let adapters = {};
  */
 module.exports = async function getUser( req, res, next ) {
 
+
   try {
 
     if (!req.headers['authorization']) {
@@ -93,6 +94,8 @@ function parseJwt(authorizationHeader) {
  */
 async function getUserInstance({ authConfig, authProvider, userId, isFixed, projectId }) {
 
+    console.log("getUserInstance", userId, isFixed, projectId, authConfig);
+
   let dbUser;
   
   try {
@@ -122,6 +125,8 @@ async function getUserInstance({ authConfig, authProvider, userId, isFixed, proj
       if (!dbUser.projectId || dbUser.projectId == config.admin.projectId) dbUser.role = 'superuser'; // !dbUser.projectId is backwards compatibility
       return dbUser;
     }
+
+        console.log("getUserInstance dbUser", dbUser.idpUser);
 
     if (!dbUser || ( !dbUser.idpUser || !dbUser.idpUser.accesstoken ) ) {
       return {};

@@ -5,7 +5,6 @@
 
 const fetch = require('node-fetch');
 const Url = require('url');
-const expressSession = require('express-session');
 
 const generateRandomPassword = () => {
   return require('crypto').randomBytes(64).toString('hex');
@@ -37,7 +36,13 @@ module.exports = {
     return {
       async enrich(req, res, next) {
         const projectId = req.project.id;
-        req.data.global.logoutUrl = `${process.env.API_URL}/auth/project/${projectId}/logout?useAuth=default&redirectUri=${req.protocol}://${req.hostname}${req.url}/api/v1/openstad-auth/logout`;
+
+        const redirectUri = `${req.protocol}://${req.get('host')}${req.originalUrl}api/v1/openstad-auth/logout`;
+        req.data.global.logoutUrl = `${process.env.API_URL}/auth/project/${projectId}/logout?useAuth=default&redirectUri=${redirectUri}`;
+
+        console.log("apos logout from url", redirectUri, req.protocol, req.get('host'), req.originalUrl, req.url);
+        console.log("req.data.global.logoutUrl", req.data.global.logoutUrl);
+
         return next();
       },
       async authenticate (req, res, next) {
@@ -45,11 +50,6 @@ module.exports = {
         if (!req.session) {
           next();
         }
-
-        const thisHost = req.headers['x-forwarded-host'] || req.get('host');
-        const protocol = req.headers['x-forwarded-proto'] || req.protocol;
-        const fullUrl = protocol + '://' + thisHost + req.originalUrl;
-        const parsedUrl = Url.parse(fullUrl, true);
 
         // add apostrophes permissions function to the data object so we can check it in the templates
         req.data.userCan = function (permission) {
@@ -72,11 +72,13 @@ module.exports = {
           req.session.openstadLoginToken = req.query.openstadlogintoken;
           req.session.returnTo = null;
 
+          console.log("returnTo", req.sitePrefix, returnTo);
+
           // Remove siteprefix from returnTo if returnTo starts with the siteprefix
           // This is to prevent doubling of the siteprefix leading to 404s
-          if (req.sitePrefix && returnTo.startsWith(`/${req.sitePrefix}`)) {
-            returnTo = returnTo.replace(`/${req.sitePrefix}`, '');
-          }
+          // if (req.sitePrefix && returnTo.startsWith(`/${req.sitePrefix}`)) {
+          //   returnTo = returnTo.replace(`/${req.sitePrefix}`, '');
+          // }
           
           req.session.save(() => {
             res.redirect(returnTo);
@@ -138,6 +140,8 @@ module.exports = {
                 }
 
                 let user = await response.json();
+
+                console.log("fetching user", url, user);
 
                 if (user && Object.keys(user).length > 0 && user.id) {
 
