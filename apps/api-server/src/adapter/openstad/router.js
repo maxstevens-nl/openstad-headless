@@ -302,6 +302,8 @@ router
     return next();
   })
   .get(function (req, res, next) {
+    console.log("===> logging out, trying not idp", req.query, config.url, req.project.id);
+
     if (!req.query.ipdlogout) {
       // redirect to idp server
       let redirectUri = encodeURIComponent(config.url + '/auth/project/' + req.project.id + '/logout?ipdlogout=done&useAuth=' + req.query.useAuth + '&redirectUri=' + encodeURIComponent(req.query.redirectUri));
@@ -311,6 +313,8 @@ router
     return next();
   })
   .get(async function (req, res, next) {
+    console.log("===> logging out, idp I guess?", req.query, req.params, config.url, req.project.id);
+
     const projectId = req.params.projectId;
     if(req.query.redirectUri && projectId && await isRedirectAllowed(projectId, req.query.redirectUri)){
       return res.redirect(req.query.redirectUri);
