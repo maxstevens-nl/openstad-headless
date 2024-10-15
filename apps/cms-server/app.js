@@ -3,7 +3,6 @@ require('dotenv').config();
 const apostrophe = require('apostrophe');
 const express = require('express');
 const app = express();
-const _ = require('lodash');
 const projectService = require('./services/projects');
 const aposConfig = require('./lib/apos-config');
 const REFRESH_PROJECTS_INTERVAL = 60000 * 5;
@@ -23,12 +22,12 @@ let startUpQueue = [];
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/:sitePrefix?/config-reset', async function (req, res, next) {
+app.use('/:sitePrefix?/config-reset', async function (_, __, next) {
   await loadProjects();
   next();
 });
 
-function createReturnUrl(req, res) {
+function createReturnUrl(req) {
 
   // check in url if returnTo params is set for redirecting to page
   // req.session.returnTo = req.query.returnTo ? decodeURIComponent(req.query.returnTo) : null;
@@ -57,7 +56,7 @@ async function setupProject(project) {
 
   const domain = url.host + (url.path && url.path != '/' ? url.path : '');
 
-  console.log("Setting up project: ", domain);
+  console.log(`Setting up project. domain: {${domain}}; url: {${project.url}}`);
 
   // for convenience and speed we set the domain name as the key
   projects[domain] = project;
@@ -149,7 +148,7 @@ async function doStartServer(domain, req, res) {
   }
 }
 
-async function run(id, projectData, options, callback) {
+async function run(id, projectData, _, callback) {
   // Get host from projectData url
   const url = new URL(projectData.url);
   const protocol = process.env.FORCE_HTTP ? 'http://' : 'https://';
@@ -189,7 +188,7 @@ async function run(id, projectData, options, callback) {
   return apos;
 }
 
-app.use(async function (req, res, next) {
+app.use(async function (_, res, next) {
 
   /**
    * Stop server if Project Api Key is not set.
@@ -238,7 +237,7 @@ app.use(async function (req, res, next) {
   next();
 });
 
-app.use(async function (req, res, next) {
+app.use(async function (req, _, next) {
 
     // format domain to our specification
     let domain = req.headers['x-forwarded-host'] || req.get('host');
@@ -252,7 +251,7 @@ app.use(async function (req, res, next) {
 
 });
 
-async function serveSite (req, res, siteConfig, forceRestart) {
+async function serveSite(req, res, siteConfig, forceRestart) {
   // const dbName = siteConfig.config && siteConfig.config.cms && siteConfig.config.cms.dbName ? siteConfig.config.cms.dbName : '';
   const domain = siteConfig.domain;
 
@@ -265,8 +264,7 @@ async function serveSite (req, res, siteConfig, forceRestart) {
 
     if (!projects[domain]) {
       console.log('Project not found: ', domain, req.originalUrl);
-      res.status(404).json({ error: 'Project not found' });
-      return;
+      return res.status(404).json({ error: 'Project not found' });
     }
 
     // use existing server
@@ -343,7 +341,7 @@ app.use('/:sitePrefix', function (req, res, next) {
 
 // Add site to request object if we don't have a prefix
 // This fixes a bug where basicAuth would only apply to subdirectories
-app.use((req, res, next) => {
+app.use((req, _, next) => {
   if (!req.site) {
     if (projects[req.openstadDomain]) {
       req.site = projects[req.openstadDomain];
@@ -366,7 +364,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/:privileged(admin)?/login', function (req, res, next) {
+app.use('/:privileged(admin)?/login', function (req, res) {
   const domainAndPath = req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
   const i = req.url.indexOf('?');
   let query = req.url.substring(i + 1);
@@ -378,7 +376,7 @@ app.use('/:privileged(admin)?/login', function (req, res, next) {
   return res.redirect(url && query ? url + '?' + query : url);
 });
 
-app.get('/auth/login', (req, res, next) => {
+app.get('/auth/login', (req, res) => {
 
   let returnUrl = createReturnUrl(req, res);
   returnUrl = encodeURIComponent(returnUrl + '?openstadlogintoken=[[jwt]]');
@@ -395,7 +393,7 @@ app.get('/auth/login', (req, res, next) => {
 
 });
 
-app.use('/logout', function (req, res, next) {
+app.use('/logout', function (req, res) {
   const domainAndPath = req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
   const i = req.url.indexOf('?');
   let query = req.url.substring(i + 1);
@@ -404,7 +402,7 @@ app.use('/logout', function (req, res, next) {
   return res.redirect(url && query ? url + '?' + query : url);
 });
 
-app.get('/auth/logout', (req, res, next) => {
+app.get('/auth/logout', (req, res) => {
 
   let returnUrl = createReturnUrl(req, res);
 
@@ -420,7 +418,7 @@ app.get('/auth/logout', (req, res, next) => {
 
 });
 
-app.use(async function (req, res, next){
+app.use(async function (req, res) {
   const completeDomain = req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
     if (projects[completeDomain]) {
       return await serveSite(req, res, projects[completeDomain], req.forceRestart);
@@ -428,7 +426,6 @@ app.use(async function (req, res, next){
 
     // fallback to generic 404
     res.status(404).send(`Error: No project found for given URL ${req.openstadDomain}${req.url}`);
-
 });
 
 setInterval(loadProjects, REFRESH_PROJECTS_INTERVAL);
