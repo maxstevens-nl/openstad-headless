@@ -9,7 +9,7 @@ import { Dialog } from '@openstad-headless/ui/src';
 import { BaseProps, ProjectSettingProps } from '@openstad-headless/types';
 import { Filters } from '@openstad-headless/ui/src/stem-begroot-and-resource-overview/filter';
 import { loadWidget } from '@openstad-headless/lib/load-widget';
-import { elipsize } from '../../lib/ui-helpers';
+import {elipsizeHTML} from '../../lib/ui-helpers';
 import { GridderResourceDetail } from './gridder-resource-detail';
 import { hasRole } from '@openstad-headless/lib';
 import nunjucks from 'nunjucks';
@@ -23,7 +23,7 @@ import {
   Paragraph,
   Button,
 } from '@utrecht/component-library-react';
-import { ResourceOverviewMapWidgetProps } from '@openstad-headless/leaflet-map/src/types/resource-overview-map-widget-props';
+import { ResourceOverviewMapWidgetProps, dataLayerArray } from '@openstad-headless/leaflet-map/src/types/resource-overview-map-widget-props';
 
 export type ResourceOverviewWidgetProps = BaseProps &
   ProjectSettingProps & {
@@ -32,7 +32,7 @@ export type ResourceOverviewWidgetProps = BaseProps &
     resourceOverviewMapWidget?: Omit<
       ResourceOverviewMapWidgetProps,
       keyof BaseProps | keyof ProjectSettingProps | 'projectId'
-    >;
+    > & dataLayerArray;
     renderHeader?: (
       widgetProps: ResourceOverviewWidgetProps,
       resources?: any,
@@ -90,6 +90,7 @@ export type ResourceOverviewWidgetProps = BaseProps &
     resetText?: string;
     applyText?: string;
     onFilteredResourcesChange?: (filteredResources: any[]) => void;
+    displayLikeButton?: boolean;
   };
 
 //Temp: Header can only be made when the map works so for now a banner
@@ -236,21 +237,20 @@ const defaultItemRenderer = (
           <div>
             <Spacer size={1}/>
             {props.displayTitle ? (
-                <Heading4>
-                  <a href={getUrl()} className="resource-card--link_trigger"> {elipsize(resource.title, props.titleMaxLength || 20)} </a>
+               <Heading4>
+                 <a href={getUrl()} className="resource-card--link_trigger" dangerouslySetInnerHTML={{__html: elipsizeHTML(resource.title, props.titleMaxLength || 20)}}/>
               </Heading4>
             ) : null}
 
             {props.displaySummary ? (
-              <Paragraph>
-                {elipsize(resource.summary, props.summaryMaxLength || 20)}
-              </Paragraph>
+              <Paragraph dangerouslySetInnerHTML={{__html: elipsizeHTML(resource.summary, props.summaryMaxLength || 20)}}/>
             ) : null}
 
             {props.displayDescription ? (
-              <Paragraph className="osc-resource-overview-content-item-description">
-                {elipsize(resource.description, props.descriptionMaxLength || 30)}
-              </Paragraph>
+              <Paragraph
+                className="osc-resource-overview-content-item-description"
+                dangerouslySetInnerHTML={{__html: elipsizeHTML(resource.description, props.descriptionMaxLength || 30)}}
+              />
             ) : null}
           </div>
 
@@ -301,20 +301,16 @@ const defaultItemRenderer = (
             <Spacer size={1} />
             {props.displayTitle ? (
               <Heading4>
-                <button className="resource-card--link_trigger" onClick={() => onItemClick && onItemClick()}>{elipsize(resource.title, props.titleMaxLength || 20)}</button>
+                <button className="resource-card--link_trigger" onClick={() => onItemClick && onItemClick()} dangerouslySetInnerHTML={{__html: elipsizeHTML(resource.title, props.titleMaxLength || 20)}}></button>
               </Heading4>
             ) : null}
 
             {props.displaySummary ? (
-              <Paragraph>
-                {elipsize(resource.summary, props.summaryMaxLength || 20)}
-              </Paragraph>
+              <Paragraph dangerouslySetInnerHTML={{__html: elipsizeHTML(resource.summary, props.summaryMaxLength || 20)}}/>
             ) : null}
 
             {props.displayDescription ? (
-              <Paragraph className="osc-resource-overview-content-item-description">
-                {elipsize(resource.description, props.descriptionMaxLength || 30)}
-              </Paragraph>
+              <Paragraph className="osc-resource-overview-content-item-description" dangerouslySetInnerHTML={{__html: elipsizeHTML(resource.description, props.descriptionMaxLength || 30)}}/>
             ) : null}
           </div>
 
@@ -355,6 +351,7 @@ function ResourceOverview({
   onlyIncludeStatusIds = '',
   displayDocuments = false,
   showActiveTags = false,
+  displayLikeButton = false,
   documentsTitle = '',
   documentsDesc = '',
   displayVariant = '',
@@ -537,6 +534,7 @@ function ResourceOverview({
                 displayDocuments={displayDocuments}
                 documentsTitle={documentsTitle}
                 documentsDesc={documentsDesc}
+                displayLikeButton={displayLikeButton}
                 onRemoveClick={(resource) => {
                   try {
                     resource
@@ -549,6 +547,7 @@ function ResourceOverview({
                     console.error(e);
                   }
                 }}
+                {...props}
               />
             )}></Carousel>
         }
