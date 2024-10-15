@@ -174,6 +174,8 @@ async function run(id, projectData, _, callback) {
     rootDir: apostropheRootDir,
   };
 
+  console.log("MONGO uri", process.env.MONGODB_URI);
+
   if (process.env.MONGODB_URI) {
     // Apply the MongoDB prefix (if given) to the database name,
     // and ensure we don't exceed the MongoDB database name length limit
@@ -189,8 +191,6 @@ async function run(id, projectData, _, callback) {
       return callback(null, apos);
     }
   };
-
-    console.log("Running project", projectData);
 
   const apos = await apostrophe(
     projectConfig,
