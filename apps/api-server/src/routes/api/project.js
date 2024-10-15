@@ -1,12 +1,10 @@
 const express 				= require('express');
-const config 					= require('config');
-const fetch           = require('node-fetch');
 const merge           = require('merge');
-const Sequelize       = require('sequelize');
 const db      				= require('../../db');
 const auth 						= require('../../middleware/sequelize-authorization-middleware');
 const pagination 			= require('../../middleware/pagination');
 const searchInResults = require('../../middleware/search-in-results');
+
 // TODO-AUTH
 const checkHostStatus = require('../../services/checkHostStatus')
 const projectsWithIssues = require('../../services/projects-with-issues');
