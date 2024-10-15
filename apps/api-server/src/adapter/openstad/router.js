@@ -93,6 +93,7 @@ router
       let url = baseUrl + '/auth/project/' + req.project.id + '/logout?redirectUri=' + backToHereUrl;
       return res.redirect(url)
     }else if(req.query.redirectUri){
+      console.log("===> redirect not allowed 1.", req.query.redirectUri, projectId);
       return next(createError(403, 'redirectUri not found in allowlist.'));
     }
     return next();
@@ -108,6 +109,7 @@ router
       console.log("===> Redirect step 1; redirecting to auth server because we called the login route");
       return res.redirect(url);
     }else if(req.query.redirectUri){
+      console.log("===> redirect not allowed 2.", req.query.redirectUri, projectId);
       return next(createError(403, 'redirectUri not found in allowlist.'));
     }
     return next();
@@ -313,6 +315,7 @@ router
     if(req.query.redirectUri && projectId && await isRedirectAllowed(projectId, req.query.redirectUri)){
       return res.redirect(req.query.redirectUri);
     }else if(req.query.redirectUri){
+      console.log("===> redirect not allowed 3.", req.query.redirectUri, projectId);
       return next(createError(403, 'redirectUri not found in allowlist.'));
     }
 
