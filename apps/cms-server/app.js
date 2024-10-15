@@ -411,6 +411,7 @@ app.get('/auth/logout', (req, res) => {
 
 app.use(async function (req, res) {
   const completeDomain = req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
+    console.log("===> complete domain", completeDomain, req.openstadDomain, req.sitePrefix);
     if (projects[completeDomain]) {
       return await serveSite(req, res, projects[completeDomain], req.forceRestart);
     }
