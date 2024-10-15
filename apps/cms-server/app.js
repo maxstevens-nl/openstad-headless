@@ -24,7 +24,7 @@ const publicPath = path.join(__dirname, 'public');
 
 // list files in directory
 const files = require('fs').readdirSync(publicPath);
-console.log("===> files in public dir", files);
+console.log("===> files in public dir", publicPath, files);
 
 app.use(express.static(publicPath));
 
