@@ -28,7 +28,6 @@ app.use('/:sitePrefix?/config-reset', async function (_, __, next) {
 });
 
 function createReturnUrl(req) {
-
   // check in url if returnTo params is set for redirecting to page
   // req.session.returnTo = req.query.returnTo ? decodeURIComponent(req.query.returnTo) : null;
   //const thisHost = req.headers['x-forwarded-host'] || req.get('host');
@@ -45,6 +44,7 @@ function createReturnUrl(req) {
 
 async function setupProject(project) {
   if (!project.url) return;
+
   // We are no longer saving the protocol in the database, but we need a
   // protocol to be able to use `Url.parse` to get the host.
   if (!project.url.startsWith('http://') && !project.url.startsWith('https://')) {
@@ -52,9 +52,10 @@ async function setupProject(project) {
     project.domain = project.url;
     project.url = protocol + project.url;
   }
+
   let url = new URL(project.url);
 
-  const domain = url.host + (url.path && url.path != '/' ? url.path : '');
+  const domain = url.host + (url.pathname !== '/' ? url.pathname : '');
 
   console.log(`Setting up project. domain: {${domain}}; url: {${project.url}}`);
 
@@ -89,16 +90,15 @@ async function loadProject(projectId) {
 
 async function loadProjects() {
   try {
-
     projects = {};
 
     const allProjects = await projectService.fetchAll();
 
     console.log(allProjects);
 
-    allProjects.forEach(async project => {
+    await Promise.all(allProjects.map(project => 
       setupProject(project)
-    });
+    ));
 
     // add event subscription
     if (!subscriptions['all']) {
@@ -113,7 +113,6 @@ async function loadProjects() {
     }
 
     cleanUpProjects();
-
   } catch(err) {
     console.log('Error fetching projects:', err);
   }
@@ -189,7 +188,6 @@ async function run(id, projectData, _, callback) {
 }
 
 app.use(async function (_, res, next) {
-
   /**
    * Stop server if Project Api Key is not set.
    */
@@ -316,27 +314,20 @@ async function serveSite(req, res, siteConfig, forceRestart) {
 app.use('/:sitePrefix', function (req, res, next) {
     const domainAndPath = req.openstadDomain + '/' + req.params.sitePrefix;
 
-    const site = projects[domainAndPath] ? projects[domainAndPath] : false;
-
-
-
+    const site = projects[domainAndPath];
     if (site) {
       site.sitePrefix = req.params.sitePrefix;
-      req.sitePrefix  = req.params.sitePrefix;
-      req.site        = site;
-
+      req.sitePrefix = req.params.sitePrefix;
+      req.site = site;
 
       // Remove the prefix from the URL
       req.url = req.url.replace(`/${req.params.sitePrefix}`, '');
 
-
       // Reinitialize route parameters, so the next middleware will see the correct parameters
-      req.app._router.handle(req, res, next);
+      return req.app._router.handle(req, res, next);
+    } 
 
-    } else {
-      next();
-    }
-
+    next();
 });
 
 // Add site to request object if we don't have a prefix
@@ -377,7 +368,6 @@ app.use('/:privileged(admin)?/login', function (req, res) {
 });
 
 app.get('/auth/login', (req, res) => {
-
   let returnUrl = createReturnUrl(req, res);
   returnUrl = encodeURIComponent(returnUrl + '?openstadlogintoken=[[jwt]]');
 
@@ -390,7 +380,6 @@ app.get('/auth/login', (req, res) => {
   url = req.query.loginPriviliged ? url + '&loginPriviliged=1' : url + '&forceNewLogin=1'; // ;
 
   return res.redirect(url);
-
 });
 
 app.use('/logout', function (req, res) {
@@ -403,7 +392,6 @@ app.use('/logout', function (req, res) {
 });
 
 app.get('/auth/logout', (req, res) => {
-
   let returnUrl = createReturnUrl(req, res);
 
   const projectDomain =  process.env.OVERWRITE_DOMAIN ? process.env.OVERWRITE_DOMAIN : req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
