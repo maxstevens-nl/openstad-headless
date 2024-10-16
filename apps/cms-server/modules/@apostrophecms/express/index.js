@@ -15,6 +15,7 @@ module.exports = {
        * since our top level is managing express
        */
       async listen() {
+          console.log("listening on port: ", self.apos.options.port);
       }
     };
   }
