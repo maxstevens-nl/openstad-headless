@@ -1,3 +1,5 @@
+console.log("express module, secret ok: ", process.env.EXPRESS_SECRET !== undefined);
+
 module.exports = {
   options: {
     session: {
