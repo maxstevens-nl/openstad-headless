@@ -13,7 +13,7 @@ const path = require('node:path');
 
 let projects = {};
 /** @type {Object<string, import('redis').RedisClientType>} */
-let subscriptions = {}
+let subscriptions = {};
 const apostropheServer = {};
 
 let startUpIsBusy = false;
@@ -26,7 +26,7 @@ const apostropheRootDir = process.env.APOS_ROOT_DIR ?? __dirname;
 // console.log("===> files in public dir", publicPath, files);
 
 const publicPath = path.join(apostropheRootDir, 'public');
-console.log("apos root dir:", apostropheRootDir, publicPath);
+console.log('apos root dir:', apostropheRootDir, publicPath);
 app.use(express.static(publicPath));
 
 app.use('/:sitePrefix?/config-reset', async function (_, __, next) {
@@ -39,7 +39,11 @@ function createReturnUrl(req) {
   // req.session.returnTo = req.query.returnTo ? decodeURIComponent(req.query.returnTo) : null;
   //const thisHost = req.headers['x-forwarded-host'] || req.get('host');
   const protocol = req.headers['x-forwarded-proto'] || req.protocol;
-  let returnUrl = protocol + '://' + req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
+  let returnUrl =
+    protocol +
+    '://' +
+    req.openstadDomain +
+    (req.sitePrefix ? '/' + req.sitePrefix : '');
   if (req.query.returnTo && typeof req.query.returnTo === 'string') {
     // only get the pathname to prevent external redirects
     let pathToReturnTo = new URL(req.query.returnTo, true);
@@ -56,7 +60,10 @@ async function setupProject(project) {
 
   // We are no longer saving the protocol in the database, but we need a
   // protocol to be able to use `Url.parse` to get the host.
-  if (!project.url.startsWith('http://') && !project.url.startsWith('https://')) {
+  if (
+    !project.url.startsWith('http://') &&
+    !project.url.startsWith('https://')
+  ) {
     const protocol = process.env.FORCE_HTTP === 'yes' ? 'http://' : 'https://';
     project.domain = project.url;
     project.url = protocol + project.url;
@@ -76,25 +83,27 @@ async function setupProject(project) {
     let subscriber = await messageStreaming.getSubscriber();
     if (subscriber) {
       subscriptions[project.id] = subscriber;
-      await subscriptions[project.id].subscribe(`project-${project.id}-update`, () => {
-        if (apostropheServer[project.domain]) {
-          // restart the server with the new settings
-          apostropheServer[project.domain].apos.destroy();
-          delete apostropheServer[project.domain];
-        }
+      await subscriptions[project.id].subscribe(
+        `project-${project.id}-update`,
+        () => {
+          if (apostropheServer[project.domain]) {
+            // restart the server with the new settings
+            apostropheServer[project.domain].apos.destroy();
+            delete apostropheServer[project.domain];
+          }
 
-        loadProject(project.id)
-      });
+          loadProject(project.id);
+        }
+      );
     } else {
       console.log('No subscriber found');
     }
   }
-
 }
 
 async function loadProject(projectId) {
   const project = await projectService.fetchOne(projectId);
-  setupProject(project)
+  setupProject(project);
 }
 
 async function loadProjects() {
@@ -105,24 +114,26 @@ async function loadProjects() {
 
     console.log(allProjects);
 
-    allProjects.forEach(project => 
-      setupProject(project)
-    );
+    allProjects.forEach((project) => setupProject(project));
 
     // add event subscription
     if (!subscriptions['all']) {
       let subscriber = await messageStreaming.getSubscriber();
       if (subscriber) {
         subscriptions['all'] = subscriber;
-        await subscriptions['all'].subscribe(`project-urls-update`, () => loadProjects());
-        await subscriptions['all'].subscribe(`new-project`, () => loadProjects());
+        await subscriptions['all'].subscribe(`project-urls-update`, () =>
+          loadProjects()
+        );
+        await subscriptions['all'].subscribe(`new-project`, () =>
+          loadProjects()
+        );
       } else {
         console.log('No subscriber found');
       }
     }
 
     cleanUpProjects();
-  } catch(err) {
+  } catch (err) {
     console.log('Error fetching projects:', err);
   }
 }
@@ -174,18 +185,25 @@ async function run(id, projectData, _, callback) {
     rootDir: apostropheRootDir,
   };
 
-  console.log("MONGO uri", process.env.MONGODB_URI);
+  console.log('MONGO uri', process.env.MONGODB_URI);
 
   if (process.env.MONGODB_URI) {
     // Apply the MongoDB prefix (if given) to the database name,
     // and ensure we don't exceed the MongoDB database name length limit
-    const dbPrefix = process.env.MONGODB_PREFIX ? process.env.MONGODB_PREFIX + (!process.env.MONGODB_PREFIX.endsWith('_') ? '_' : '') : '';
-    const dbName = (dbPrefix + (projectConfig.shortName)).substring(0, 63);
+    const dbPrefix = process.env.MONGODB_PREFIX
+      ? process.env.MONGODB_PREFIX +
+        (!process.env.MONGODB_PREFIX.endsWith('_') ? '_' : '')
+      : '';
+    const dbName = (dbPrefix + projectConfig.shortName).substring(0, 63);
 
-    projectConfig.modules['@apostrophecms/db'].options.uri = process.env.MONGODB_URI.replace("{database}", dbName);
+    projectConfig.modules['@apostrophecms/db'].options.uri =
+      process.env.MONGODB_URI.replace('{database}', dbName);
   }
 
-    console.log("projectConfig.mongo.uri", projectConfig.modules['@apostrophecms/db'].options.uri);
+  console.log(
+    'projectConfig.mongo.uri',
+    projectConfig.modules['@apostrophecms/db'].options.uri
+  );
 
   projectConfig.afterListen = function () {
     apos._id = projectConfig._id;
@@ -194,11 +212,9 @@ async function run(id, projectData, _, callback) {
     }
   };
 
-    console.log("apos config", JSON.stringify(projectConfig));
+  console.log('apos config', JSON.stringify(projectConfig));
 
-  const apos = await apostrophe(
-    projectConfig,
-  );
+  const apos = await apostrophe(projectConfig);
 
   return apos;
 }
@@ -252,17 +268,15 @@ app.use(async function (_, res, next) {
 });
 
 app.use(async function (req, _, next) {
+  // format domain to our specification
+  let domain = req.headers['x-forwarded-host'] || req.get('host');
+  domain = domain.replace(['http://', 'https://'], ['']);
+  domain = domain.replace(['www'], ['']);
 
-    // format domain to our specification
-    let domain = req.headers['x-forwarded-host'] || req.get('host');
-    domain = domain.replace([ 'http://', 'https://' ], [ '' ]);
-    domain = domain.replace([ 'www' ], [ '' ]);
+  // for dev purposes allow overwrite domain name
 
-    // for dev purposes allow overwrite domain name
-
-    req.openstadDomain = domain;
-    next();
-
+  req.openstadDomain = domain;
+  next();
 });
 
 async function serveSite(req, res, siteConfig, forceRestart) {
@@ -271,7 +285,10 @@ async function serveSite(req, res, siteConfig, forceRestart) {
 
   try {
     // check if this site needs to redirect. We can then skip the rest.
-    let redirectURI = siteConfig.config && siteConfig.config.cms && siteConfig.config.cms.redirectURI;
+    let redirectURI =
+      siteConfig.config &&
+      siteConfig.config.cms &&
+      siteConfig.config.cms.redirectURI;
     if (redirectURI) {
       return res.redirect(redirectURI);
     }
@@ -283,7 +300,7 @@ async function serveSite(req, res, siteConfig, forceRestart) {
 
     // use existing server
     if (apostropheServer[domain] && !forceRestart) {
-      return apostropheServer[domain].app(req , res);
+      return apostropheServer[domain].app(req, res);
     }
 
     // busy? add to queue
@@ -293,12 +310,12 @@ async function serveSite(req, res, siteConfig, forceRestart) {
       startUpIsBusy = true;
     }
 
-    await doStartServer(domain, req, res)
+    await doStartServer(domain, req, res);
 
     // handle queue
     while (startUpQueue.length) {
       let nextInQueue = startUpQueue.shift();
-      let [ nextDomain, nextReq, nextRes ] = nextInQueue;
+      let [nextDomain, nextReq, nextRes] = nextInQueue;
       if (apostropheServer[nextDomain]) {
         apostropheServer[nextDomain].app(nextReq, nextRes);
       } else {
@@ -307,12 +324,11 @@ async function serveSite(req, res, siteConfig, forceRestart) {
     }
 
     startUpIsBusy = false;
-
   } catch (e) {
     console.log('Error starting up project: ', domain, e);
     return res.status(500).json({
       error: 'An error occured running project ',
-      domain
+      domain,
     });
   }
 }
@@ -328,22 +344,22 @@ async function serveSite(req, res, siteConfig, forceRestart) {
  * if openstad.org exists of course.
  */
 app.use('/:sitePrefix', function (req, res, next) {
-    const domainAndPath = req.openstadDomain + '/' + req.params.sitePrefix;
+  const domainAndPath = req.openstadDomain + '/' + req.params.sitePrefix;
 
-    const site = projects[domainAndPath];
-    if (site) {
-      site.sitePrefix = req.params.sitePrefix;
-      req.sitePrefix = req.params.sitePrefix;
-      req.site = site;
+  const site = projects[domainAndPath];
+  if (site) {
+    site.sitePrefix = req.params.sitePrefix;
+    req.sitePrefix = req.params.sitePrefix;
+    req.site = site;
 
-      // Remove the prefix from the URL
-      req.url = req.url.replace(`/${req.params.sitePrefix}`, '');
+    // Remove the prefix from the URL
+    req.url = req.url.replace(`/${req.params.sitePrefix}`, '');
 
-      // Reinitialize route parameters, so the next middleware will see the correct parameters
-      return req.app._router.handle(req, res, next);
-    } 
+    // Reinitialize route parameters, so the next middleware will see the correct parameters
+    return req.app._router.handle(req, res, next);
+  }
 
-    next();
+  next();
 });
 
 // Add site to request object if we don't have a prefix
@@ -359,12 +375,19 @@ app.use((req, _, next) => {
 
 // Create a middleware function for basic authentication
 app.use((req, res, next) => {
-
-  if (req.site && req.site.config?.basicAuth?.active && req.site.config?.basicAuth?.username && req.site.config?.basicAuth?.password) {
+  if (
+    req.site &&
+    req.site.config?.basicAuth?.active &&
+    req.site.config?.basicAuth?.username &&
+    req.site.config?.basicAuth?.password
+  ) {
     console.log('Basic auth enabled for project: ', req.site.url);
     return basicAuth({
-      users: { [req.site.config.basicAuth.username]: req.site.config.basicAuth.password },
-      challenge: true
+      users: {
+        [req.site.config.basicAuth.username]:
+          req.site.config.basicAuth.password,
+      },
+      challenge: true,
     })(req, res, next);
   }
 
@@ -372,7 +395,8 @@ app.use((req, res, next) => {
 });
 
 app.use('/:privileged(admin)?/login', function (req, res) {
-  const domainAndPath = req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
+  const domainAndPath =
+    req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
   const i = req.url.indexOf('?');
   let query = req.url.substring(i + 1);
   const protocol = req.headers['x-forwarded-proto'] || req.protocol;
@@ -387,19 +411,23 @@ app.get('/auth/login', (req, res) => {
   let returnUrl = createReturnUrl(req, res);
   returnUrl = encodeURIComponent(returnUrl + '?openstadlogintoken=[[jwt]]');
 
-  const domainAndPath = req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
-  const project = (projects[domainAndPath] ? projects[domainAndPath] : false);
+  const domainAndPath =
+    req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
+  const project = projects[domainAndPath] ? projects[domainAndPath] : false;
 
   const apiUrl = process.env.API_URL;
   let url = `${apiUrl}/auth/project/${project.id}/login?redirectUri=${returnUrl}`;
   url = req.query.useOauth ? url + '&useOauth=' + req.query.useOauth : url;
-  url = req.query.loginPriviliged ? url + '&loginPriviliged=1' : url + '&forceNewLogin=1'; // ;
+  url = req.query.loginPriviliged
+    ? url + '&loginPriviliged=1'
+    : url + '&forceNewLogin=1'; // ;
 
   return res.redirect(url);
 });
 
 app.use('/logout', function (req, res) {
-  const domainAndPath = req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
+  const domainAndPath =
+    req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
   const i = req.url.indexOf('?');
   let query = req.url.substring(i + 1);
   const protocol = req.headers['x-forwarded-proto'] || req.protocol;
@@ -410,37 +438,58 @@ app.use('/logout', function (req, res) {
 app.get('/auth/logout', (req, res) => {
   let returnUrl = createReturnUrl(req, res);
 
-  const projectDomain =  process.env.OVERWRITE_DOMAIN ? process.env.OVERWRITE_DOMAIN : req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
-  const project = (projects[projectDomain] ? projects[projectDomain] : false);
+  const projectDomain = process.env.OVERWRITE_DOMAIN
+    ? process.env.OVERWRITE_DOMAIN
+    : req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
+  const project = projects[projectDomain] ? projects[projectDomain] : false;
 
   const apiUrl = process.env.API_URL;
   let url = `${apiUrl}/auth/project/${project.id}/logout?redirectUri=${returnUrl}`;
   url = req.query.useOauth ? url + '&useOauth=' + req.query.useOauth : url;
-  url = req.query.loginPriviliged ? url + '&loginPriviliged=1' : url + '&forceNewLogin=1';
+  url = req.query.loginPriviliged
+    ? url + '&loginPriviliged=1'
+    : url + '&forceNewLogin=1';
 
   return res.redirect(url);
-
 });
 
 app.use(async function (req, res) {
-  const completeDomain = req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
-    console.log("===> complete domain", completeDomain, req.openstadDomain, req.sitePrefix);
-    if (projects[completeDomain]) {
-      return await serveSite(req, res, projects[completeDomain], req.forceRestart);
-    }
+  const completeDomain =
+    req.openstadDomain + (req.sitePrefix ? '/' + req.sitePrefix : '');
+  console.log(
+    '===> complete domain',
+    completeDomain,
+    req.openstadDomain,
+    req.sitePrefix
+  );
+  if (projects[completeDomain]) {
+    return await serveSite(
+      req,
+      res,
+      projects[completeDomain],
+      req.forceRestart
+    );
+  }
 
-    // fallback to generic 404
-    res.status(404).send(`Error: No project found for given URL ${req.openstadDomain}${req.url}`);
+  // fallback to generic 404
+  res
+    .status(404)
+    .send(
+      `Error: No project found for given URL ${req.openstadDomain}${req.url}`
+    );
 });
 
 setInterval(loadProjects, REFRESH_PROJECTS_INTERVAL);
 
-console.log("Apos release id: ", process.env.APOS_RELEASE_ID);
+console.log('Apos release id: ', process.env.APOS_RELEASE_ID);
 
 if (process.env.RAILWAY_GIT_COMMIT_SHA) {
-    process.env.APOS_RELEASE_ID = process.env.RAILWAY_GIT_COMMIT_SHA;
+  process.env.APOS_RELEASE_ID = process.env.RAILWAY_GIT_COMMIT_SHA;
 }
 
-console.log("Apos release id from railway git commit sha: ", process.env.APOS_RELEASE_ID);
+console.log(
+  'Apos release id from railway git commit sha: ',
+  process.env.APOS_RELEASE_ID
+);
 
 app.listen(process.env.PORT || 3000);

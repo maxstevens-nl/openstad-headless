@@ -29,6 +29,7 @@ RUN npm run build-packages --if-present --prefix=$WORKSPACE
 # && \
 #     npm run build --prefix=@openstad-headless/${APP} --if-present
 
+
 # Development image
 FROM builder AS development
 ARG APP
@@ -38,12 +39,14 @@ WORKDIR /opt/openstad-headless
 
 CMD ["npm", "run", "dev", "--prefix=${WORKSPACE}"]
 
+
 # Prepare production
 FROM builder AS prepare-production
 ARG APP
 ENV WORKSPACE=apps/${APP}
 RUN npm --prefix=apps/${APP} run build --if-present && \
     npm --prefix=apps/${APP} prune --production
+
 
 # Release image
 FROM node:18-slim AS release
@@ -67,6 +70,7 @@ EXPOSE ${PORT}
 
 # Run the application
 CMD ["npm", "run", "start", "--prefix=${WORKSPACE}"]
+
 
 FROM release AS release-with-packages
 ARG APP

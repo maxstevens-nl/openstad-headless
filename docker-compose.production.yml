@@ -1,0 +1,177 @@
+services:
+  openstad-api-server:
+    depends_on:
+      openstad-mysql:
+        condition: service_healthy
+      openstad-redis:
+        condition: service_healthy
+    build:
+      target: release-with-packages
+    environment:
+      - URL=${API_URL}
+      - PORT=${API_PORT}
+      - NODE_ENV=production
+      - ADMIN_URL=${ADMIN_URL}
+
+      - DB_HOST=${MYSQL_HOST}
+      - DB_USERNAME=${API_DATABASE_USER}
+      - DB_PASSWORD=${API_DATABASE_PASSWORD}
+      - DB_NAME=${API_DATABASE_NAME}
+
+      - REDIS_URL=${REDIS_URL}
+
+      - API_EMAILADDRESS=${API_EMAILADDRESS}
+      - MAIL_TRANSPORT_SMTP_PORT=${API_SMTP_PORT}
+      - MAIL_TRANSPORT_SMTP_HOST=${API_SMTP_HOST}
+      - MAIL_TRANSPORT_SMTP_REQUIRESSL=${API_SMTP_REQUIRESSL}
+      - MAIL_TRANSPORT_SMTP_AUTH_USER=${API_SMTP_USERNAME}
+      - MAIL_TRANSPORT_SMTP_AUTH_PASS=${API_SMTP_PASSWORD}
+
+      - AUTH_JWTSECRET=${API_AUTH_JWTSECRET}
+      - AUTH_FIXEDAUTHTOKENS=${API_AUTH_FIXEDAUTHTOKENS}
+      - AUTH_ADAPTER_OPENSTAD_SERVERURL=${AUTH_APP_URL}
+      - AUTH_ADAPTER_OPENSTAD_SERVERURL_INTERNAL=http://openstad-auth-server:${AUTH_PORT}
+
+      - IMAGE_APP_URL=${IMAGE_APP_URL}
+      - IMAGE_VERIFICATION_TOKEN=${IMAGE_VERIFICATION_TOKEN}
+    ports:
+      - '${API_PORT}:${API_PORT}'
+
+  openstad-auth-server:
+    depends_on:
+      openstad-mysql:
+        condition: service_healthy
+    build:
+      target: release
+    environment:
+      - APP_URL=${AUTH_APP_URL}
+      - PORT=${AUTH_PORT}
+      - API_URL=${API_URL}
+      - ADMIN_URL=${ADMIN_URL}
+      - NODE_ENV=production
+
+      - DB_HOST=${MYSQL_HOST}
+      - DB_USER=${AUTH_DATABASE_USER}
+      - DB_PASSWORD=${AUTH_DATABASE_PASSWORD}
+      - DB_NAME=${AUTH_DATABASE_NAME}
+
+      - EMAIL_ASSETS_URL=${EMAIL_ASSETS_URL}
+      - MAIL_SERVER_URL=${AUTH_MAIL_SERVER_URL}
+      - MAIL_SERVER_PORT=${AUTH_MAIL_SERVER_PORT}
+      - MAIL_SERVER_SECURE=${AUTH_MAIL_SERVER_SECURE}
+      - MAIL_SERVER_PASSWORD=${AUTH_MAIL_SERVER_PASSWORD}
+      - MAIL_SERVER_USER_NAME=${AUTH_MAIL_SERVER_USER_NAME}
+      - FROM_NAME=${AUTH_FROM_NAME}
+      - FROM_EMAIL=${AUTH_FROM_EMAIL}
+
+      - AUTH_ADMIN_CLIENT_ID=${AUTH_ADMIN_CLIENT_ID}
+      - AUTH_ADMIN_CLIENT_SECRET=${AUTH_ADMIN_CLIENT_SECRET}
+      - AUTH_FIRST_CLIENT_ID=${AUTH_FIRST_CLIENT_ID}
+      - AUTH_FIRST_CLIENT_SECRET=${AUTH_FIRST_CLIENT_SECRET}
+      - AUTH_FIRST_LOGIN_CODE=${AUTH_FIRST_LOGIN_CODE}
+
+      - SESSION_SECRET=${AUTH_SESSION_SECRET}
+    ports:
+      - '${AUTH_PORT}:${AUTH_PORT}'
+
+  openstad-image-server:
+    build:
+      target: release
+    environment:
+      - APP_URL=${IMAGE_APP_URL}
+      - PORT_API=${IMAGE_PORT_API}
+      - PORT_IMAGE_SERVER=${IMAGE_PORT_IMAGE_SERVER}
+      - NODE_ENV=production
+
+      - IMAGES_DIR=${IMAGE_IMAGES_DIR}
+      - DOCUMENTS_DIR=${IMAGE_DOCUMENTS_DIR}
+
+      - THROTTLE=${IMAGE_THROTTLE}
+      - THROTTLE_CC_PROCESSORS=${IMAGE_THROTTLE_CC_PROCESSORS}
+      - THROTTLE_CC_PREFETCHER=${IMAGE_THROTTLE_CC_PREFETCHER}
+      - THROTTLE_CC_REQUESTS=${IMAGE_THROTTLE_CC_REQUESTS}
+
+      - IMAGE_VERIFICATION_TOKEN=${IMAGE_VERIFICATION_TOKEN}
+    ports:
+      - '${IMAGE_PORT_API}:${IMAGE_PORT_API}'
+
+  openstad-admin-server:
+    build:
+      target: release
+    environment:
+      - URL=${ADMIN_URL}
+      - PORT=${ADMIN_PORT}
+
+      - API_URL=${API_URL}
+      - API_URL_INTERNAL=http://openstad-api-server:${API_PORT}
+      - API_FIXED_AUTH_KEY=${API_FIXED_AUTH_KEY}
+      - EMAIL_ASSETS_URL=${EMAIL_ASSETS_URL}
+
+      - CLIENT_ID=${AUTH_ADMIN_CLIENT_ID}
+      - CLIENT_SECRET=${AUTH_ADMIN_CLIENT_SECRET}
+      - COOKIE_SECRET=${ADMIN_COOKIE_SECRET}
+
+      - OAUTH_URL=${AUTH_APP_URL}
+      - OAUTH_URL_INTERNAL=http://openstad-auth-server:${AUTH_PORT}
+    ports:
+      - '${ADMIN_PORT}:${ADMIN_PORT}'
+
+  openstad-cms-server:
+    depends_on:
+      openstad-mongo:
+        condition: service_healthy
+      openstad-redis:
+        condition: service_healthy
+    build:
+      target: release
+    environment:
+      - PORT=${CMS_PORT}
+
+      - API_URL=${API_URL}
+      - API_URL_INTERNAL=http://openstad-api-server:${API_PORT}
+      - API_KEY=${API_FIXED_AUTH_KEY}
+
+      - OVERWRITE_URL=${CMS_OVERWRITE_URL}
+
+      - MONGODB_URI=mongodb://${CMS_MONGO_USERNAME}:${CMS_MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/{database}
+
+      - REDIS_URL=${REDIS_URL}
+    ports:
+      - '${CMS_PORT}:${CMS_PORT}'
+
+  openstad-mysql:
+    image: mysql:5.7
+    container_name: openstad-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      # MYSQL_DATABASE: ${MYSQL_DATABASE}
+      # MYSQL_USER: ${MYSQL_USER}
+      # MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - '${MYSQL_PORT}:3306'
+    volumes:
+      - openstad-mysql-data:/var/lib/mysql
+
+  openstad-redis:
+    image: redis:5.0
+    container_name: openstad-redis
+    restart: unless-stopped
+    ports:
+      - '${REDIS_PORT}:6379'
+
+  openstad-mongo:
+    image: mongo:4.2
+    container_name: openstad-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    ports:
+      - '${MONGO_PORT}:27017'
+    volumes:
+      - openstad-mongo-data:/data/db
+
+volumes:
+  openstad-mysql-data: {}
+  openstad-mongo-data: {}

@@ -1,15 +1,13 @@
 const config = require('config');
 const redis = require('redis');
 
-let client = null;
-
 async function getClient() {
   let client;
+
   try {
-    client = await redis.createClient(config.messageStreaming.redis)
-      .connect();
+    client = await redis.createClient(config.messageStreaming.redis).connect();
   } catch(err) {
-    //console.log(err);
+    console.error("Failed to initialize redis", err);
   }
 
   return client;
