@@ -18,6 +18,7 @@ import type {DataLayer, ResourceOverviewMapWidgetProps } from './types/resource-
 import { BaseMap } from './base-map';
 import React, { useState } from 'react';
 import { LocationType } from '@openstad-headless/leaflet-map/src/types/location.js';
+import L from 'leaflet';
 
 type Point = {
   lat: number;
@@ -91,7 +92,11 @@ const ResourceOverviewMap = ({
         }
       }
 
+      const firstStatus = resource.statuses && resource.statuses[0];
+      let MapIconImage = firstStatus && firstStatus.mapIcon ? firstStatus.mapIcon : '';
+
       const firstTag = resource.tags && resource.tags[0];
+      MapIconImage = firstTag && firstTag.mapIcon ? firstTag.mapIcon : MapIconImage;
       const MapIconColor = firstTag && firstTag.documentMapIconColor ? firstTag.documentMapIconColor : '';
 
       // Set the resource name
@@ -102,6 +107,16 @@ const ResourceOverviewMap = ({
       // Set the icon color
       if (MapIconColor) {
         marker.icon.color = MapIconColor;
+      }
+
+      // Set the icon
+      if (MapIconImage) {
+        marker.icon = L.icon({
+          iconUrl: MapIconImage,
+          iconSize: [30, 40],
+          iconAnchor: [15, 40],
+          className: 'custom-image-icon',
+        });
       }
 
       return marker;
@@ -153,20 +168,26 @@ const ResourceOverviewMap = ({
     projectId: props.projectId,
   });
 
-  const mapDataLayers: { layer: any; icon?: any }[] = [];
+  const mapDataLayers: { layer: any; icon?: any, name: string, id: string, activeOnInit: boolean }[] = [];
   const selectedDataLayers = props?.resourceOverviewMapWidget?.datalayer || [];
+  const showOnOffButtons = props?.resourceOverviewMapWidget?.enableOnOffSwitching || false;
 
   if (selectedDataLayers && Array.isArray(selectedDataLayers) && Array.isArray(datalayers) && datalayers.length > 0) {
-    selectedDataLayers.forEach((selectedDataLayer: DataLayer) => {
+    selectedDataLayers.forEach((selectedDataLayer: DataLayer, index: number) => {
       const foundDatalayer = datalayers.find((datalayer: DataLayer) => {
         const isMatch = datalayer.id === selectedDataLayer.id;
         return isMatch;
       });
 
       if (foundDatalayer) {
+        const stableId = `layer-${index}`;
+
         mapDataLayers.push({
           layer: foundDatalayer.layer,
           icon: foundDatalayer.icon,
+          name: selectedDataLayer.name,
+          activeOnInit: typeof(selectedDataLayer?.activeOnInit) === 'boolean' ? selectedDataLayer.activeOnInit : true,
+          id: stableId
         });
       }
     });
@@ -220,15 +241,57 @@ const ResourceOverviewMap = ({
     }
   };
 
+  const [activeLayers, setActiveLayers] = useState<{ [key: string]: boolean }>({});
+
+  useEffect(() => {
+    if (mapDataLayers.length > 0 && Object.keys(activeLayers).length === 0) {
+      const initialLayers = mapDataLayers.reduce((acc, layer) => {
+        acc[layer.id] = layer.activeOnInit;
+        return acc;
+      }, {} as { [key: string]: boolean });
+
+      setActiveLayers(initialLayers);
+    }
+  }, [mapDataLayers]);
+
+  const toggleLayer = (id: string) => {
+    setActiveLayers(prevState => ({
+      ...prevState,
+      [id]: !prevState[id],
+    }));
+  };
+
+  const visibleMapDataLayers = mapDataLayers.filter(layer => activeLayers[layer.id]);
 
   return ((polygon && center) || !areaId) ? (
     <div className='map-container--buttons'>
       <Button appearance='primary-action-button' className='skip-link' onClick={skipMarkers}>Sla kaart over</Button>
+      { mapDataLayers.length > 0 && (
+        <ul className="legend">
+          {mapDataLayers.map(layer => (
+            <li key={layer.id} className="legend-item">
+              <label className="legend-label">
+                {showOnOffButtons && (
+                  <input
+                    type="checkbox"
+                    checked={!!activeLayers[layer.id]}
+                    onChange={() => toggleLayer(layer.id)}
+                  />
+                )}
+                <div className="legend-info">
+                  {(layer.icon && layer.icon[0] && layer.icon[0].url) && <img src={layer.icon[0].url} alt="Layer icon" className="legend-icon"/>}
+                  <span>{layer.name || 'Naamloze laag'}</span>
+                </div>
+              </label>
+            </li>
+          ))}
+        </ul>
+      )}
       <BaseMap
         {...props}
         {...zoom}
         area={polygon}
-        mapDataLayers={mapDataLayers}
+        mapDataLayers={visibleMapDataLayers}
         autoZoomAndCenter="area"
         categorize={{ categories, categorizeByField }}
         center={center}
