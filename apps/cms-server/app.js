@@ -1,4 +1,5 @@
 require('dotenv').config();
+const fs = require('fs');
 
 const apostrophe = require('apostrophe');
 const express = require('express');
@@ -22,6 +23,8 @@ let startUpIsBusy = false;
 let startUpQueue = [];
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+console.log(path.join(__dirname, 'public'), fs.readdirSync(path.join(__dirname, 'public')));
 
 app.use('/:sitePrefix?/config-reset', async function (req, res, next) {
   await loadProjects();
