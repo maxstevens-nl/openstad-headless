@@ -145,6 +145,13 @@ const defaultConfig = {
   },
 
   notifications: {
+    admin: {
+            emailAdress: 
+        process.env.NOTIFICATIONS_ADMIN_TO_EMAILADDRESS ||
+        process.env.API_NOTIFICATIONS_ADMIN_TO_EMAILADDRESS ||
+        process.env.API_NOTIFICATIONS_ADMIN_EMAILADDRESS ||
+        null,
+    },
     sendEndDateNotifications: {
       XDaysBefore:
         process.env.NOTIFICATIONS_SENDENDDATENOTIFICATIONS_XDAYSBEFORE ||

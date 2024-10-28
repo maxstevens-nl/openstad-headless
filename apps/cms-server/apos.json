@@ -1,0 +1,428 @@
+{
+  "modules": {
+    "@apostrophecms/seo": {},
+    "@apostrophecms/rich-text-widget": {
+      "options": {
+        "className": "bp-rich-text"
+      }
+    },
+    "@apostrophecms/global": {},
+    "asset": {},
+    "default-page": {},
+    "@apostrophecms/blog": {},
+    "@apostrophecms/blog-page": {},
+    "openstad-login": {},
+    "openstad-section-widget": {},
+    "openstad-assets": {},
+    "openstad-auth": {},
+    "openstad-component-widget": {},
+    "openstad-title-widget": {},
+    "openstad-shareLinks-widget": {},
+    "openstad-accordion-widget": {},
+    "openstad-iconSection-widget": {},
+    "openstad-button-widget": {},
+    "openstad-rte-widget": {},
+    "openstad-alertBox-widget": {},
+    "openstad-timeline-widget": {
+      "options": {
+        "label": "Een agenda"
+      }
+    },
+    "openstad-image-widget": {},
+    "openstad-carousel-widget": {}
+  },
+  "baseUrl": "https://cms.openstad-demo.indot.dev",
+  "options": {
+    "id": 2,
+    "name": "Project van Max",
+    "title": "Nieuwe project",
+    "url": "https://cms.openstad-demo.indot.dev",
+    "config": {
+      "allowedDomains": [
+        "cms.openstad-demo.indot.dev",
+        "api.openstad-demo.indot.dev"
+      ],
+      "project": {
+        "endDate": "2024-11-30T23:00:00.000Z",
+        "endDateNotificationSent": false,
+        "projectHasEnded": false,
+        "cssUrl": ""
+      },
+      "anonymize": {
+        "anonymizeUsersXDaysAfterEndDate": 60,
+        "warnUsersAfterXDaysOfInactivity": 770,
+        "anonymizeUsersAfterXDaysOfInactivity": 860
+      },
+      "auth": {
+        "default": "openstad",
+        "adapter": {},
+        "provider": {
+          "openstad": {
+            "name": "Project van Max normal",
+            "adapter": "openstad",
+            "clientId": "2c83594fa858cae0c1ae7d3bf89fce7f",
+            "clientSecret": "4205d26a428244e13437d36ec7738298"
+          },
+          "anonymous": {
+            "name": "Project van Max anonymous",
+            "adapter": "openstad",
+            "clientId": "fcbd00c8f0d01e8dea02fb8f8bfc5c68",
+            "clientSecret": "8866a861f2f61a84e5c6e0c24e798bc9"
+          }
+        }
+      },
+      "resources": {
+        "canAddNewResources": true,
+        "titleMinLength": 10,
+        "titleMaxLength": 50,
+        "summaryMinLength": 20,
+        "summaryMaxLength": 140,
+        "descriptionMinLength": 140,
+        "descriptionMaxLength": 5000,
+        "minimumYesVotes": 100,
+        "showVoteButtons": true,
+        "canEditAfterFirstLikeOrComment": false
+      },
+      "comments": {
+        "canComment": true,
+        "requiredUserRole": "member",
+        "closedText": "De reactiemogelijkheid is gesloten, u kunt niet meer reageren",
+        "canReply": true,
+        "canLike": true,
+        "descriptionMinLength": 30,
+        "descriptionMaxLength": 500
+      },
+      "users": {
+        "canCreateNewUsers": true,
+        "allowUseOfNicknames": false
+      },
+      "votes": {
+        "isViewable": false,
+        "isActive": false,
+        "requiredUserRole": "member",
+        "mustConfirm": false,
+        "withExisting": "error",
+        "voteType": "likes",
+        "voteValues": [
+          {
+            "label": "voor",
+            "value": "yes"
+          },
+          {
+            "label": "tegen",
+            "value": "no"
+          }
+        ],
+        "maxResources": 100,
+        "minResources": 1
+      },
+      "polls": {
+        "canAddPolls": false,
+        "requiredUserRole": "anonymous"
+      },
+      "widgets": {
+        "beta": false,
+        "deprecated": false,
+        "visibleWidgets": []
+      },
+      "map": {
+        "minZoom": "7",
+        "maxZoom": "20",
+        "areaId": "0"
+      },
+      "ignoreBruteForce": [],
+      "uniqueId": "1727253364maxopenstadadminserverproductionuprailwa",
+      "basicAuth": {
+        "active": false,
+        "password": "",
+        "username": ""
+      }
+    },
+    "safeConfig": {
+      "map": {
+        "areaId": "0",
+        "maxZoom": "20",
+        "minZoom": "7"
+      },
+      "auth": {
+        "default": "openstad",
+        "provider": {
+          "openstad": {
+            "adapter": "openstad",
+            "clientId": "2c83594fa858cae0c1ae7d3bf89fce7f"
+          },
+          "anonymous": {
+            "adapter": "openstad",
+            "clientId": "fcbd00c8f0d01e8dea02fb8f8bfc5c68"
+          }
+        }
+      },
+      "polls": {
+        "canAddPolls": false,
+        "requiredUserRole": "anonymous"
+      },
+      "users": {
+        "canCreateNewUsers": true,
+        "allowUseOfNicknames": false
+      },
+      "votes": {
+        "isActive": false,
+        "voteType": "likes",
+        "isViewable": false,
+        "voteValues": {
+          "0": {
+            "label": "voor",
+            "value": "yes"
+          },
+          "1": {
+            "label": "tegen",
+            "value": "no"
+          }
+        },
+        "mustConfirm": false,
+        "maxResources": 100,
+        "minResources": 1,
+        "withExisting": "error",
+        "requiredUserRole": "member"
+      },
+      "project": {
+        "cssUrl": "",
+        "endDate": "2024-11-30T23:00:00.000Z",
+        "projectHasEnded": false,
+        "endDateNotificationSent": false
+      },
+      "widgets": {
+        "beta": false,
+        "deprecated": false
+      },
+      "comments": {
+        "canLike": true,
+        "canReply": true,
+        "canComment": true,
+        "closedText": "De reactiemogelijkheid is gesloten, u kunt niet meer reageren",
+        "requiredUserRole": "member",
+        "descriptionMaxLength": 500,
+        "descriptionMinLength": 30
+      },
+      "resources": {
+        "titleMaxLength": 50,
+        "titleMinLength": 10,
+        "minimumYesVotes": 100,
+        "showVoteButtons": true,
+        "summaryMaxLength": 140,
+        "summaryMinLength": 20,
+        "canAddNewResources": true,
+        "descriptionMaxLength": 5000,
+        "descriptionMinLength": 140,
+        "canEditAfterFirstLikeOrComment": false
+      }
+    },
+    "hostStatus": {},
+    "areaId": null,
+    "createdAt": "2024-09-25T08:35:03.000Z",
+    "updatedAt": "2024-09-25T11:34:41.000Z",
+    "deletedAt": null,
+    "domain": "cms.openstad-demo.indot.dev/max",
+    "sitePrefix": "max"
+  },
+  "project": {
+    "id": 2,
+    "name": "Project van Max",
+    "title": "Nieuwe project",
+    "url": "https://cms.openstad-demo.indot.dev",
+    "config": {
+      "allowedDomains": [
+        "cms.openstad-demo.indot.dev",
+        "api.openstad-demo.indot.dev"
+      ],
+      "project": {
+        "endDate": "2024-11-30T23:00:00.000Z",
+        "endDateNotificationSent": false,
+        "projectHasEnded": false,
+        "cssUrl": ""
+      },
+      "anonymize": {
+        "anonymizeUsersXDaysAfterEndDate": 60,
+        "warnUsersAfterXDaysOfInactivity": 770,
+        "anonymizeUsersAfterXDaysOfInactivity": 860
+      },
+      "auth": {
+        "default": "openstad",
+        "adapter": {},
+        "provider": {
+          "openstad": {
+            "name": "Project van Max normal",
+            "adapter": "openstad",
+            "clientId": "2c83594fa858cae0c1ae7d3bf89fce7f",
+            "clientSecret": "4205d26a428244e13437d36ec7738298"
+          },
+          "anonymous": {
+            "name": "Project van Max anonymous",
+            "adapter": "openstad",
+            "clientId": "fcbd00c8f0d01e8dea02fb8f8bfc5c68",
+            "clientSecret": "8866a861f2f61a84e5c6e0c24e798bc9"
+          }
+        }
+      },
+      "resources": {
+        "canAddNewResources": true,
+        "titleMinLength": 10,
+        "titleMaxLength": 50,
+        "summaryMinLength": 20,
+        "summaryMaxLength": 140,
+        "descriptionMinLength": 140,
+        "descriptionMaxLength": 5000,
+        "minimumYesVotes": 100,
+        "showVoteButtons": true,
+        "canEditAfterFirstLikeOrComment": false
+      },
+      "comments": {
+        "canComment": true,
+        "requiredUserRole": "member",
+        "closedText": "De reactiemogelijkheid is gesloten, u kunt niet meer reageren",
+        "canReply": true,
+        "canLike": true,
+        "descriptionMinLength": 30,
+        "descriptionMaxLength": 500
+      },
+      "users": {
+        "canCreateNewUsers": true,
+        "allowUseOfNicknames": false
+      },
+      "votes": {
+        "isViewable": false,
+        "isActive": false,
+        "requiredUserRole": "member",
+        "mustConfirm": false,
+        "withExisting": "error",
+        "voteType": "likes",
+        "voteValues": [
+          {
+            "label": "voor",
+            "value": "yes"
+          },
+          {
+            "label": "tegen",
+            "value": "no"
+          }
+        ],
+        "maxResources": 100,
+        "minResources": 1
+      },
+      "polls": {
+        "canAddPolls": false,
+        "requiredUserRole": "anonymous"
+      },
+      "widgets": {
+        "beta": false,
+        "deprecated": false,
+        "visibleWidgets": []
+      },
+      "map": {
+        "minZoom": "7",
+        "maxZoom": "20",
+        "areaId": "0"
+      },
+      "ignoreBruteForce": [],
+      "uniqueId": "1727253364maxopenstadadminserverproductionuprailwa",
+      "basicAuth": {
+        "active": false,
+        "password": "",
+        "username": ""
+      }
+    },
+    "safeConfig": {
+      "map": {
+        "areaId": "0",
+        "maxZoom": "20",
+        "minZoom": "7"
+      },
+      "auth": {
+        "default": "openstad",
+        "provider": {
+          "openstad": {
+            "adapter": "openstad",
+            "clientId": "2c83594fa858cae0c1ae7d3bf89fce7f"
+          },
+          "anonymous": {
+            "adapter": "openstad",
+            "clientId": "fcbd00c8f0d01e8dea02fb8f8bfc5c68"
+          }
+        }
+      },
+      "polls": {
+        "canAddPolls": false,
+        "requiredUserRole": "anonymous"
+      },
+      "users": {
+        "canCreateNewUsers": true,
+        "allowUseOfNicknames": false
+      },
+      "votes": {
+        "isActive": false,
+        "voteType": "likes",
+        "isViewable": false,
+        "voteValues": {
+          "0": {
+            "label": "voor",
+            "value": "yes"
+          },
+          "1": {
+            "label": "tegen",
+            "value": "no"
+          }
+        },
+        "mustConfirm": false,
+        "maxResources": 100,
+        "minResources": 1,
+        "withExisting": "error",
+        "requiredUserRole": "member"
+      },
+      "project": {
+        "cssUrl": "",
+        "endDate": "2024-11-30T23:00:00.000Z",
+        "projectHasEnded": false,
+        "endDateNotificationSent": false
+      },
+      "widgets": {
+        "beta": false,
+        "deprecated": false
+      },
+      "comments": {
+        "canLike": true,
+        "canReply": true,
+        "canComment": true,
+        "closedText": "De reactiemogelijkheid is gesloten, u kunt niet meer reageren",
+        "requiredUserRole": "member",
+        "descriptionMaxLength": 500,
+        "descriptionMinLength": 30
+      },
+      "resources": {
+        "titleMaxLength": 50,
+        "titleMinLength": 10,
+        "minimumYesVotes": 100,
+        "showVoteButtons": true,
+        "summaryMaxLength": 140,
+        "summaryMinLength": 20,
+        "canAddNewResources": true,
+        "descriptionMaxLength": 5000,
+        "descriptionMinLength": 140,
+        "canEditAfterFirstLikeOrComment": false
+      }
+    },
+    "hostStatus": {},
+    "areaId": null,
+    "createdAt": "2024-09-25T08:35:03.000Z",
+    "updatedAt": "2024-09-25T11:34:41.000Z",
+    "deletedAt": null,
+    "domain": "cms.openstad-demo.indot.dev/max",
+    "sitePrefix": "max"
+  },
+  "_id": "cms.openstad-demo.indot.dev/max",
+  "shortName": "openstad-2",
+  "mongo": {
+    "uri": "mongodb://mongo:tFUCJRuTrfAYOqNkTzUXJAUhgkoLdCEi@mongodb.railway.internal:27017/openstad-2"
+  },
+  "prefix": "/max",
+  "rootDir": "/data"
+}

@@ -7,6 +7,11 @@ services:
         condition: service_healthy
     build:
       target: release-with-packages
+      context: .
+      dockerfile: Dockerfile.template
+      args:
+        - APP=api-server
+        - PORT=${API_PORT}
     environment:
       - URL=${API_URL}
       - PORT=${API_PORT}
@@ -43,6 +48,11 @@ services:
         condition: service_healthy
     build:
       target: release
+      context: .
+      dockerfile: Dockerfile.template
+      args:
+        - APP=auth-server
+        - PORT=${AUTH_PORT}
     environment:
       - APP_URL=${AUTH_APP_URL}
       - PORT=${AUTH_PORT}
@@ -51,6 +61,7 @@ services:
       - NODE_ENV=production
 
       - DB_HOST=${MYSQL_HOST}
+      - DB_PORT=${MYSQL_PORT}
       - DB_USER=${AUTH_DATABASE_USER}
       - DB_PASSWORD=${AUTH_DATABASE_PASSWORD}
       - DB_NAME=${AUTH_DATABASE_NAME}
@@ -77,6 +88,11 @@ services:
   openstad-image-server:
     build:
       target: release
+      context: .
+      dockerfile: Dockerfile.template
+      args:
+        - APP=image-server
+        - PORT=${IMAGE_PORT_API}
     environment:
       - APP_URL=${IMAGE_APP_URL}
       - PORT_API=${IMAGE_PORT_API}
@@ -98,6 +114,11 @@ services:
   openstad-admin-server:
     build:
       target: release
+      context: .
+      dockerfile: Dockerfile.template
+      args:
+        - APP=admin-server
+        - PORT=${ADMIN_PORT}
     environment:
       - URL=${ADMIN_URL}
       - PORT=${ADMIN_PORT}
@@ -124,6 +145,11 @@ services:
         condition: service_healthy
     build:
       target: release
+      context: .
+      dockerfile: Dockerfile.template
+      args:
+        - APP=cms-server
+        - PORT=${CMS_PORT}
     environment:
       - PORT=${CMS_PORT}
 
@@ -140,7 +166,7 @@ services:
       - '${CMS_PORT}:${CMS_PORT}'
 
   openstad-mysql:
-    image: mysql:5.7
+    image: mysql:9.1.0
     container_name: openstad-mysql
     restart: unless-stopped
     environment:
@@ -154,14 +180,14 @@ services:
       - openstad-mysql-data:/var/lib/mysql
 
   openstad-redis:
-    image: redis:5.0
+    image: redis:7.4.1
     container_name: openstad-redis
     restart: unless-stopped
     ports:
       - '${REDIS_PORT}:6379'
 
   openstad-mongo:
-    image: mongo:4.2
+    image: mongo:8.0.3
     container_name: openstad-mongo
     restart: unless-stopped
     environment:
