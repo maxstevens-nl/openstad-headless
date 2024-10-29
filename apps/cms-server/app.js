@@ -470,6 +470,7 @@ app.use(async function (req, res, next) {
     req.openstadDomain,
     req.sitePrefix
   );
+  logDirFiles(publicPath);
   if (projects[completeDomain]) {
     return await serveSite(
       req,
