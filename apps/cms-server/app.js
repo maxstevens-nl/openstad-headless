@@ -20,9 +20,14 @@ const apostropheServer = {};
 let startUpIsBusy = false;
 let startUpQueue = [];
 
+function logDirFiles(dir) {
+    const files = fs.readdirSync(dir, { recursive: true });
+    console.log("Files in public directory: ", files);
+}
 
 const publicPath = path.resolve(process.env.APOS_ROOT_DIR, 'public');
-console.log(publicPath, fs.readdirSync(publicPath));
+logDirFiles(publicPath);
+
 app.use(express.static(publicPath));
 
 app.use('/:sitePrefix?/config-reset', async function (req, res, next) {
