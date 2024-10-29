@@ -4,10 +4,8 @@ const fs = require('fs');
 const apostrophe = require('apostrophe');
 const express = require('express');
 const app = express();
-const _ = require('lodash');
 const projectService = require('./services/projects');
 const aposConfig = require('./lib/apos-config');
-const { refresh } = require('less');
 const REFRESH_PROJECTS_INTERVAL = 60000 * 5;
 const Url = require('node:url');
 const messageStreaming = require('./services/message-streaming');
@@ -22,9 +20,10 @@ const apostropheServer = {};
 let startUpIsBusy = false;
 let startUpQueue = [];
 
-app.use(express.static(path.join(__dirname, 'public')));
 
-console.log(path.join(__dirname, 'public'), fs.readdirSync(path.join(__dirname, 'public')));
+const publicPath = path.resolve(process.env.APOS_ROOT_DIR, 'public');
+console.log(publicPath, fs.readdirSync(publicPath));
+app.use(express.static(publicPath));
 
 app.use('/:sitePrefix?/config-reset', async function (req, res, next) {
   await loadProjects();
