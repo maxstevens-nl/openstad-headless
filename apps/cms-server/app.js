@@ -22,7 +22,7 @@ let startUpQueue = [];
 
 function logDirFiles(dir) {
   const files = fs.readdirSync(dir, { recursive: true });
-  console.log('Files in public directory: ', files);
+  console.log(`Files in dir {${dir}}: `, files);
 }
 
 const publicPath = path.resolve(process.env.APOS_ROOT_DIR, 'public');
@@ -471,6 +471,10 @@ app.use(async function (req, res, next) {
     req.sitePrefix
   );
   logDirFiles(publicPath);
+  logDirFiles(path.resolve(__dirname, 'public'));
+  logDirFiles(path.resolve(__dirname, 'data'));
+  logDirFiles(path.resolve(process.env.APOS_ROOT_DIR, 'public'));
+  logDirFiles(path.resolve(process.env.APOS_ROOT_DIR, 'data'));
   if (projects[completeDomain]) {
     return await serveSite(
       req,
