@@ -21,6 +21,11 @@ let startUpIsBusy = false;
 let startUpQueue = [];
 
 function logDirFiles(dir) {
+  if (!fs.existsSync(dir)) {
+    console.log(`Dir {${dir}} does not exist`);
+    return;
+  }
+
   const files = fs.readdirSync(dir, { recursive: true });
   console.log(`Files in dir {${dir}}: `, files);
   console.log(`Is dir symlink: {${dir}}`, fs.lstatSync(dir).isSymbolicLink());
