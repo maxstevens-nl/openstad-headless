@@ -23,6 +23,7 @@ let startUpQueue = [];
 function logDirFiles(dir) {
   const files = fs.readdirSync(dir, { recursive: true });
   console.log(`Files in dir {${dir}}: `, files);
+  console.log(`Is dir symlink: {${dir}}`, fs.lstatSync(dir).isSymbolicLink());
 }
 
 const publicPath = path.resolve(__dirname, 'public');
