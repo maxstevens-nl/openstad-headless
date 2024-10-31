@@ -25,7 +25,7 @@ function logDirFiles(dir) {
   console.log(`Files in dir {${dir}}: `, files);
 }
 
-const publicPath = path.resolve(process.env.APOS_ROOT_DIR, 'public');
+const publicPath = path.resolve(__dirname, 'public');
 logDirFiles(publicPath);
 
 app.use(express.static(publicPath));
