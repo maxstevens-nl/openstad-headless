@@ -197,8 +197,10 @@ async function run(id, projectData, options, callback) {
       : '';
     const dbName = (dbPrefix + project.shortName).substring(0, 63);
 
-    project.modules['@apostrophecms/db'].options.uri =
-      process.env.MONGODB_URI.replace('{database}', dbName);
+    const mongoUri = process.env.MONGODB_URI.replace('{database}', dbName);
+    project.modules['@apostrophecms/db'].options.uri = mongoUri;
+
+        console.log("===> mongoUri", mongoUri);
   }
 
   const config = project;
