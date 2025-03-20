@@ -1,0 +1,57 @@
+{
+	"$schema": "https://turbo.build/schema.json",
+	"ui": "tui",
+	"tasks": {
+		"//#check": {
+			"inputs": [
+				"**/*.ts",
+				"**/*.tsx",
+				"**/*.json",
+				"**/*.html",
+				"**/*.css",
+				"!**/node_modules",
+				"!**/dist",
+				"!**/dist-dts",
+				"!**/.next",
+				"!**/.turbo",
+				"!**/apos-build"
+			]
+		},
+		"//#fix": {
+			"inputs": [
+				"**/*.ts",
+				"**/*.tsx",
+				"**/*.json",
+				"**/*.html",
+				"**/*.css",
+				"!**/node_modules",
+				"!**/dist",
+				"!**/dist-dts",
+				"!**/.next",
+				"!**/.turbo",
+				"!**/apos-build"
+			]
+		},
+		"build": {
+			"dependsOn": ["^build"],
+			"outputs": [
+				".next/**",
+				"!.next/cache/**",
+				"dist/**",
+				"apos-build",
+				"public/apos-frontend"
+			]
+		},
+		"test": {
+			"dependsOn": ["^build"]
+		},
+		"lint": {},
+		"typecheck": {
+			"dependsOn": ["^typecheck"]
+		},
+		"dev": {
+			"persistent": true,
+			"cache": false
+		}
+	}
+}

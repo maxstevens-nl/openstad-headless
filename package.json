@@ -1,37 +1,34 @@
 {
-  "name": "openstad-headless",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "create-docker-config": "node ./scripts/create-docker-config.js",
-    "setup": "node ./scripts/setup-all.js",
-    "start": "node ./scripts/start-all.js",
-    "init-databases": "node ./scripts/init-databases.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/openstad/openstad-headless.git"
-  },
-  "author": "OpenStad",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/openstad/openstad-headless/issues"
-  },
-  "homepage": "https://github.com/openstad/openstad-headless#readme",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "private": true,
-  "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-    "mysql2": "^3.11.3",
-    "prettier": "3.0.3"
-  },
-  "dependencies": {
-    "react-leaflet": "^4.2.1",
-    "uuid": "^10.0.0"
-  }
+	"name": "openstad-headless",
+	"version": "1.0.0",
+	"description": "",
+	"homepage": "https://github.com/openstad/openstad-headless#readme",
+	"bugs": {
+		"url": "https://github.com/openstad/openstad-headless/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/openstad/openstad-headless.git"
+	},
+	"license": "ISC",
+	"author": "OpenStad",
+	"main": "index.js",
+	"scripts": {
+		"build": "turbo run build",
+		"check": "biome check . --reporter=summary",
+		"create-docker-config": "node ./scripts/create-docker-config.js",
+		"dev": "turbo run dev --filter admin-server --filter api-server --filter auth-server --filter cms-server --filter image-server",
+		"fix": "biome check . --write",
+		"init-databases": "node ./scripts/init-databases.js",
+		"lint": "turbo run lint",
+		"setup": "node ./scripts/setup-all.js",
+		"typecheck": "turbo run typecheck"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.0.5",
+		"dotenv": "^16.4.7",
+		"mysql2": "^3.11.3",
+		"turbo": "^2.5.4"
+	},
+	"packageManager": "pnpm@10.11.1+sha512.e519b9f7639869dc8d5c3c5dfef73b3f091094b0a006d7317353c72b124e80e1afd429732e28705ad6bfa1ee879c1fce46c128ccebd3192101f43dd67c667912"
 }

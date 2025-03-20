@@ -3,16 +3,16 @@
  */
 
 module.exports = {
-  extend: '@apostrophecms/widget-type',
-  options: {
-    label: 'Alert Box'
-  },
-  fields: {
-    add: {
-      message: {
-        type: 'string',
-        label: 'Content'
-      },
-    },
-  }
+	extend: "@apostrophecms/widget-type",
+	options: {
+		label: "Alert Box",
+	},
+	fields: {
+		add: {
+			message: {
+				type: "string",
+				label: "Content",
+			},
+		},
+	},
 };

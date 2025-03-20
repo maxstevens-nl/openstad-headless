@@ -1,41 +1,52 @@
-import useSWR from 'swr';
+import { validateProjectNumber } from "@/lib/validateProjectNumber";
+import useSWR from "swr";
 
 export default function useStatus(projectId?: string) {
-  const url = `/api/openstad/api/project/${projectId}/status`;
+	const projectNumber: number | undefined = validateProjectNumber(projectId);
 
-  const statusListSwr = useSWR(projectId ? url : null);
+	const url = `/api/openstad/api/project/${projectNumber}/status`;
 
-  async function createStatus(name: string, seqnr: number, addToNewResources: boolean) {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ projectId, name, seqnr, addToNewResources }),
-    });
+	const statusListSwr = useSWR(projectNumber ? url : null);
 
-    return await res.json();
-  }
+	async function createStatus(
+		name: string,
+		seqnr: number,
+		addToNewResources: boolean,
+	) {
+		const res = await fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				projectId: projectNumber,
+				name,
+				seqnr,
+				addToNewResources,
+			}),
+		});
 
-  async function removeStatus(id: number) {
-    const deleteUrl = `/api/openstad/api/project/${projectId}/status/${id}`;
+		return await res.json();
+	}
 
-    const res = await fetch(deleteUrl, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+	async function removeStatus(id: number) {
+		const deleteUrl = `/api/openstad/api/project/${projectNumber}/status/${id}`;
 
-    if (res.ok) {
-      const existingData = [...statusListSwr.data];
-      const updatedList = existingData.filter((ed) => ed.id !== id);
-      statusListSwr.mutate(updatedList);
-      return updatedList;
-    } else {
-      throw new Error('Could not remove this status');
-    }
-  }
+		const res = await fetch(deleteUrl, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
 
-  return {...statusListSwr, createStatus, removeStatus}
+		if (res.ok) {
+			const existingData = [...statusListSwr.data];
+			const updatedList = existingData.filter((ed) => ed.id !== id);
+			statusListSwr.mutate(updatedList);
+			return updatedList;
+		}
+		throw new Error("Could not remove this status");
+	}
+
+	return { ...statusListSwr, createStatus, removeStatus };
 }

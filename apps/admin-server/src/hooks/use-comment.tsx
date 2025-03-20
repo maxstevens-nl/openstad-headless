@@ -1,21 +1,25 @@
-import useSWR from 'swr';
+import { validateProjectNumber } from "@/lib/validateProjectNumber";
+import useSWR from "swr";
 
 export default function useComment(projectId?: string, id?: string) {
-  const url = `/api/openstad/api/project/${projectId}/comment/${id}`;
+	const projectNumber: number | undefined = validateProjectNumber(projectId);
+	const useId: number | undefined = validateProjectNumber(id);
 
-  const commentSwr = useSWR(projectId && id ? url : null);
+	const url = `/api/openstad/api/project/${projectNumber}/comment/${useId}`;
 
-  async function updateComment(description: string, label: string) {
-    const res = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id, description, label }),
-    });
+	const commentSwr = useSWR(projectNumber && useId ? url : null);
 
-    return await res.json();
-  }
+	async function updateComment(description: string, label: string) {
+		const res = await fetch(url, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ id: useId, description, label }),
+		});
 
-  return {...commentSwr, updateComment}
+		return await res.json();
+	}
+
+	return { ...commentSwr, updateComment };
 }

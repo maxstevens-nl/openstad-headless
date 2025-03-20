@@ -1,27 +1,29 @@
-import useSWR from 'swr';
+import { validateProjectNumber } from "@/lib/validateProjectNumber";
+import useSWR from "swr";
 
 export default function useSubmissions(projectId?: string) {
-  const url = `/api/openstad/api/project/${projectId}/submission`;
+	const projectNumber: number | undefined = validateProjectNumber(projectId);
 
-  const { data, isLoading, error, mutate } = useSWR(projectId ? url : null);
+	const url = `/api/openstad/api/project/${projectNumber}/submission`;
 
-  async function remove(id: string|number) {
-    const res = await fetch(`${url}/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+	const { data, isLoading, error, mutate } = useSWR(projectNumber ? url : null);
 
-    if (res.ok) {
-      const existingData = [...data];
-      const updatedList = existingData.filter((ed) => ed.id !== id);
-      mutate(updatedList);
-      return updatedList;
-    } else {
-      throw new Error('Could not remove the submission');
-    }
-  }
+	async function remove(id: string | number) {
+		const res = await fetch(`${url}/${id}`, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
 
-  return { data, isLoading, error, remove };
+		if (res.ok) {
+			const existingData = [...data];
+			const updatedList = existingData.filter((ed) => ed.id !== id);
+			mutate(updatedList);
+			return updatedList;
+		}
+		throw new Error("Could not remove the submission");
+	}
+
+	return { data, isLoading, error, remove };
 }

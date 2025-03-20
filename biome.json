@@ -1,0 +1,86 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.0.5/schema.json",
+	"files": {
+		"includes": [
+			"!**/.next",
+			"!**/dist",
+			"!**/dist-dts",
+			"!**/node_modules",
+			"!**/.turbo",
+			"!**/apos-build",
+			"!**/apos-frontend",
+			"!apps/cms-server/modules/*",
+			"!apps/auth-server/public/**/*.css"
+		]
+	},
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"formatter": {
+		"formatWithErrors": true
+	},
+	"linter": {
+		"rules": {
+			"suspicious": {
+				"noExplicitAny": "off",
+				"noArrayIndexKey": "off",
+				"noAssignInExpressions": "off",
+				"noShadowRestrictedNames": "off",
+				"noPrototypeBuiltins": "off",
+				"noImplicitAnyLet": "off",
+				"noGlobalAssign": "off",
+				"noShorthandPropertyOverrides": "off",
+				"noControlCharactersInRegex": "off",
+				"noSelfCompare": "off",
+				"noEmptyBlock": "off",
+				"noThenProperty": "off",
+				"noFunctionAssign": "off"
+			},
+			"correctness": {
+				"useExhaustiveDependencies": "off",
+				"noUnreachable": "off",
+				"noUnknownProperty": "off",
+				"noConstantCondition": "off",
+				"useJsxKeyInIterable": "off",
+				"noInvalidUseBeforeDeclaration": "off",
+				"noUnsafeOptionalChaining": "off",
+				"noUnsafeFinally": "off",
+				"noEmptyPattern": "off",
+				"noChildrenProp": "off",
+				"noSelfAssign": "off",
+				"noUnusedImports": "error"
+			},
+			"complexity": {
+				"noForEach": "off",
+				"noBannedTypes": "off",
+				"noUselessFragments": "off",
+				"noUselessThisAlias": "off"
+			},
+			"style": {
+				"noParameterAssign": "off",
+				"noNonNullAssertion": "off",
+				"useConst": "off"
+			},
+			"a11y": {
+				"useKeyWithClickEvents": "off",
+				"useButtonType": "off",
+				"noLabelWithoutControl": "off",
+				"useIframeTitle": "off",
+				"useValidAnchor": "off",
+				"useSemanticElements": "off",
+				"useGenericFontNames": "off",
+				"noSvgWithoutTitle": "off",
+				"useAltText": "off"
+			},
+			"performance": {
+				"noDelete": "off",
+				"noAccumulatingSpread": "off"
+			},
+			"security": {
+				"noDangerouslySetInnerHtml": "off"
+			}
+		}
+	}
+}
