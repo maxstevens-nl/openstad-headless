@@ -6,13 +6,16 @@
 	"license": "ISC",
 	"scripts": {
 		"start": "node server.js",
+
 		"predev": "./scripts/predev.sh",
-		"dev": "node nodemon-watch-server.js",
+		"dev": "node --watch server.js",
+
 		"test": "npm run test:unit",
 		"test:unit": "jest --no-cache --config jest.config.js",
 		"test:unit:watch": "jest --watch --no-cache",
 		"test:e2e": "jest --no-cache --config jest-e2e.config.js --forceExit",
 		"test:e2e:debug": "jest --no-cache --config jest-e2e.config.js --verbose --forceExit",
+
 		"init-database": "node ./scripts/init-database.js",
 		"migrate-database": "node ./scripts/migrate-database.js",
 		"build-packages": "node ./scripts/build-packages.js"

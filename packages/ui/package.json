@@ -3,8 +3,7 @@
 	"version": "1.0.0",
 	"description": "Collection of all the base components used in openstad headless",
 	"scripts": {
-		"rollup": "rollup -c",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"rollup": "rollup -c"
 	},
 	"author": "",
 	"license": "ISC",
