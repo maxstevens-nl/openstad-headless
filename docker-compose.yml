@@ -110,7 +110,6 @@ services:
       - /opt/openstad-headless/packages/configs/node_modules
       - /opt/openstad-headless/packages/data-store/node_modules
       - /opt/openstad-headless/packages/date-countdown-bar/node_modules
-      - /opt/openstad-headless/packages/eslint-config-custom/node_modules
       - /opt/openstad-headless/packages/lib/node_modules
       - /opt/openstad-headless/packages/likes/node_modules
       - /opt/openstad-headless/packages/message-streaming/node_modules

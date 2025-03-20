@@ -12,6 +12,7 @@ export default defineConfig(({ command }) => {
 		};
 		// During build, use the classic runtime and build as an IIFE so we can deliver it to the browser
 	}
+
 	return {
 		plugins: [react({ jsxRuntime: "classic" })],
 		css: prefix(),
