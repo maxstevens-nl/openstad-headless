@@ -1,4 +1,3 @@
-/* eslint-env jquery */
 import Alert from '../../src/alert'
 import Button from '../../src/button'
 import Carousel from '../../src/carousel'

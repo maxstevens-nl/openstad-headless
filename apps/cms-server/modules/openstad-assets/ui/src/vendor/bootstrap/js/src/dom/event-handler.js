@@ -121,7 +121,6 @@ function bootstrapDelegationHandler(element, selector, fn) {
       }
     }
 
-    // To please ESLint
     return null
   }
 }

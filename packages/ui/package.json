@@ -3,7 +3,8 @@
 	"version": "1.0.0",
 	"description": "Collection of all the base components used in openstad headless",
 	"scripts": {
-		"rollup": "rollup -c"
+		"rollup": "rollup -c",
+		"typecheck": "tsc --noEmit"
 	},
 	"author": "",
 	"license": "ISC",

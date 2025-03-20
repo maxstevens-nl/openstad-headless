@@ -254,7 +254,6 @@ const BaseMap = ({
 				setBoundsAndCenter([center] as any);
 			}
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [mapRef, area, center]);
 
 	// markers

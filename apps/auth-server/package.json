@@ -7,6 +7,7 @@
 	"main": "app.js",
 	"scripts": {
 		"start": "node app.js",
+
 		"test": "npm run test:unit && npm run test:e2e",
 		"test-cert": "env TEST_CERTS=1 npm run test:unit",
 		"test:unit": "jest unit",
@@ -15,13 +16,13 @@
 
 		"predev": "./scripts/predev.sh",
 		"dev": "nodemon app.js",
+		"build": "npm run build:css",
 
 		"watch": "npm-run-all --parallel watch:*",
 		"watch:css": "nodemon -e less -w public/css -x npm run build:css",
 		"build:css": "lessc public/css/main.less > public/css/main.css",
 		"init-database": "node ./scripts/init-database.js",
-		"migrate-database": "node ./scripts/migrate-database.js",
-		"build": "npm run build:css"
+		"migrate-database": "node ./scripts/migrate-database.js"
 	},
 	"engines": {
 		"node": ">=6.7.0",

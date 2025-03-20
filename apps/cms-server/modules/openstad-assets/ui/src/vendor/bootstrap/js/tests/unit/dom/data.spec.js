@@ -91,7 +91,6 @@ describe('Data', () => {
   })
 
   it('should console.error a message if called with multiple keys', () => {
-    /* eslint-disable no-console */
     console.error = jasmine.createSpy('console.error')
 
     const data = { ...TEST_DATA }

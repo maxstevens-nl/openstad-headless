@@ -7,7 +7,8 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint"
+		"lint": "next lint",
+		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.3.1",
@@ -70,7 +71,7 @@
 		"rooks": "^7.14.1",
 		"swr": "^2.2.2",
 		"xlsx": "^0.18.5",
-		"zod": "^3.22.2"
+		"zod": "^3.24.2"
 	},
 	"devDependencies": {
 		"@types/leaflet": "^1.9.6",

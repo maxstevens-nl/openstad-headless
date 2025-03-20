@@ -1,22 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BaseMap, type BaseMapWidgetProps } from "./base-map.js";
-import { EditorMap, type EditorMapWidgetProps } from "./editor-map.js";
-import {
-	ResourceDetailMap,
-	type ResourceDetailMapWidgetProps,
-} from "./resource-detail-map.js";
-import {
-	ResourceOverviewMap,
-	type ResourceOverviewMapWidgetProps,
-} from "./resource-overview-map.js";
+import { BaseMap } from "./base-map.js";
+import { EditorMap } from "./editor-map.js";
+import { ResourceDetailMap } from "./resource-detail-map.js";
+import { ResourceOverviewMap } from "./resource-overview-map.js";
+import type { BaseMapWidgetProps } from "./types/basemap-widget-props";
+import type { EditorMapWidgetProps } from "./types/editormap-widget-props";
+import type { ResourceDetailMapWidgetProps } from "./types/resource-detail-map-widget-props";
+import type { ResourceOverviewMapWidgetProps } from "./types/resource-overview-map-widget-props";
 
 const config: BaseMapWidgetProps = {
 	api: {
 		url: import.meta.env.VITE_API_URL,
 	},
-	projectId: import.meta.env.VITE_PROJECT_ID || 2,
-	resourceId: import.meta.env.VITE_RESOURCE_ID || 1,
+	projectId: import.meta.env.VITE_PROJECT_ID || "2",
+	resourceId: import.meta.env.VITE_RESOURCE_ID || "1",
 	tilesVariant: import.meta.env.VITE_TILES_VARIANT,
 	width: "100%",
 	height: "100%",

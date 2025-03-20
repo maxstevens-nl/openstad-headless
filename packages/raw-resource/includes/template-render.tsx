@@ -8,7 +8,6 @@ function getVariableValue(varName: string, varMapping: { [p: string]: any }) {
 	// e.g. resource.extraData.phone, we must get resource['extraData']['phone'] if it exists
 	const splitVarName = varName.split(".");
 
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	varValue = varMapping[splitVarName[0]];
 
 	if (splitVarName.length > 1) {
@@ -16,10 +15,8 @@ function getVariableValue(varName: string, varMapping: { [p: string]: any }) {
 		splitVarName.shift();
 
 		splitVarName.forEach((vn) => {
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-expect-error
 			if (varValue?.[vn]) {
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 				// @ts-expect-error any
 				varValue = varValue[vn] as string;
 			} else {
@@ -105,12 +102,10 @@ export const renderRawTemplate = (
 
 						// If the condition is true, render the block
 						if (conditionIsTrue) {
-							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 							rendered = rendered.replaceAll(match[0], block[0]);
 						} else {
 							// If the condition is false, render the else block (or empty value)
 							const elseBlock = block[1] ?? "";
-							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call
 							rendered = rendered.replaceAll(match[0], elseBlock);
 						}
 					}
@@ -139,7 +134,6 @@ export const renderRawTemplate = (
 								const filterName = filterParts[0];
 								let filterArgs: string[] = [];
 								if (filterParts.length > 1) {
-									// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 									filterArgs = filterParts[1]
 										.replace(")", "")
 										.split(",")

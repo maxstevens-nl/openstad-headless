@@ -1,4 +1,4 @@
-export function addToClassname(obj, className, options) {
+export function addToClassname(obj: any, className: any, options?: any) {
 	if (obj) {
 		if (!obj.className) obj.className = "";
 		if (!obj.className.match(new RegExp(` ?${className}(?: |$)`))) {
@@ -10,7 +10,7 @@ export function addToClassname(obj, className, options) {
 	return obj;
 }
 
-export function removeFromClassName(obj, className) {
+export function removeFromClassName(obj: any, className: any) {
 	if (obj?.className) {
 		obj.className = obj.className.replace(
 			new RegExp(` ?${className}(?: |$)`),

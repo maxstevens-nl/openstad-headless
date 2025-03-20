@@ -7,6 +7,7 @@
 		"build": "turbo run build",
 		"dev": "turbo run dev --filter admin-server --filter api-server --filter auth-server --filter cms-server --filter image-server",
 		"lint": "turbo run lint",
+		"typecheck": "turbo run typecheck",
 
 		"check": "biome check . --reporter=summary",
 		"fix": "biome check . --write",

@@ -13,7 +13,7 @@ const {
 	tokenInfo,
 } = require("./properties.js");
 const promisify = require("es6-promisify");
-const request = require("request").defaults({ jar: true, strictSSL: false }); // eslint-disable-line
+const request = require("request").defaults({ jar: true, strictSSL: false }); 
 
 const get = promisify(request.get, { multiArgs: true });
 const post = promisify(request.post, { multiArgs: true });
@@ -121,9 +121,9 @@ module.exports = {
 	 */
 	getAuthorization: (options = {}) => {
 		const auth = options.authorization || authorization;
-		const redirect_uri = options.redirect || redirect; // eslint-disable-line camelcase
-		const response_type = options.responseType || "code"; // eslint-disable-line camelcase
-		const client_id = options.clientId || clientId; // eslint-disable-line camelcase
+		const redirect_uri = options.redirect || redirect; 
+		const response_type = options.responseType || "code"; 
+		const client_id = options.clientId || clientId; 
 		const scope = options.scope || "";
 		return get(
 			`${auth}?redirect_uri=${redirect_uri}&response_type=${response_type}&client_id=${client_id}&scope=${scope}`,

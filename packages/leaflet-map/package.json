@@ -6,7 +6,8 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc && vite build --config vite.config.base-map.ts && vite build --config vite.config.editor-map.ts && vite build --config vite.config.resource-detail-map.ts && vite build --config vite.config.resource-overview-map.ts",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@openstad-headless/data-store": "*",

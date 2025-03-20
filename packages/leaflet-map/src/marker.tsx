@@ -48,7 +48,6 @@ export default function Marker({
 	]) {
 		const EventName = `on${eventname.charAt(0).toUpperCase()}${eventname.slice(1)}`;
 		eventname = eventname.toLowerCase();
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 		let onEvent = (props as any)[EventName] || [];
 		if (!Array.isArray(onEvent)) onEvent = [onEvent];
 

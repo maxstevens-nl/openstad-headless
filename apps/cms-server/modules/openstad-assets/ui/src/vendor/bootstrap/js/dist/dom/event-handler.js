@@ -99,8 +99,7 @@
             return fn.apply(target, [event]);
           }
         }
-      } // To please ESLint
-
+      } 
 
       return null;
     };
