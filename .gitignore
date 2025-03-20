@@ -4,9 +4,8 @@
 node_modules/
 .DS_Store
 nginx.config.example
-/apps/auth-server/certificate.pem
-/apps/auth-server/privatekey.pem
-/apps/auth-server/certrequest.csr
+*.pem
+*.csr
 .packages-build-hash
 secrets.yml
 secrets.yaml
@@ -15,3 +14,4 @@ secrets.yaml
 *.agekey
 
 .turbo
+*.pub
