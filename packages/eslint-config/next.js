@@ -7,33 +7,33 @@
  *
  */
 module.exports = {
-  extends: [
-    '@vercel/style-guide/eslint/node',
-    '@vercel/style-guide/eslint/typescript',
-    '@vercel/style-guide/eslint/browser',
-    '@vercel/style-guide/eslint/react',
-    '@vercel/style-guide/eslint/next',
-    // turborepo custom eslint configuration configures the following rules:
-    //  - https://github.com/vercel/turbo/blob/main/packages/eslint-plugin-turbo/docs/rules/no-undeclared-env-vars.md
-    'eslint-config-turbo',
-  ].map(require.resolve),
-  parserOptions: {
-    project: ['../configs/tsconfig.eslint.json'],
-  },
-  globals: {
-    React: true,
-    JSX: true,
-  },
-  settings: {
-    'import/resolver': {
-      typescript: {
-        project: ['../configs/tsconfig.eslint.json'],
-      },
-    },
-  },
-  ignorePatterns: ['node_modules/', 'dist/'],
-  // add rules configurations here
-  rules: {
-    'import/no-default-export': 'off',
-  },
+	extends: [
+		"@vercel/style-guide/eslint/node",
+		"@vercel/style-guide/eslint/typescript",
+		"@vercel/style-guide/eslint/browser",
+		"@vercel/style-guide/eslint/react",
+		"@vercel/style-guide/eslint/next",
+		// turborepo custom eslint configuration configures the following rules:
+		//  - https://github.com/vercel/turbo/blob/main/packages/eslint-plugin-turbo/docs/rules/no-undeclared-env-vars.md
+		"eslint-config-turbo",
+	].map(require.resolve),
+	parserOptions: {
+		project: ["../configs/tsconfig.eslint.json"],
+	},
+	globals: {
+		React: true,
+		JSX: true,
+	},
+	settings: {
+		"import/resolver": {
+			typescript: {
+				project: ["../configs/tsconfig.eslint.json"],
+			},
+		},
+	},
+	ignorePatterns: ["node_modules/", "dist/"],
+	// add rules configurations here
+	rules: {
+		"import/no-default-export": "off",
+	},
 };

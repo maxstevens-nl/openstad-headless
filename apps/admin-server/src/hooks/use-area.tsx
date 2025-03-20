@@ -1,21 +1,24 @@
-import useSWR from 'swr';
+import { validateProjectNumber } from "@/lib/validateProjectNumber";
+import useSWR from "swr";
 
 export default function useArea(areaId?: string) {
-  let url = `/api/openstad/api/area/${areaId}`;
+	const areaNumber: number | undefined = validateProjectNumber(areaId);
 
-  const areaSwr = useSWR( url );
+	const url = `/api/openstad/api/area/${areaNumber}`;
 
-  async function updateArea(name: string, geoJSON: string) {
-    const res = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name: name, geoJSON: JSON.parse(geoJSON)}),
-    });
+	const areaSwr = useSWR(areaNumber ? url : null);
 
-    return await res.json();
-  }
+	async function updateArea(name: string, geoJSON: string) {
+		const res = await fetch(url, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ name: name, geoJSON: JSON.parse(geoJSON) }),
+		});
 
-  return { ...areaSwr, updateArea };
+		return await res.json();
+	}
+
+	return { ...areaSwr, updateArea };
 }

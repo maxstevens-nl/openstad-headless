@@ -1,34 +1,34 @@
 {
-  "name": "openstad-headless",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "check": "biome check .",
-    "fix": "biome check . --write",
-    "create-docker-config": "node ./scripts/create-docker-config.js",
-    "setup": "node ./scripts/setup-all.js",
-    "start": "node ./scripts/start-all.js",
-    "init-databases": "node ./scripts/init-databases.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/openstad/openstad-headless.git"
-  },
-  "author": "OpenStad",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/openstad/openstad-headless/issues"
-  },
-  "homepage": "https://github.com/openstad/openstad-headless#readme",
-  "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "dotenv": "^16.4.7",
-    "mysql2": "^3.11.3",
-    "turbo": "^2.4.4"
-  },
-  "packageManager": "pnpm@10.11.1+sha512.e519b9f7639869dc8d5c3c5dfef73b3f091094b0a006d7317353c72b124e80e1afd429732e28705ad6bfa1ee879c1fce46c128ccebd3192101f43dd67c667912"
+	"name": "openstad-headless",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "turbo run build",
+		"dev": "turbo run dev",
+		"lint": "turbo run lint",
+		"check": "biome check .",
+		"fix": "biome check . --write",
+		"create-docker-config": "node ./scripts/create-docker-config.js",
+		"setup": "node ./scripts/setup-all.js",
+		"start": "node ./scripts/start-all.js",
+		"init-databases": "node ./scripts/init-databases.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/openstad/openstad-headless.git"
+	},
+	"author": "OpenStad",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/openstad/openstad-headless/issues"
+	},
+	"homepage": "https://github.com/openstad/openstad-headless#readme",
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"dotenv": "^16.4.7",
+		"mysql2": "^3.11.3",
+		"turbo": "^2.4.4"
+	},
+	"packageManager": "pnpm@10.11.1+sha512.e519b9f7639869dc8d5c3c5dfef73b3f091094b0a006d7317353c72b124e80e1afd429732e28705ad6bfa1ee879c1fce46c128ccebd3192101f43dd67c667912"
 }

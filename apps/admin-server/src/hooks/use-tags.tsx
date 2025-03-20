@@ -1,41 +1,59 @@
-import useSWR from 'swr';
+import { validateProjectNumber } from "@/lib/validateProjectNumber";
+import useSWR from "swr";
 
 export default function useTag(projectId?: string) {
-  const url = `/api/openstad/api/project/${projectId}/tag`;
+	// Global tags have projectId = 0, therefore this check is different from the others
+	const projectNumber: number | undefined = validateProjectNumber(
+		projectId,
+		true,
+	);
 
-  const tagListSwr = useSWR(projectId ? url : null);
+	const url = `/api/openstad/api/project/${projectNumber}/tag`;
 
-  async function createTag(name: string, type: string, seqnr: number, addToNewResources: boolean) {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ projectId, name, type, seqnr, addToNewResources }),
-    });
+	const tagListSwr = useSWR(projectNumber ? url : null);
 
-    return await res.json();
-  }
+	async function createTag(
+		name: string,
+		type: string,
+		seqnr: number,
+		addToNewResources: boolean,
+	) {
+		const res = await fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				projectId: projectNumber,
+				name,
+				type,
+				seqnr,
+				addToNewResources,
+			}),
+		});
 
-  async function removeTag(id: number) {
-    const deleteUrl = `/api/openstad/api/project/${projectId}/tag/${id}`;
+		return await res.json();
+	}
 
-    const res = await fetch(deleteUrl, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+	async function removeTag(id: number) {
+		const deleteUrl = `/api/openstad/api/project/${projectNumber}/tag/${id}`;
 
-    if (res.ok) {
-      const existingData = [...tagListSwr.data];
-      const updatedList = existingData.filter((ed) => ed.id !== id);
-      tagListSwr.mutate(updatedList);
-      return updatedList;
-    } else {
-      throw new Error('Could not remove this tag');
-    }
-  }
+		const res = await fetch(deleteUrl, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
 
-  return {...tagListSwr, createTag, removeTag}
+		if (res.ok) {
+			const existingData = [...tagListSwr.data];
+			const updatedList = existingData.filter((ed) => ed.id !== id);
+			tagListSwr.mutate(updatedList);
+			return updatedList;
+		} else {
+			throw new Error("Could not remove this tag");
+		}
+	}
+
+	return { ...tagListSwr, createTag, removeTag };
 }

@@ -20,7 +20,7 @@ function buildPackage (package) {
     return;
   }
   
-  let packagePath = widgetDefinitions[package].directory;
+  const packagePath = widgetDefinitions[package].directory;
   
   buildPackageByDirectory(packagePath);
   

@@ -1,84 +1,84 @@
-import { WidgetDefinition } from '@/lib/widget-definitions';
-import useSWR from 'swr';
+import { validateProjectNumber } from "@/lib/validateProjectNumber";
+import type { WidgetDefinition } from "@/lib/widget-definitions";
+import useSWR from "swr";
 
 export function useWidgetsHook(projectId?: string) {
-  let url = `/api/openstad/api/project/${projectId}/widgets`;
+	const projectNumber: number | undefined = validateProjectNumber(projectId);
 
-  const widgetsSwr = useSWR(projectId ? url : null);
+	const url = `/api/openstad/api/project/${projectNumber}/widgets`;
 
-  async function createWidget(typeId: string, description: string) {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ type: typeId, description }),
-    });
-    const data = await res.json();
-    widgetsSwr.mutate([...widgetsSwr.data, data]);
-    return data;
-  }
+	const widgetsSwr = useSWR(projectNumber ? url : null);
 
-  async function remove(id: number) {
-    const deleteUrl = `/api/openstad/api/project/${projectId}/widgets/${id}`;
+	async function createWidget(typeId: string, description: string) {
+		const res = await fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ type: typeId, description }),
+		});
+		const data = await res.json();
+		widgetsSwr.mutate([...widgetsSwr.data, data]);
+		return data;
+	}
 
-    const res = await fetch(deleteUrl, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+	async function remove(id: number) {
+		const deleteUrl = `/api/openstad/api/project/${projectNumber}/widgets/${id}`;
 
-    if (res.ok) {
-      const existingData = [...widgetsSwr.data];
-      const updatedList = existingData.filter((ed) => ed.id !== id);
-      widgetsSwr.mutate(updatedList);
-      return updatedList;
-    } else {
-      throw new Error('Could not remove the widget');
-    }
-  }
+		const res = await fetch(deleteUrl, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
 
-  async function updateWidget(id: number, body: any) {
-    const updateUrl = `/api/openstad/api/project/${projectId}/widgets/${id}`;
+		if (res.ok) {
+			const existingData = [...widgetsSwr.data];
+			const updatedList = existingData.filter((ed) => ed.id !== id);
+			widgetsSwr.mutate(updatedList);
+			return updatedList;
+		} else {
+			throw new Error("Could not remove the widget");
+		}
+	}
 
-    const res = await fetch(updateUrl, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
+	async function updateWidget(id: number, body: any) {
+		const updateUrl = `/api/openstad/api/project/${projectNumber}/widgets/${id}`;
 
-    if (res.ok) {
-      const existingData = [...widgetsSwr.data];
-      const updatedList = existingData.filter((ed) => ed.id === id);
+		const res = await fetch(updateUrl, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(body),
+		});
 
-      updatedList[0].description = body.description;
-      widgetsSwr.mutate(updatedList);
+		if (res.ok) {
+			const existingData = [...widgetsSwr.data];
+			const updatedList = existingData.filter((ed) => ed.id === id);
 
-      console.log({new: widgetsSwr.data});
-      return widgetsSwr.data;
+			updatedList[0].description = body.description;
+			widgetsSwr.mutate(updatedList);
 
-    } else {
-      throw new Error('Could not update the widget');
-    }
+			console.log({ new: widgetsSwr.data });
+			return widgetsSwr.data;
+		} else {
+			throw new Error("Could not update the widget");
+		}
+	}
 
-  }
-
-
-  return { ...widgetsSwr, createWidget, updateWidget, remove };
+	return { ...widgetsSwr, createWidget, updateWidget, remove };
 }
 
 export type Widget = {
-  id: number;
-  projectId: number;
-  description: string;
+	id: number;
+	projectId: number;
+	description: string;
 
-  config: object;
-  type: WidgetDefinition;
+	config: object;
+	type: WidgetDefinition;
 
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
+	createdAt: string;
+	updatedAt: string;
+	deletedAt: string | null;
 };

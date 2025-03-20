@@ -1,21 +1,28 @@
-import useSWR from 'swr';
+import { validateProjectNumber } from "@/lib/validateProjectNumber";
+import useSWR from "swr";
 
 export default function useArea(layerId?: string) {
-    let url = `/api/openstad/api/datalayer/${layerId}`;
+	const layerNumber: number | undefined = validateProjectNumber(layerId);
 
-    const datalayerSwr = useSWR( url );
+	const url = `/api/openstad/api/datalayer/${layerNumber}`;
 
-    async function updateDatalayer(name: string, layer: string, icon: any) {
-        const res = await fetch(url, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name: name, layer: JSON.parse(layer), icon: icon}),
-        });
+	const datalayerSwr = useSWR(layerNumber ? url : null);
 
-        return await res.json();
-    }
+	async function updateDatalayer(name: string, layer: string, icon: any) {
+		const res = await fetch(url, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				name: name,
+				layer: JSON.parse(layer),
+				icon: icon,
+			}),
+		});
 
-    return { ...datalayerSwr, updateDatalayer };
+		return await res.json();
+	}
+
+	return { ...datalayerSwr, updateDatalayer };
 }
