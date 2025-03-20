@@ -24,7 +24,7 @@ THROTTLE_CC_REQUESTS=${process.env.IMAGE_THROTTLE_CC_REQUESTS}
 		if (actions["create config"]) {
 			console.log("------------------------------");
 			console.log("Create config file");
-			await fs.writeFileSync("./apps/image-server/.env", imgConfig);
+			fs.writeFileSync("./apps/image-server/.env", imgConfig);
 		}
 
 		// npm i

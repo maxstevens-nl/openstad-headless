@@ -1,5 +1,4 @@
 const fs = require("node:fs");
-const util = require("node:util");
 const execute = require("./execute");
 
 module.exports = async function setupCmsServer(actions) {
@@ -25,7 +24,7 @@ API_KEY=${process.env.API_FIXED_AUTH_KEY}
 		if (actions["create config"]) {
 			console.log("------------------------------");
 			console.log("Create config file");
-			await fs.writeFileSync("./apps/cms-server/.env", cmsConfig);
+			fs.writeFileSync("./apps/cms-server/.env", cmsConfig);
 		}
 
 		// npm i

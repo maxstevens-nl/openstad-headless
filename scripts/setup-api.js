@@ -81,7 +81,7 @@ ADMIN_DOMAIN=${process.env.ADMIN_DOMAIN}
 			console.log("------------------------------");
 			console.log("Create config file");
 			console.log("API_FIXED_AUTH_KEY:", process.env.API_FIXED_AUTH_KEY);
-			await fs.writeFileSync("./apps/api-server/.env", apiConfig);
+			fs.writeFileSync("./apps/api-server/.env", apiConfig);
 		}
 
 		// npm i

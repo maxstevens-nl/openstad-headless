@@ -21,7 +21,7 @@ PORT=${process.env.ADMIN_PORT}
 		if (actions["create config"]) {
 			console.log("------------------------------");
 			console.log("Create config file");
-			await fs.writeFileSync("./apps/admin-server/.env", imgConfig);
+			fs.writeFileSync("./apps/admin-server/.env", imgConfig);
 		}
 
 		// npm i

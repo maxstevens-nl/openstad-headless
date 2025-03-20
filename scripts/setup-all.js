@@ -15,11 +15,10 @@ const modules = [
 	initCmsServer,
 	createNginxConfigExample,
 	() =>
-		new Promise((resolve, reject) => {
+		new Promise(() => {
 			console.log("==============================");
 			console.log("Done");
 			process.exit();
-			resolve();
 		}),
 ];
 

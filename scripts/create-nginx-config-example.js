@@ -73,7 +73,7 @@ server {
 	try {
 		console.log("==============================");
 		console.log("Create nginx config example file");
-		await fs.writeFileSync("./nginx.config.example", nginxConfigExample);
+		fs.writeFileSync("./nginx.config.example", nginxConfigExample);
 	} catch (err) {
 		console.log(err);
 	}

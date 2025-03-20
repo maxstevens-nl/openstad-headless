@@ -90,7 +90,6 @@ SESSION_SECRET=${process.env.AUTH_SESSION_SECRET}
 			} catch (err) {
 				if (err.code !== "EEXIST") {
 					throw err;
-					return;
 				}
 				console.error("Certs dir exists");
 			}

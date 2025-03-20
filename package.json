@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "turbo run build",
-		"dev": "turbo run dev --concurrency 30",
+		"dev": "turbo run dev --filter admin-server --filter api-server --filter auth-server --filter cms-server --filter image-server",
 		"lint": "turbo run lint",
 
 		"check": "biome check . --reporter=summary",
@@ -13,7 +13,6 @@
 
 		"create-docker-config": "node ./scripts/create-docker-config.js",
 		"setup": "node ./scripts/setup-all.js",
-		"start": "node ./scripts/start-all.js",
 		"init-databases": "node ./scripts/init-databases.js"
 	},
 	"repository": {

@@ -11,13 +11,7 @@ async function setupEnvVars() {
 	const BASE_PORT = (process.env.BASE_PORT =
 		Number.parseInt(process.env.BASE_PORT) || 31400);
 
-	const BASIC_AUTH_USER = (process.env.BASIC_AUTH_USER =
-		process.env.BASIC_AUTH_USER || "openstad");
-	const BASIC_AUTH_PASSWORD = (process.env.BASIC_AUTH_PASSWORD =
-		process.env.BASIC_AUTH_PASSWORD || "openstad");
-
 	process.env.FORCE_HTTP = process.env.FORCE_HTTP || "";
-	const COOKIE_SECURE_OFF = process.env.FORCE_HTTP ? "yes" : "";
 
 	process.env.BASE_DOMAIN = process.env.BASE_DOMAIN || "localhost";
 
@@ -63,7 +57,6 @@ async function setupEnvVars() {
 	const AUTH_URL = (process.env.AUTH_URL =
 		process.env.AUTH_URL ||
 		(process.env.FORCE_HTTP ? "http://" : "https://") + AUTH_DOMAIN);
-	const AUTH_JWT_SECRET = generateRandomToken({ length: 64 }); // TODO: wordt niet gebruikt
 	const AUTH_ADMIN_CLIENT_ID = (process.env.AUTH_ADMIN_CLIENT_ID =
 		process.env.AUTH_ADMIN_CLIENT_ID || generateRandomToken({ length: 64 }));
 	const AUTH_ADMIN_CLIENT_SECRET = (process.env.AUTH_ADMIN_CLIENT_SECRET =

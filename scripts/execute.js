@@ -16,7 +16,7 @@ module.exports = function execute(command, args, options) {
 			console.log(`${chunk}`.replace(/(?:\r|\n)+$/, ""));
 		});
 
-		child.on("close", (code) => {
+		child.on("close", () => {
 			resolve();
 		});
 	});
