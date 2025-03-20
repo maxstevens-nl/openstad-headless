@@ -3,17 +3,16 @@
  */
 
 module.exports = {
-  extend: '@apostrophecms/widget-type',
-  options: {
-    label: 'Share Links'
-  },
-  fields: {
-    add: {
-      title: {
-        type: 'string',
-        label: 'Titel'
-      },
-  
-    },
-  }
+	extend: "@apostrophecms/widget-type",
+	options: {
+		label: "Share Links",
+	},
+	fields: {
+		add: {
+			title: {
+				type: "string",
+				label: "Titel",
+			},
+		},
+	},
 };

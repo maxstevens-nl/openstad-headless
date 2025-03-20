@@ -19,11 +19,11 @@
 }
 
 .osc-base-map-widget-container .osc-map-marker-faded {
-  opacity: .35;
+	opacity: 0.35;
 }
 
 .osc-base-map-widget-container .osc-map-marker-cluster-faded {
-  opacity: .35;
+	opacity: 0.35;
 }
 
 .leaflet-container a {
@@ -34,7 +34,6 @@
 .leaflet-bottom.leaflet-right{
   display: none;
 }
-
 
 .leaflet-popup .leaflet-popup-content{
   display: flex;

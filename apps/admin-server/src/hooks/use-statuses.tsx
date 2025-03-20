@@ -1,44 +1,52 @@
-import useSWR from 'swr';
-import {validateProjectNumber} from "@/lib/validateProjectNumber";
+import { validateProjectNumber } from "@/lib/validateProjectNumber";
+import useSWR from "swr";
 
 export default function useStatus(projectId?: string) {
-  const projectNumber: number | undefined = validateProjectNumber(projectId);
+	const projectNumber: number | undefined = validateProjectNumber(projectId);
 
-  const url = `/api/openstad/api/project/${projectNumber}/status`;
+	const url = `/api/openstad/api/project/${projectNumber}/status`;
 
-  const statusListSwr = useSWR(projectNumber ? url : null);
+	const statusListSwr = useSWR(projectNumber ? url : null);
 
-  async function createStatus(name: string, seqnr: number, addToNewResources: boolean) {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ projectId: projectNumber, name, seqnr, addToNewResources }),
-    });
+	async function createStatus(
+		name: string,
+		seqnr: number,
+		addToNewResources: boolean,
+	) {
+		const res = await fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				projectId: projectNumber,
+				name,
+				seqnr,
+				addToNewResources,
+			}),
+		});
 
-    return await res.json();
-  }
+		return await res.json();
+	}
 
-  async function removeStatus(id: number) {
-    const deleteUrl = `/api/openstad/api/project/${projectNumber}/status/${id}`;
+	async function removeStatus(id: number) {
+		const deleteUrl = `/api/openstad/api/project/${projectNumber}/status/${id}`;
 
-    const res = await fetch(deleteUrl, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+		const res = await fetch(deleteUrl, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
 
-    if (res.ok) {
-      const existingData = [...statusListSwr.data];
-      const updatedList = existingData.filter((ed) => ed.id !== id);
-      statusListSwr.mutate(updatedList);
-      return updatedList;
-    } else {
-      throw new Error('Could not remove this status');
-    }
-  }
+		if (res.ok) {
+			const existingData = [...statusListSwr.data];
+			const updatedList = existingData.filter((ed) => ed.id !== id);
+			statusListSwr.mutate(updatedList);
+			return updatedList;
+		}
+		throw new Error("Could not remove this status");
+	}
 
-  return {...statusListSwr, createStatus, removeStatus}
+	return { ...statusListSwr, createStatus, removeStatus };
 }

@@ -1,0 +1,13 @@
+packages:
+  - apps/*
+  - packages/*
+onlyBuiltDependencies:
+  - '@biomejs/biome'
+  - '@parcel/watcher'
+  - aws-sdk
+  - bcrypt
+  - esbuild
+  - sharp
+  - sqlite3
+  - vue-demi
+  - xxhash

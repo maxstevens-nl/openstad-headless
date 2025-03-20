@@ -1,11 +1,11 @@
 {
   "name": "@openstad-headless/multi-project-resource-overview",
-  "private": true,
   "version": "0.0.0",
+	"private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "tsc && vite build",
+		"dev": "vite",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -19,7 +19,7 @@
     "@utrecht/component-library-css": "^4.2.0",
     "@utrecht/component-library-react": "^4.2.0",
     "@utrecht/design-tokens": "^1.0.0-alpha.631",
-    "copy": "^0.0.1",
+		"copy": "^0.3.0",
     "nunjucks": "^3.2.4",
     "postcss": "^8.4.38",
     "postcss-prefix-selector": "^2.1.0",

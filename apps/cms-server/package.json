@@ -1,63 +1,68 @@
 {
-  "name": "openstad-frontend",
-  "version": "1.0.0",
-  "description": "Openstad frontent project including openstad frontend packages\"",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon",
-    "build": "NODE_ENV=production node build @apostrophecms/asset:build"
-  },
-  "nodemonConfig": {
-    "delay": 1000,
-    "verbose": true,
-    "watch": [
-      "./app.js",
-      "./modules/**/*",
-      "./lib/**/*.js",
-      "./views/**/*.html"
-    ],
-    "ignoreRoot": [
-      ".git"
-    ],
-    "ignore": [
-      "**/ui/apos/",
-      "**/ui/src/",
-      "**/ui/public/",
-      "locales/*.json",
-      "public/uploads/",
-      "public/apos-frontend/*.js",
-      "data/"
-    ],
-    "ext": "json, js, html, scss, vue"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Amsterdam/openstad-frontend.git"
-  },
-  "author": "Team Openstad: Niels Denes & Tosh Koevoets",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Amsterdam/openstad-frontend/issues"
-  },
-  "homepage": "https://github.com/Amsterdam/openstad-frontend#readme",
-  "dependencies": {
-    "@apostrophecms/anchors": "^1.0.1",
-    "@apostrophecms/blog": "^1.0.4",
-    "@apostrophecms/import-export": "^3.0.0",
-    "@apostrophecms/redirect": "^1.4.2",
-    "@apostrophecms/seo": "^1.3.0",
-    "apostrophe": "^4.15.2",
-    "dotenv": "^16.0.3",
-    "express-basic-auth": "^1.2.1",
-    "http-proxy-middleware": "^2.0.6",
-    "jquery": "^3.7.1",
-    "less": "^4.1.3",
-    "less-loader": "^11.1.0",
-    "postcss-prefix-selector": "^2.1.0",
-    "redis": "^4.6.13"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
-  }
+	"name": "cms-server",
+	"version": "1.0.0",
+	"description": "Openstad frontent project including openstad frontend packages",
+	"main": "app.js",
+	"scripts": {
+		"start": "node app.js",
+		"dev": "nodemon",
+		"build": "NODE_ENV=production node build @apostrophecms/asset:build"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Amsterdam/openstad-frontend.git"
+	},
+	"author": "Team Openstad: Niels Denes & Tosh Koevoets",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Amsterdam/openstad-frontend/issues"
+	},
+	"homepage": "https://github.com/Amsterdam/openstad-frontend#readme",
+	"dependencies": {
+		"@apostrophecms/anchors": "^1.0.1",
+		"@apostrophecms/blog": "^1.0.4",
+		"@apostrophecms/import-export": "^3.0.0",
+		"@apostrophecms/redirect": "^1.4.2",
+		"@apostrophecms/seo": "^1.3.0",
+		"apostrophe": "^4.15.0",
+		"css-loader": "^7.1.2",
+		"dotenv": "^16.0.3",
+		"express": "^4.21.2",
+		"express-basic-auth": "^1.2.1",
+		"http-proxy-middleware": "^2.0.6",
+		"jquery": "^3.7.1",
+		"less": "^4.1.3",
+		"less-loader": "^11.1.0",
+		"postcss-loader": "^8.1.1",
+		"postcss-prefix-selector": "^2.1.0",
+		"redis": "^4.6.13",
+		"sass-loader": "^16.0.5"
+	},
+	"devDependencies": {
+		"less": "^4.1.3",
+		"less-loader": "^11.1.0",
+		"nodemon": "^3.0.1",
+		"postcss-prefix-selector": "^2.1.0"
+	},
+	"nodemonConfig": {
+		"delay": 1000,
+		"verbose": true,
+		"watch": [
+			"./app.js",
+			"./modules/workspace:*workspace:*/workspace:*",
+			"./lib/workspace:*workspace:*/workspace:*.js",
+			"./views/workspace:*workspace:*/workspace:*.html"
+		],
+		"ignoreRoot": [".git"],
+		"ignore": [
+			"workspace:*workspace:*/ui/apos/",
+			"workspace:*workspace:*/ui/src/",
+			"workspace:*workspace:*/ui/public/",
+			"locales/workspace:*.json",
+			"public/uploads/",
+			"public/apos-frontend/workspace:*.js",
+			"data/"
+		],
+		"ext": "json, js, html, scss, vue"
+	}
 }

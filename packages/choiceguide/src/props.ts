@@ -1,4 +1,4 @@
-import { ProjectSettingProps, BaseProps } from '@openstad-headless/types';
+import type { BaseProps, ProjectSettingProps } from "@openstad-headless/types";
 
 export type ChoiceGuideProps = ChoiceGuide &
     ChoiceGuideGeneralSettings &
@@ -9,8 +9,8 @@ export type ChoiceGuideProps = ChoiceGuide &
 export type ChoiceGuide = {
     noOfQuestionsToShow?: string;
     showPageCountAndCurrentPageInButton?: boolean;
-    choicesType?: 'default' | 'minus-to-plus-100' | 'plane' | 'hidden';
-    imageAspectRatio?: '16x9' | '1x1';
+	choicesType?: "default" | "minus-to-plus-100" | "plane" | "hidden";
+	imageAspectRatio?: "16x9" | "1x1";
     choicesPreferenceMinColor?: string;
     choicesPreferenceMaxColor?: string;
     choicesPreferenceTitle?: string;
@@ -29,11 +29,12 @@ export type ChoiceGuide = {
 type ExtraProjectSettings = {
     choiceGuide: ChoiceGuide;
     choiceOption?: {
-        choiceOptions: ChoiceOptions[] };
+		choiceOptions: ChoiceOptions[];
+	};
     items?: Array<Item>;
     widgetId?: string;
-    generalSettings?: ChoiceGuideGeneralSettings
-}
+	generalSettings?: ChoiceGuideGeneralSettings;
+};
 
 export type ChoiceGuideGeneralSettings = {
     submitButtonText?: string;
@@ -44,7 +45,7 @@ export type ChoiceGuideGeneralSettings = {
 };
 
 export type ChoiceGuideSidebarProps = {
-    choicesType: 'default' | 'minus-to-plus-100' | 'plane' | 'hidden';
+	choicesType: "default" | "minus-to-plus-100" | "plane" | "hidden";
     choicesPreferenceMinColor?: string;
     choicesPreferenceMaxColor?: string;
     choicesPreferenceTitle?: string;
@@ -54,12 +55,12 @@ export type ChoiceGuideSidebarProps = {
     choiceOptions?: ChoiceOptions[];
     scores?: Record<string, Score>;
     answers?: Record<string, Record<string, number>>;
-    imageAspectRatio?: '16x9' | '1x1';
+	imageAspectRatio?: "16x9" | "1x1";
     image?: string;
     showPageCountAndCurrentPageInButton?: boolean;
     weights?: WeightOverview;
     widgetId?: string;
-}
+};
 
 export type Score = {
     x: number;
@@ -103,8 +104,8 @@ export type Item = {
     imageA?: string;
     imageB?: string;
     defaultValue?: string;
-    maxChoices?: string,
-    maxChoicesMessage?: string,
+	maxChoices?: string;
+	maxChoicesMessage?: string;
     skipQuestion?: boolean;
     skipQuestionAllowExplanation?: boolean;
     skipQuestionExplanation?: string;
@@ -130,7 +131,7 @@ export type Weight = {
     [key: string]: string | number | Weight | undefined;
 };
 
-export type DimensionWeights = Record<'x' | 'y', string | number>;
+export type DimensionWeights = Record<"x" | "y", string | number>;
 export type ChoiceWeights = Record<string, DimensionWeights>;
 export type GroupWeights = Record<number, DimensionWeights | ChoiceWeights>;
 export type WeightOverview = Record<number, GroupWeights>;

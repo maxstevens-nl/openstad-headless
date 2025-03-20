@@ -41,7 +41,7 @@ services:
       - openstad-mongo-data:/var/lib/mongo
 
   openstad-mailpit:
-    image: axllent/mailpit:v1.15
+    image: axllent/mailpit:v1.25
     ports:
       - 1025:1025 # smtp server
       - 8025:8025 # web ui
@@ -112,7 +112,6 @@ services:
       - /opt/openstad-headless/packages/configs/node_modules
       - /opt/openstad-headless/packages/data-store/node_modules
       - /opt/openstad-headless/packages/date-countdown-bar/node_modules
-      - /opt/openstad-headless/packages/eslint-config-custom/node_modules
       - /opt/openstad-headless/packages/lib/node_modules
       - /opt/openstad-headless/packages/likes/node_modules
       - /opt/openstad-headless/packages/message-streaming/node_modules

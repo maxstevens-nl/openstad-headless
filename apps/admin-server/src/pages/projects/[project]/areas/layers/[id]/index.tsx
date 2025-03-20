@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import {useFieldArray, useForm} from 'react-hook-form';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback, useEffect } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { Button } from '@/components/ui/button';
+import { ImageUploader } from "@/components/image-uploader";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -11,17 +12,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { PageLayout } from '@/components/ui/page-layout';
-import { Heading } from '@/components/ui/typography';
-import { Separator } from '@/components/ui/separator';
-import { useRouter } from 'next/router';
-import useDatalayer from '@/hooks/use-datalayer';
-import toast from 'react-hot-toast';
-import {ImageUploader} from "@/components/image-uploader";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { PageLayout } from "@/components/ui/page-layout";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
+import { Heading } from "@/components/ui/typography";
+import useDatalayer from "@/hooks/use-datalayer";
 import {X} from "lucide-react";
+import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
   name: z.string(),
@@ -37,18 +37,16 @@ const formSchema = z.object({
 export default function ProjectDatalayerEdit() {
   const router = useRouter();
   const { project, id } = router.query;
-  const { data, isLoading, updateDatalayer } = useDatalayer(
-    id as string
-  );
+	const { data, isLoading, updateDatalayer } = useDatalayer(id as string);
 
   const defaults = useCallback(
     () => ({
       name: data?.name || null,
       layer: JSON.stringify(data?.layer),
       icon: data?.icon || null,
-      iconUploader: '',
+			iconUploader: "",
     }),
-    [data]
+		[data],
   );
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -57,13 +55,19 @@ export default function ProjectDatalayerEdit() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const datalayer = await updateDatalayer(values.name, values.layer, values.icon);
+		const datalayer = await updateDatalayer(
+			values.name,
+			values.layer,
+			values.icon,
+		);
 
     if (datalayer) {
-      toast.success('Kaartlaag aangepast!');
+			toast.success("Kaartlaag aangepast!");
       // router.push(`/projects/${project}/areas`);
     } else {
-      toast.error('De kaartlaag die is meegegeven lijkt niet helemaal te kloppen.')
+			toast.error(
+				"De kaartlaag die is meegegeven lijkt niet helemaal te kloppen.",
+			);
     }
   }
 
@@ -73,7 +77,7 @@ export default function ProjectDatalayerEdit() {
 
   const { fields: iconField, remove: removeImage } = useFieldArray({
     control: form.control,
-    name: 'icon',
+		name: "icon",
   });
 
   return (
@@ -82,25 +86,27 @@ export default function ProjectDatalayerEdit() {
         pageHeader="Projecten"
         breadcrumbs={[
           {
-            name: 'Projecten',
-            url: '/projects',
+						name: "Projecten",
+						url: "/projects",
           },
           {
-            name: 'Polygonen',
+						name: "Polygonen",
             url: `/projects/${project}/areas`,
           },
           {
-            name: 'Kaartlaag aanpassen',
+						name: "Kaartlaag aanpassen",
             url: `/projects/${project}/areas/layers/${id}`,
           },
-        ]}>
+				]}
+			>
         <div className="p-6 bg-white rounded-md">
           <Form {...form}>
             <Heading size="xl">Aanpassen</Heading>
             <Separator className="my-4" />
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="lg:w-1/2 grid grid-cols-1 gap-4">
+							className="lg:w-1/2 grid grid-cols-1 gap-4"
+						>
               <FormField
                 control={form.control}
                 name="name"
@@ -120,19 +126,20 @@ export default function ProjectDatalayerEdit() {
                 fieldName="iconUploader"
                 imageLabel="Icoon op de kaart"
                 description="De ideale afmetingen voor een icoon zijn 30x40 pixels."
-                allowedTypes={['image/*']}
+								allowedTypes={["image/*"]}
                 onImageUploaded={(imageResult) => {
-                  form.setValue('icon', [imageResult]);
-                  form.resetField('iconUploader');
-                  form.trigger('icon');
+									form.setValue("icon", [imageResult]);
+									form.resetField("iconUploader");
+									form.trigger("icon");
                 }}
                 project={project as string}
               />
               <div className="space-y-2 col-span-full md:col-span-1 flex flex-col">
                 {iconField.length > 0 && (
                   <>
-                    <label
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Geüpload icoon</label>
+										<label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+											Geüpload icoon
+										</label>
                     <section className="grid col-span-full grid-cols-3 gap-x-4 gap-y-8 ">
                       {iconField.map(({id, url}, index) => {
                         return (
@@ -143,7 +150,8 @@ export default function ProjectDatalayerEdit() {
                               onClick={() => {
                                 removeImage(index);
                               }}
-                              className="absolute right-0 top-0">
+															className="absolute right-0 top-0"
+														>
                               <X size={24}/>
                             </Button>
                           </div>

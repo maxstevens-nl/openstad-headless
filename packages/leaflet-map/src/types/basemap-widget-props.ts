@@ -1,12 +1,10 @@
-import { ProjectSettingProps, BaseProps } from '@openstad-headless/types';
+import type { BaseProps, ProjectSettingProps } from "@openstad-headless/types";
 
-import type { MapPropsType } from '../types/index';
-import {PostcodeAutoFillLocation} from "@openstad-headless/ui/src/stem-begroot-and-resource-overview/filter";
+import type { MapPropsType } from "../types/index.js";
 
 export type BaseMapWidgetProps = BaseProps &
-  ProjectSettingProps & {
-    resourceId?: string;
-    customPolygon?: any;
-    mapDataLayers?: any;
-    locationProx?: PostcodeAutoFillLocation
-  } & MapPropsType;
+	ProjectSettingProps & {
+		resourceId?: string;
+		customPolygon?: any;
+		mapDataLayers?: any;
+	} & MapPropsType;

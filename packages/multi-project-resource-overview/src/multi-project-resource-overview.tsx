@@ -1,69 +1,117 @@
-import React, { useEffect, useState } from 'react';
-import { loadWidget } from '@openstad-headless/lib/load-widget';
-import { ResourceOverviewWidgetProps, ResourceOverview } from '@openstad-headless/resource-overview/src/resource-overview';
-import '../../resource-overview/src/resource-overview.css';
+import { loadWidget } from "@openstad-headless/lib/load-widget";
+import {
+	ResourceOverview,
+	type ResourceOverviewWidgetProps,
+} from "@openstad-headless/resource-overview/src/resource-overview";
+import { useEffect, useRef, useState } from "react";
+import "../../resource-overview/src/resource-overview.css";
 
 export type MultiProjectResourceOverviewProps = ResourceOverviewWidgetProps & {
-  widgetName?: string;
-  selectedProjects?: {
-    id: string;
-    name: string;
-    tags?: string;
-    detailPageLink?: string;
-    label?: string;
-    overviewTitle?: string;
-    overviewSummary?: string;
-    overviewDescription?: string;
-    overviewImage?: string;
-    overviewUrl?: string;
-  }[];
-  includeProjectsInOverview?: boolean;
+	widgetName?: string;
+	selectedProjects?: {
+		id: string;
+		name: string;
+		detailPageLink?: string;
+		label?: string;
+	}[];
 };
 
 function MultiProjectResourceOverview({
-  ...props
+	...props
 }: MultiProjectResourceOverviewProps) {
-  const [selectedProjectsState, setSelectedProjectsState] = useState(props.selectedProjects || []);
+	const [resources, setResources] = useState<Array<any>>([]);
+	const [tags, setTags] = useState<Array<any>>([]);
 
-  const fetchResource = async (url: string) => {
-    const response = await fetch(url);
-    return response.json();
-  };
+	const resourceCache = useRef(new Map());
+	const tagsCache = useRef(new Map());
 
-  useEffect(() => {
-    if (props.selectedProjects && props.selectedProjects.length > 0) {
-      const updateSelectedProjects = async (selectedProjects: any= []) => {
-        const url = `${props?.api?.url}/api/project?includeConfig=1&getBasicInformation=1`;
-        const data = await fetchResource(url);
+	const fetchResource = async (url: string) => {
+		const response = await fetch(url);
+		return response.json();
+	};
 
-        const updatedProjects = selectedProjects?.map((selectedProject: any) => {
-          const project = Array.isArray(data) && data.find((p: any) => p.id === selectedProject.id);
-          if (project) {
-            return {
-              ...selectedProject,
-              tags: project?.tags || '',
-              createdAt: project?.createdAt,
-            }
-          }
-          return selectedProject;
-        });
+	useEffect(() => {
+		const fetchResources = async () => {
+			try {
+				const newProjects =
+					props.selectedProjects?.filter(
+						(project) => !resourceCache.current.has(project.id),
+					) || [];
 
-        setSelectedProjectsState( updatedProjects );
-      }
+				if (newProjects.length === 0) return;
 
-      updateSelectedProjects(props.selectedProjects);
-    }
-  }, [props.selectedProjects]);
+				const projectResources = await Promise.all(
+					newProjects.map(async (project) => {
+						const url = `${props?.api?.url}/api/project/${project.id}/resource?includeConfig=1&includeUserVote=1&includeVoteCount=1`;
+						const data = await fetchResource(url);
 
-  const initFinished = selectedProjectsState.some(project => typeof project?.createdAt === 'string')
+						resourceCache.current.set(project.id, data);
 
-  return !initFinished ? null : (
-    <ResourceOverview
-      {...props}
-      selectedProjects={selectedProjectsState}
-      includeProjectsInOverview={props.includeProjectsInOverview}
-    />
-  );
+						return data;
+					}),
+				);
+
+				const allResources = [
+					...Array.from(resourceCache.current.values()).flat(),
+				];
+
+				const uniqueResources = allResources.filter(
+					(resource, index, self) =>
+						index === self.findIndex((t) => t.id === resource.id),
+				);
+
+				setResources(uniqueResources);
+			} catch (error) {
+				console.error("Error fetching resources:", error);
+			}
+		};
+
+		fetchResources();
+	}, [props.selectedProjects]);
+
+	useEffect(() => {
+		const fetchTags = async () => {
+			try {
+				const newTagGroups =
+					props.tagGroups?.filter(
+						(tagGroup) =>
+							!tagsCache.current.has(`${tagGroup.projectId}-${tagGroup.type}`),
+					) || [];
+
+				if (newTagGroups.length === 0) return;
+
+				const fetchedTags = await Promise.all(
+					newTagGroups.map(async (tagGroup) => {
+						const url = `${props?.api?.url}/api/project/${tagGroup.projectId}/tag?type=${tagGroup.type}`;
+						const data = await fetchResource(url);
+
+						tagsCache.current.set(
+							`${tagGroup.projectId}-${tagGroup.type}`,
+							data,
+						);
+						return data;
+					}),
+				);
+
+				const allTags = [...Array.from(tagsCache.current.values()).flat()];
+
+				setTags(allTags);
+			} catch (error) {
+				console.error("Error fetching tags:", error);
+			}
+		};
+
+		fetchTags();
+	}, [props.tagGroups]);
+
+	return (
+		<ResourceOverview
+			{...props}
+			multiProjectResources={resources || []}
+			selectedProjects={props.selectedProjects}
+			quickFixTags={tags || []}
+		/>
+	);
 }
 
 MultiProjectResourceOverview.loadWidget = loadWidget;

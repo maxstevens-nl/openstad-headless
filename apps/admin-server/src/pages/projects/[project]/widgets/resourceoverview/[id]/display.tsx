@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -7,24 +7,24 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Separator } from '@/components/ui/separator';
-import { Heading } from '@/components/ui/typography';
-import { YesNoSelect } from '@/lib/form-widget-helpers';
-import { EditFieldProps } from '@/lib/form-widget-helpers/EditFieldProps';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { MultiProjectResourceOverviewProps } from '@openstad-headless/multi-project-resource-overview/src/multi-project-resource-overview';
-import { Input } from '@/components/ui/input';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { useFieldDebounce } from '@/hooks/useFieldDebounce';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Heading } from "@/components/ui/typography";
+import { useFieldDebounce } from "@/hooks/useFieldDebounce";
+import { YesNoSelect } from "@/lib/form-widget-helpers";
+import type { EditFieldProps } from "@/lib/form-widget-helpers/EditFieldProps";
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { MultiProjectResourceOverviewProps } from "@openstad-headless/multi-project-resource-overview/src/multi-project-resource-overview";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 const formSchema = z.object({
   displayBanner: z.boolean(),
   displayMap: z.boolean(),
@@ -58,7 +58,7 @@ const formSchema = z.object({
 
 export default function WidgetResourceOverviewDisplay(
   props: MultiProjectResourceOverviewProps &
-    EditFieldProps<MultiProjectResourceOverviewProps>
+		EditFieldProps<MultiProjectResourceOverviewProps>,
 ) {
   type FormData = z.infer<typeof formSchema>;
   async function onSubmit(values: FormData) {
@@ -83,11 +83,11 @@ export default function WidgetResourceOverviewDisplay(
       displayVote: props?.displayVote || false,
       displayStatusLabel: props?.displayStatusLabel || false,
       displayDocuments: props?.displayDocuments || false,
-      documentsTitle: props?.documentsTitle || '',
-      documentsDesc: props?.documentsDesc || '',
+			documentsTitle: props?.documentsTitle || "",
+			documentsDesc: props?.documentsDesc || "",
       displayVariant: props?.displayVariant,
-      applyText: props?.applyText || 'Toepassen',
-      resetText: props?.resetText || 'Reset',
+			applyText: props?.applyText || "Toepassen",
+			resetText: props?.resetText || "Reset",
       displayLikeButton: props?.displayLikeButton || false,
       clickableImage: props?.clickableImage || false,
       displayBudget: props?.displayBudget !== false,
@@ -102,8 +102,8 @@ export default function WidgetResourceOverviewDisplay(
   });
 
   const { watch } = form;
-  const displayBanner = watch('displayBanner');
-  const displayMap = watch('displayMap');
+	const displayBanner = watch("displayBanner");
+	const displayMap = watch("displayMap");
 
   return (
     <div className="p-6 bg-white rounded-md">
@@ -112,9 +112,9 @@ export default function WidgetResourceOverviewDisplay(
         <Separator className="my-4" />
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="lg:w-3/4 grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-8">
-
-          <div className='col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-8 w-full'>
+					className="lg:w-3/4 grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-8"
+				>
+					<div className="col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-8 w-full">
             <FormField
               control={form.control}
               name="displayBanner"
@@ -132,9 +132,7 @@ export default function WidgetResourceOverviewDisplay(
                 name="bannerText"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
-                      Titel
-                    </FormLabel>
+										<FormLabel>Titel</FormLabel>
                     <FormControl>
                       <Input
                         type="text"
@@ -152,7 +150,7 @@ export default function WidgetResourceOverviewDisplay(
             )}
           </div>
 
-          <div className='col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-8 w-full'>
+					<div className="col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-8 w-full">
             <FormField
               control={form.control}
               name="displayMap"
@@ -234,7 +232,6 @@ export default function WidgetResourceOverviewDisplay(
             )}
           /> */}
 
-
           <FormField
             control={form.control}
             name="displaySummary"
@@ -282,7 +279,6 @@ export default function WidgetResourceOverviewDisplay(
             )}
           />
 
-
           <FormField
             control={form.control}
             name="summaryMaxLength"
@@ -322,9 +318,7 @@ export default function WidgetResourceOverviewDisplay(
             name="displayVote"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>
-                  Hoeveelheid stemmen weergeven
-                </FormLabel>
+								<FormLabel>Hoeveelheid stemmen weergeven</FormLabel>
                 {YesNoSelect(field, props)}
                 <FormMessage />
               </FormItem>
@@ -336,9 +330,7 @@ export default function WidgetResourceOverviewDisplay(
             name="displayStatusLabel"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>
-                  Status label weergeven
-                </FormLabel>
+								<FormLabel>Status label weergeven</FormLabel>
                 {YesNoSelect(field, props)}
                 <FormMessage />
               </FormItem>
@@ -350,9 +342,7 @@ export default function WidgetResourceOverviewDisplay(
             name="displayBudget"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>
-                  Budget in dialog weergeven
-                </FormLabel>
+								<FormLabel>Budget in dialog weergeven</FormLabel>
                 {YesNoSelect(field, props)}
                 <FormMessage />
               </FormItem>
@@ -364,9 +354,7 @@ export default function WidgetResourceOverviewDisplay(
             name="displayTags"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>
-                  Tags in dialog weergeven
-                </FormLabel>
+								<FormLabel>Tags in dialog weergeven</FormLabel>
                 {YesNoSelect(field, props)}
                 <FormMessage />
               </FormItem>
@@ -392,9 +380,7 @@ export default function WidgetResourceOverviewDisplay(
             name="displayDocuments"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>
-                  Geüploade documenten weergeven
-                </FormLabel>
+								<FormLabel>Geüploade documenten weergeven</FormLabel>
                 {YesNoSelect(field, props)}
                 <FormMessage />
               </FormItem>
@@ -432,7 +418,8 @@ export default function WidgetResourceOverviewDisplay(
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Welke beschrijving moet er boven de download knop(pen) komen?
+											Welke beschrijving moet er boven de download knop(pen)
+											komen?
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -484,19 +471,16 @@ export default function WidgetResourceOverviewDisplay(
                     field.onChange(value);
                     props.onFieldChanged(field.name, value);
                   }}
-                  value={field.value}>
+									value={field.value}
+								>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecteer een optie" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem
-                      value={'default'}>
-                      Standaard
-                    </SelectItem>
-                    <SelectItem
-                      value={'compact'}>
+										<SelectItem value={"default"}>Standaard</SelectItem>
+										<SelectItem value={"compact"}>
                       Compact (3 koloms)
                     </SelectItem>
                   </SelectContent>
@@ -505,16 +489,14 @@ export default function WidgetResourceOverviewDisplay(
               </FormItem>
             )}
           />
-          <div></div>
+					<div />
 
           <FormField
             control={form.control}
             name="applyText"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>
-                  Tekst voor het toepassen van de filters
-                </FormLabel>
+								<FormLabel>Tekst voor het toepassen van de filters</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -535,9 +517,7 @@ export default function WidgetResourceOverviewDisplay(
             name="resetText"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>
-                  Tekst voor het resetten van de filters
-                </FormLabel>
+								<FormLabel>Tekst voor het resetten van de filters</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -558,9 +538,7 @@ export default function WidgetResourceOverviewDisplay(
             name="displayLikeButton"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>
-                  Like button weergeven in de dialog
-                </FormLabel>
+								<FormLabel>Like button weergeven in de dialog</FormLabel>
                 {YesNoSelect(field, props)}
                 <FormMessage />
               </FormItem>
@@ -576,7 +554,8 @@ export default function WidgetResourceOverviewDisplay(
                   Moet de afbeelding in de dialog klikbaar zijn?
                 </FormLabel>
                 <FormDescription>
-                  Als je dit aanvinkt, wordt de afbeelding in de dialog klikbaar en wordt de afbeelding geopend in een nieuw tabblad.
+									Als je dit aanvinkt, wordt de afbeelding in de dialog klikbaar
+									en wordt de afbeelding geopend in een nieuw tabblad.
                 </FormDescription>
                 {YesNoSelect(field, props)}
                 <FormMessage />
