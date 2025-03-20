@@ -91,7 +91,7 @@ router
 	.put((req, res, next) => {
 		const action = req.results;
 
-		if (!(action && action.can && action.can("update")))
+		if (!action?.can?.("update"))
 			return next(new Error("You cannot update this action"));
 
 		action
@@ -108,7 +108,7 @@ router
 	.delete(auth.useReqUser)
 	.delete((req, res, next) => {
 		const result = req.results;
-		if (!(result && result.can && result.can("delete")))
+		if (!result?.can?.("delete"))
 			return next(new Error("You cannot delete this action"));
 
 		req.results

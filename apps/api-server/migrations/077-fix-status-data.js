@@ -22,7 +22,7 @@ module.exports = {
 				});
 				if (statuses.length) {
 					// check defaultStatus
-					if (!statuses.find((s) => s.id == defaultStatusId)) {
+					if (!statuses.find((s) => s.id === defaultStatusId)) {
 						defaultStatusId = statuses[0].id;
 						console.log(
 							`Let op: default status voor project ${project.name} is gezet op ${statuses[0].name} (${statuses[0].id})`,
@@ -44,7 +44,7 @@ module.exports = {
 				});
 				if (statuses.length) {
 					// check defaultStatus
-					if (!statuses.find((s) => s.id == defaultStatusId)) {
+					if (!statuses.find((s) => s.id === defaultStatusId)) {
 						defaultStatusId = statuses[0].id;
 						console.log(
 							`Let op: default status voor project ${project.name} is gezet op ${statuses[0].name} (${statuses[0].id})`,

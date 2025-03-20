@@ -22,7 +22,7 @@ router
 
 	// bestaat de project config
 	.all((req, res, next) => {
-		if (!(req.project && req.project.config && req.project.config.votes)) {
+		if (!req.project?.config?.votes) {
 			return next(
 				createError(403, "Project niet gevonden of niet geconfigureerd"),
 			);
@@ -42,7 +42,7 @@ router
 
 	// is er een geldige gebruiker
 	.all((req, res, next) => {
-		if (req.method == "GET") return next(); // nvt
+		if (req.method === "GET") return next(); // nvt
 
 		if (!req.user) {
 			return next(createError(401, "Geen gebruiker gevonden"));
@@ -91,7 +91,7 @@ router
 		}
 		const opinion = req.query.opinion;
 
-		if (opinion && (opinion == "yes" || opinion == "no")) {
+		if (opinion && (opinion === "yes" || opinion === "no")) {
 			where.opinion = opinion;
 		}
 
@@ -165,7 +165,7 @@ router
 			.then((found) => {
 				if (
 					req.project.config.votes.voteType !== "likes" &&
-					req.project.config.votes.withExisting == "error" &&
+					req.project.config.votes.withExisting === "error" &&
 					found &&
 					found.length
 				)
@@ -192,7 +192,7 @@ router
 		votes = votes.map((entry) => {
 			return {
 				resourceId: Number.parseInt(entry.resourceId, 10),
-				opinion: typeof entry.opinion == "string" ? entry.opinion : null,
+				opinion: typeof entry.opinion === "string" ? entry.opinion : null,
 				userId: req.user.id,
 				confirmed: false,
 				confirmReplacesVoteId: null,
@@ -202,12 +202,12 @@ router
 		});
 
 		// merge
-		if (req.project.config.votes.withExisting == "merge") {
+		if (req.project.config.votes.withExisting === "merge") {
 			// no double votes
 			try {
 				if (
 					req.existingVotes.find((newVote) =>
-						votes.find((oldVote) => oldVote.resourceId == newVote.resourceId),
+						votes.find((oldVote) => oldVote.resourceId === newVote.resourceId),
 					)
 				) {
 					const transaction = res.locals.transaction;
@@ -226,7 +226,7 @@ router
 					return {
 						resourceId: Number.parseInt(oldVote.resourceId, 10),
 						opinion:
-							typeof oldVote.opinion == "string" ? oldVote.opinion : null,
+							typeof oldVote.opinion === "string" ? oldVote.opinion : null,
 						userId: req.user.id,
 						confirmed: false,
 						confirmReplacesVoteId: null,
@@ -253,7 +253,7 @@ router
 			lock: true,
 		})
 			.then((found) => {
-				if (req.votes.length != found.length) {
+				if (req.votes.length !== found.length) {
 					console.log("req.votes", req.votes);
 					console.log("found", found);
 					console.log("req.body", req.body);
@@ -277,11 +277,11 @@ router
 	// validaties voor voteType=likes
 	.post((req, res, next) => {
 		const transaction = res.locals.transaction;
-		if (req.project.config.votes.voteType != "likes") return next();
+		if (req.project.config.votes.voteType !== "likes") return next();
 
 		if (
-			req.project.config.votes.voteType == "likes" &&
-			req.project.config.votes.requiredUserRole == "anonymous"
+			req.project.config.votes.voteType === "likes" &&
+			req.project.config.votes.requiredUserRole === "anonymous"
 		) {
 			req.votes.forEach((vote) => {
 				// check if votes exists for same opinion on the same IP within 5 minutes
@@ -328,7 +328,7 @@ router
 	// validaties voor voteType=count
 	.post((req, res, next) => {
 		const transaction = res.locals.transaction;
-		if (req.project.config.votes.voteType != "count") return next();
+		if (req.project.config.votes.voteType !== "count") return next();
 		if (
 			req.votes.length >= req.project.config.votes.minResources &&
 			req.votes.length <= req.project.config.votes.maxResources
@@ -341,19 +341,18 @@ router
 				.rollback()
 				.then(() => next(err))
 				.catch(() => next(err));
-		} else {
-			return next(err);
 		}
+		return next(err);
 	})
 
 	// validaties voor voteType=budgeting
 	.post((req, res, next) => {
 		const transaction = res.locals.transaction;
-		if (req.project.config.votes.voteType != "budgeting") return next();
+		if (req.project.config.votes.voteType !== "budgeting") return next();
 		let budget = 0;
 		req.votes.forEach((vote) => {
 			const resource = req.resources.find(
-				(resource) => resource.id == vote.resourceId,
+				(resource) => resource.id === vote.resourceId,
 			);
 			budget += resource.budget;
 		});
@@ -372,28 +371,25 @@ router
 					.rollback()
 					.then(() => next(err))
 					.catch(() => next(err));
-			} else {
-				return next(err);
 			}
-		} else {
-			return next();
+			return next(err);
 		}
+		return next();
 	})
 
 	// validaties voor voteType=countPerTag
 	.post((req, res, next) => {
 		const transaction = res.locals.transaction;
-		if (req.project.config.votes.voteType != "countPerTag") return next();
+		if (req.project.config.votes.voteType !== "countPerTag") return next();
 		const themes = req.project.config.votes.themes || [];
 		let totalNoOfVotes = 0;
 		req.votes.forEach((vote) => {
 			const resource = req.resources.find(
-				(resource) => resource.id == vote.resourceId,
+				(resource) => resource.id === vote.resourceId,
 			);
 			totalNoOfVotes += resource ? 1 : 0;
-			const themename =
-				resource && resource.extraData && resource.extraData.theme;
-			const theme = themes.find((theme) => theme.value == themename);
+			const themename = resource?.extraData?.theme;
+			const theme = themes.find((theme) => theme.value === themename);
 			if (theme) {
 				theme.noOf = theme.noOf || 0;
 				theme.noOf++;
@@ -419,31 +415,28 @@ router
 
 		if (isOk) {
 			return next();
-		} else {
-			const err = createError(400, "Count per thema klopt niet");
-			if (transaction) {
-				return transaction
-					.rollback()
-					.then(() => next(err))
-					.catch(() => next(err));
-			} else {
-				return next(err);
-			}
 		}
+		const err = createError(400, "Count per thema klopt niet");
+		if (transaction) {
+			return transaction
+				.rollback()
+				.then(() => next(err))
+				.catch(() => next(err));
+		}
+		return next(err);
 	})
 
 	// validaties voor voteType=budgetingPerTag
 	.post((req, res, next) => {
 		const transaction = res.locals.transaction;
-		if (req.project.config.votes.voteType != "budgetingPerTag") return next();
+		if (req.project.config.votes.voteType !== "budgetingPerTag") return next();
 		const themes = req.project.config.votes.themes || [];
 		req.votes.forEach((vote) => {
 			const resource = req.resources.find(
-				(resource) => resource.id == vote.resourceId,
+				(resource) => resource.id === vote.resourceId,
 			);
-			const themename =
-				resource && resource.extraData && resource.extraData.theme;
-			const theme = themes.find((theme) => theme.value == themename);
+			const themename = resource?.extraData?.theme;
+			const theme = themes.find((theme) => theme.value === themename);
 			if (theme) {
 				theme.budget = theme.budget || 0;
 				theme.budget += resource.budget;
@@ -458,17 +451,15 @@ router
 		});
 		if (isOk) {
 			return next();
-		} else {
-			const err = createError(400, "Budget klopt niet");
-			if (transaction) {
-				return transaction
-					.rollback()
-					.then(() => next(err))
-					.catch(() => next(err));
-			} else {
-				return next(err);
-			}
 		}
+		const err = createError(400, "Budget klopt niet");
+		if (transaction) {
+			return transaction
+				.rollback()
+				.then(() => next(err))
+				.catch(() => next(err));
+		}
+		return next(err);
 	})
 
 	.post((req, res, next) => {
@@ -480,11 +471,11 @@ router
 				req.votes.forEach((vote) => {
 					const existingVote = req.existingVotes
 						? req.existingVotes.find(
-								(entry) => entry.resourceId == vote.resourceId,
+								(entry) => entry.resourceId === vote.resourceId,
 							)
 						: false;
 					if (existingVote) {
-						if (existingVote.opinion == vote.opinion) {
+						if (existingVote.opinion === vote.opinion) {
 							actions.push({ action: "delete", vote: existingVote });
 						} else {
 							existingVote.opinion = vote.opinion;
@@ -557,7 +548,8 @@ router
 
 	.post((req, res, next) => {
 		const resourceIds = req.votes.map((entry) => entry.resourceId);
-		db.Vote.findAll({ // get existing votes for this user
+		db.Vote.findAll({
+			// get existing votes for this user
 			where: { userId: req.user.id, resourceId: resourceIds },
 		})
 			.then((found) => {
@@ -589,7 +581,7 @@ router
 router
 	.route("/:voteId(\\d+)")
 	.all((req, res, next) => {
-		var voteId = req.params.voteId;
+		const voteId = req.params.voteId;
 
 		db.Vote.findOne({
 			where: { id: voteId },
@@ -605,7 +597,7 @@ router
 	.delete(auth.useReqUser)
 	.delete((req, res, next) => {
 		const vote = req.results;
-		if (!(vote && vote.can && vote.can("delete")))
+		if (!vote?.can?.("delete"))
 			return next(new Error("You cannot delete this vote"));
 
 		vote
@@ -619,7 +611,7 @@ router
 router
 	.route("/:voteId(\\d+)/toggle")
 	.all((req, res, next) => {
-		var voteId = req.params.voteId;
+		const voteId = req.params.voteId;
 
 		db.Vote.findOne({
 			where: { id: voteId },
@@ -634,8 +626,8 @@ router
 	})
 	.all(auth.can("Vote", "toggle"))
 	.get((req, res, next) => {
-		var resourceId = req.params.resourceId;
-		var vote = req.vote;
+		const resourceId = req.params.resourceId;
+		const vote = req.vote;
 
 		vote
 			.toggle()

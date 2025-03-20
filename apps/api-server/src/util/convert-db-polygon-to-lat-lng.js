@@ -10,9 +10,8 @@ module.exports = (polygon, latKey = 0, longKey = 1) => {
 				return { lat: x[latKey], lng: x[longKey] };
 			});
 		});
-	} else {
-		return polygon.coordinates[0].map((x) => {
-			return { lat: x[latKey], lng: x[longKey] };
-		});
 	}
+	return polygon.coordinates[0].map((x) => {
+		return { lat: x[latKey], lng: x[longKey] };
+	});
 };

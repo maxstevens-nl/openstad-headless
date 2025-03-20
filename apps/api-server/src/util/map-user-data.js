@@ -1,7 +1,7 @@
 const db = require("../db");
 
 module.exports = function mapUserData({ map = {}, user = {} }) {
-	if (typeof map == "string") {
+	if (typeof map === "string") {
 		try {
 			map = JSON.parse(map);
 		} catch (err) {
@@ -9,7 +9,7 @@ module.exports = function mapUserData({ map = {}, user = {} }) {
 		}
 	}
 
-	if (typeof map == "function") {
+	if (typeof map === "function") {
 		return map(user);
 	}
 
@@ -50,14 +50,14 @@ module.exports = function mapUserData({ map = {}, user = {} }) {
 
 		if (!propMap) return user[key];
 
-		if (typeof propMap == "string") {
+		if (typeof propMap === "string") {
 			try {
 				// function?
 				propMap = eval(propMap);
 			} catch (err) {}
 		}
 
-		if (typeof propMap == "function") {
+		if (typeof propMap === "function") {
 			return propMap(user, key);
 		}
 

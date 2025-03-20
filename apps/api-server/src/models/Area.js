@@ -3,7 +3,7 @@ const convertDbPolygonToLatLng =
 const { formatPolygonToGeoJson } = require("../util/geo-json-formatter");
 
 module.exports = (db, sequelize, DataTypes) => {
-	var Area = sequelize.define("area", {
+	const Area = sequelize.define("area", {
 		name: {
 			type: DataTypes.STRING,
 			allowNull: false,

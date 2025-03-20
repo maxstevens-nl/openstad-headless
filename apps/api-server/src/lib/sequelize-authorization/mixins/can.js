@@ -3,12 +3,12 @@ const hasRole = require("../lib/hasRole");
 module.exports = function can(action, user, self) {
 	self = self || this;
 
-	if (!user) user = self.auth && self.auth.user;
+	if (!user) user = self.auth?.user;
 	if (!user || !user.role) user = { role: "all" };
 
 	// use function defined on model
-	const functionName = "can" + action[0].toUpperCase() + action.slice(1);
-	if (self.auth && typeof self.auth[functionName] == "function")
+	const functionName = `can${action[0].toUpperCase()}${action.slice(1)}`;
+	if (self.auth && typeof self.auth[functionName] === "function")
 		return self.auth[functionName](user, self);
 
 	let userId = self.userId;
@@ -20,23 +20,23 @@ module.exports = function can(action, user, self) {
 	// or fallback to default
 	switch (action) {
 		case "list":
-			return hasRole(user, self.auth && self.auth.listableBy, userId);
+			return hasRole(user, self.auth?.listableBy, userId);
 			break;
 
 		case "create":
-			return hasRole(user, self.auth && self.auth.createableBy, userId);
+			return hasRole(user, self.auth?.createableBy, userId);
 			break;
 
 		case "view":
-			return hasRole(user, self.auth && self.auth.viewableBy, userId);
+			return hasRole(user, self.auth?.viewableBy, userId);
 			break;
 
 		case "update":
-			return hasRole(user, self.auth && self.auth.updateableBy, userId);
+			return hasRole(user, self.auth?.updateableBy, userId);
 			break;
 
 		case "delete":
-			return hasRole(user, self.auth && self.auth.deleteableBy, userId);
+			return hasRole(user, self.auth?.deleteableBy, userId);
 			break;
 
 		default:

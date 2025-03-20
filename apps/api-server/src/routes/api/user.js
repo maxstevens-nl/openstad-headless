@@ -31,7 +31,7 @@ const filterBody = (req, res, next) => {
 	];
 
 	keys.forEach((key) => {
-		if (typeof req.body[key] != "undefined") {
+		if (typeof req.body[key] !== "undefined") {
 			let value = req.body[key];
 			value = typeof value === "string" ? value.trim() : value;
 			data[key] = value;
@@ -75,10 +75,9 @@ router
 	.all("*", (req, res, next) => {
 		if (req.project) {
 			return next();
-		} else {
-			if (req.method == "GET" && hasRole(req.user, "admin")) {
-				return next();
-			}
+		}
+		if (req.method === "GET" && hasRole(req.user, "admin")) {
+			return next();
 		}
 		return next(new Error("Users: project not found"));
 	});
@@ -88,7 +87,7 @@ router
 	// list users
 	// ----------
 	.get((req, res, next) => {
-		const role = req.user.role == "superuser" ? "admin" : req.user.role;
+		const role = req.user.role === "superuser" ? "admin" : req.user.role;
 		req.scope.push({ method: ["onlyListable", req.user.id, role] });
 		return next();
 	})
@@ -127,13 +126,7 @@ router
 	})
 	.post((req, res, next) => {
 		// check config
-		if (
-			!(
-				req.project.config &&
-				req.project.config.users &&
-				req.project.config.users.canCreateNewUsers
-			)
-		)
+		if (!req.project.config?.users?.canCreateNewUsers)
 			return next(createError(401, "Gebruikers mogen niet aangemaakt worden"));
 		return next();
 	})
@@ -152,7 +145,7 @@ router
 		if (
 			!req.body.idpUser?.identifier ||
 			!req.body.idpUser.provider ||
-			req.body.idpUser.provider != req.authConfig.provider
+			req.body.idpUser.provider !== req.authConfig.provider
 		)
 			return next(createError(400, "User not found"));
 		const referenceUser = await db.User.findOne({
@@ -183,7 +176,7 @@ router
 		// TODO: other types of users
 		if (!req.body.email)
 			return next(createError(401, "E-mail is a required field"));
-		const email = req.body && req.body.email;
+		const email = req.body?.email;
 		req.adapter.service
 			.fetchUserData({ authConfig: req.authConfig, email })
 			.then((json) => {
@@ -224,9 +217,8 @@ router
 				if (found) {
 					console.log("user already exists", found);
 					throw new Error("User already exists");
-				} else {
-					next();
 				}
+				next();
 			})
 			.catch(next);
 	})
@@ -257,7 +249,7 @@ router
 			.catch((error) => {
 				// todo: dit komt uit de oude routes; maak het generieker
 				if (
-					typeof error == "object" &&
+					typeof error === "object" &&
 					error instanceof Sequelize.ValidationError
 				) {
 					const errors = [];
@@ -323,12 +315,12 @@ router
 	.put(async (req, res, next) => {
 		// if body contains user ids then anonymize only those
 		try {
-			let ids = req.body && req.body.onlyUserIds;
+			let ids = req.body?.onlyUserIds;
 			if (!ids) return next();
 			if (!Array.isArray(ids)) ids = [ids];
 			ids = ids
 				.map((id) => Number.parseInt(id))
-				.filter((id) => typeof id == "number");
+				.filter((id) => typeof id === "number");
 			if (ids.length) req.onlyUserIds = ids;
 		} catch (err) {
 			return next(err);
@@ -338,19 +330,21 @@ router
 	.put(async (req, res, next) => {
 		// if body contains project ids then anonymize only the users for those projects
 		try {
-			let ids = req.body && req.body.onlyProjectIds;
+			let ids = req.body?.onlyProjectIds;
 			if (!ids) return next();
 			if (!Array.isArray(ids)) ids = [ids];
 			ids = ids
 				.map((id) => Number.parseInt(id))
-				.filter((id) => typeof id == "number");
+				.filter((id) => typeof id === "number");
 			if (ids.length) {
 				const users = [req.targetUser, ...req.linkedUsers];
 				const xx = ids.map((projectId) =>
-					users.find((user) => projectId == user.projectId),
+					users.find((user) => projectId === user.projectId),
 				);
 				const userIds = ids
-					.map((projectId) => users.find((user) => projectId == user.projectId))
+					.map((projectId) =>
+						users.find((user) => projectId === user.projectId),
+					)
 					.filter((user) => !!user)
 					.map((user) => user.id);
 				req.onlyUserIds = (req.onlyUserIds || []).concat(userIds);
@@ -365,13 +359,7 @@ router
 	})
 	.put(async (req, res, next) => {
 		let result;
-		if (
-			!(
-				req.targetUser &&
-				req.targetUser.can &&
-				req.targetUser.can("update", req.user)
-			)
-		)
+		if (!req.targetUser?.can?.("update", req.user))
 			return next(new Error("You cannot update this User"));
 		if (req.onlyUserIds && !req.onlyUserIds.includes(req.targetUser.id)) {
 			req.results = {
@@ -384,7 +372,7 @@ router
 			return next();
 		}
 		try {
-			if (req.params.willOrDo == "do") {
+			if (req.params.willOrDo === "do") {
 				result = await req.targetUser.doAnonymize();
 			} else {
 				result = await req.targetUser.willAnonymize();
@@ -406,9 +394,9 @@ router
 			for (const user of req.linkedUsers) {
 				if (!req.onlyUserIds || req.onlyUserIds.includes(user.id)) {
 					let result;
-					if (!(user && user.can && user.can("update", req.user)))
+					if (!user?.can?.("update", req.user))
 						return next(new Error("You cannot update this User"));
-					if (req.params.willOrDo == "do") {
+					if (req.params.willOrDo === "do") {
 						result = await user.doAnonymize();
 					} else {
 						result = await user.willAnonymize();
@@ -451,7 +439,7 @@ router
 			.catch(next);
 	})
 	.put(async (req, res, next) => {
-		if (req.params.willOrDo != "do") return next();
+		if (req.params.willOrDo !== "do") return next();
 		if (!req.remainingUsers || req.remainingUsers.length > 0) return next();
 
 		// no api users left for this oauth user, so remove the oauth user
@@ -477,11 +465,10 @@ router
 	.put((req, res, next) => {
 		// customized version of auth.useReqUser
 		Object.keys(req.results).forEach((which) => {
-			req.results[which] &&
-				req.results[which].forEach((result) => {
-					result.auth = result.auth || {};
-					result.auth.user = req.user;
-				});
+			req.results[which]?.forEach((result) => {
+				result.auth = result.auth || {};
+				result.auth.user = req.user;
+			});
 		});
 		return next();
 	})
@@ -521,7 +508,7 @@ router
 	.put(auth.useReqUser)
 	.put(filterBody)
 	.put((req, res, next) => {
-		if (!(req.results && req.results.can && req.results.can("update")))
+		if (!req.results?.can?.("update"))
 			throw createError(400, "You cannot update this User");
 		return next();
 	})
@@ -541,18 +528,18 @@ router
 		try {
 			if (user.idpUser?.identifier) {
 				let updatedUserData = merge(true, userData, {
-					id: user.idpUser && user.idpUser.identifier,
+					id: user.idpUser?.identifier,
 				});
 				const updatedUserDataForProject = merge.recursive({}, updatedUserData);
 
 				if (
-					req.results.idpUser.provider == req.authConfig.provider &&
+					req.results.idpUser.provider === req.authConfig.provider &&
 					req.adapter.service.updateUser
 				) {
 					updatedUserData = await req.adapter.service.updateUser({
 						authConfig: req.authConfig,
 						userData: merge(true, userData, {
-							id: user.idpUser && user.idpUser.identifier,
+							id: user.idpUser?.identifier,
 						}),
 					});
 				}
@@ -580,7 +567,7 @@ router
 				apiUsers.forEach((apiUser, i) => {
 					return new Promise((resolve, reject) => {
 						const data =
-							apiUser.projectId == req.params.projectId
+							apiUser.projectId === req.params.projectId
 								? updatedUserDataForProject
 								: synchronizedUpdatedUserData;
 
@@ -628,7 +615,7 @@ router
 	.delete(async (req, res, next) => {
 		const user = req.results;
 
-		if (!(user && user.can && user.can("delete")))
+		if (!user?.can?.("delete"))
 			return next(new Error("You cannot delete this User"));
 
 		/**
@@ -638,7 +625,7 @@ router
 		 */
 		const userForAllProjects = await db.User.findAll({
 			where: {
-				idpUser: { identifier: user.idpUser && user.idpUser.identifier },
+				idpUser: { identifier: user.idpUser?.identifier },
 			},
 		});
 		if (userForAllProjects.length <= 1) {

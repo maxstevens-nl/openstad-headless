@@ -23,7 +23,7 @@ router
 			});
 		}
 
-		if (req.params && req.params.projectId) {
+		if (req.params?.projectId) {
 			req.scope.push({ method: ["forProjectId", req.params.projectId] });
 		}
 
@@ -116,7 +116,7 @@ router
 				},
 			};
 
-			if (!!userEmailAddress) {
+			if (userEmailAddress) {
 				notificationData.to = userEmailAddress;
 			} else {
 				notificationData.data.userId = req?.user?.id || 0;
@@ -135,7 +135,7 @@ router
 		"/:submissionId([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})",
 	)
 	.all((req, res, next) => {
-		var submissionId = req.params.submissionId;
+		const submissionId = req.params.submissionId;
 
 		req.scope = ["defaultScope"];
 		req.scope.push({ method: ["forProjectId", req.params.projectId] });
@@ -166,8 +166,8 @@ router
 	// ---------------
 	.put(auth.useReqUser)
 	.put((req, res, next) => {
-		var submission = req.results;
-		if (!(submission && submission.can && submission.can("update")))
+		const submission = req.results;
+		if (!submission?.can?.("update"))
 			return next(new Error("You cannot update this submission"));
 		submission
 			.update(req.body)

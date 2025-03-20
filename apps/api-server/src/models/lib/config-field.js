@@ -5,7 +5,7 @@ const configOptions = {
 
 function parseConfig(which, config) {
 	try {
-		if (typeof config == "string") {
+		if (typeof config === "string") {
 			config = JSON.parse(config);
 		}
 	} catch (err) {
@@ -24,14 +24,14 @@ function parseConfig(which, config) {
 			// TODO: 'arrayOfObjects' met een subset
 
 			// objects in objects
-			if (options[key].type == "object" && options[key].subset) {
+			if (options[key].type === "object" && options[key].subset) {
 				const temp = checkValues(value[key] || {}, options[key].subset); // recusion
 				return (newValue[key] = Object.keys(temp) ? temp : undefined);
 			}
 
 			// objects in objects
 			if (
-				options[key].type == "objectsInObject" &&
+				options[key].type === "objectsInObject" &&
 				options[key].subset &&
 				value[key]
 			) {
@@ -52,7 +52,7 @@ function parseConfig(which, config) {
 			}
 
 			// TODO: in progress
-			if (typeof value[key] != "undefined" && value[key] != null) {
+			if (typeof value[key] !== "undefined" && value[key] != null) {
 				if (
 					options[key].type &&
 					options[key].type === "int" &&
@@ -120,7 +120,7 @@ function parseConfig(which, config) {
 					options[key].type &&
 					options[key].type === "enum" &&
 					options[key].values &&
-					options[key].values.indexOf(value[key]) == -1
+					options[key].values.indexOf(value[key]) === -1
 				) {
 					throw new Error(`project.config: ${key} has an invalid value`);
 				}
@@ -128,7 +128,7 @@ function parseConfig(which, config) {
 			}
 
 			// default?
-			if (typeof options[key].default != "undefined") {
+			if (typeof options[key].default !== "undefined") {
 				return (newValue[key] = options[key].default);
 			}
 
@@ -139,7 +139,7 @@ function parseConfig(which, config) {
 
 			// allowNull?
 			if (!newValue[key] && options[key].allowNull === false) {
-				throw new Error(`project.config: $key must be defined`);
+				throw new Error("project.config: $key must be defined");
 			}
 
 			return newValue[key];
@@ -148,7 +148,7 @@ function parseConfig(which, config) {
 		// voor nu mag je er in stoppen wat je wilt; uiteindelijk moet dat zo gaan werken dat je alleen bestaande opties mag gebruiken
 		// dit blok kan dan weg
 		Object.keys(value).forEach((key) => {
-			if (typeof newValue[key] == "undefined") {
+			if (typeof newValue[key] === "undefined") {
 				newValue[key] = value[key];
 			}
 		});

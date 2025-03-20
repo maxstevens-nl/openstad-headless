@@ -26,11 +26,7 @@ router
 	// count votes
 	// -----------
 	.get((req, res, next) => {
-		let isViewable =
-			req.project &&
-			req.project.config &&
-			req.project.config.votes &&
-			req.project.config.votes.isViewable;
+		let isViewable = req.project?.config?.votes?.isViewable;
 		isViewable = isViewable || hasRole(req.user, "moderator");
 		if (!isViewable)
 			return next(createError(401, "Je kunt deze stats niet bekijken"));
@@ -49,7 +45,7 @@ router
 			.query(query, bindvars)
 			.then(([rows, fields]) => {
 				console.log(rows);
-				const counted = (rows && rows[0] && rows[0].counted) || -1;
+				const counted = rows?.[0]?.counted || -1;
 				res.json({ count: counted });
 			})
 			.catch((err) => {
@@ -72,7 +68,7 @@ router
 			.query(query, bindvars)
 			.then(([rows, fields]) => {
 				console.log(rows);
-				const counted = (rows && rows.length) || -1;
+				const counted = rows?.length || -1;
 				res.json({ count: counted });
 			})
 			.catch((err) => {

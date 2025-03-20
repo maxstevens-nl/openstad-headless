@@ -7,7 +7,7 @@ const authSettings = require("../util/auth-settings");
 const { getSafeConfig } = require("./lib/safe-config");
 
 module.exports = (db, sequelize, DataTypes) => {
-	var Project = sequelize.define(
+	const Project = sequelize.define(
 		"project",
 		{
 			name: {
@@ -37,7 +37,7 @@ module.exports = (db, sequelize, DataTypes) => {
 					return configField.parseConfig("projectConfig", value);
 				},
 				set: function (value) {
-					var currentconfig = this.getDataValue("config");
+					const currentconfig = this.getDataValue("config");
 					value = value || {};
 					value = merge.recursive(true, currentconfig, value);
 					this.setDataValue(
@@ -70,7 +70,7 @@ module.exports = (db, sequelize, DataTypes) => {
 					return configField.parseConfig("projectEmailConfig", value);
 				},
 				set: function (value) {
-					var currentconfig = this.getDataValue("emailConfig");
+					const currentconfig = this.getDataValue("emailConfig");
 					value = value || {};
 					value = merge.recursive(true, currentconfig, value);
 					this.setDataValue(
@@ -142,7 +142,7 @@ module.exports = (db, sequelize, DataTypes) => {
 						// on update of projectHasEnded also update isActive of all the parts
 						if (
 							current &&
-							typeof instance.config.project.projectHasEnded != "undefined" &&
+							typeof instance.config.project.projectHasEnded !== "undefined" &&
 							current.config.project.projectHasEnded !==
 								instance.config.project.projectHasEnded
 						) {
@@ -177,13 +177,7 @@ module.exports = (db, sequelize, DataTypes) => {
 
 				beforeDestroy: async (instance, options) => {
 					// project has ended
-					if (
-						!(
-							instance &&
-							instance.config &&
-							instance.config.project.projectHasEnded
-						)
-					)
+					if (!instance?.config?.project.projectHasEnded)
 						throw Error(
 							"Cannot delete an active project - first set the project-has-ended parameter",
 						);
@@ -239,11 +233,7 @@ module.exports = (db, sequelize, DataTypes) => {
 
 	async function beforeUpdateOrCreate(instance, options) {
 		// If a URL is provided, and no uniqueId is set, generate one
-		if (
-			instance &&
-			instance.url &&
-			(!instance.config || !instance.config.uniqueId)
-		) {
+		if (instance?.url && (!instance.config || !instance.config.uniqueId)) {
 			const uniqueId =
 				Math.round(new Date().getTime() / 1000) +
 				instance.url.replace(/\W/g, "").slice(0, 40);
@@ -321,7 +311,7 @@ module.exports = (db, sequelize, DataTypes) => {
 
 			// extract externalUserIds
 			result.externalUserIds = result.users
-				.filter((user) => user.idpUser && user.idpUser.identifier)
+				.filter((user) => user.idpUser?.identifier)
 				.map((user) => user.idpUser.identifier);
 		} catch (err) {
 			console.log(err);
@@ -359,14 +349,14 @@ module.exports = (db, sequelize, DataTypes) => {
 				const users = await db.User.findAll({
 					where: { idpUser: { identifier: externalUserId } },
 				});
-				if (users.length == 0) {
+				if (users.length === 0) {
 					// no api users left for this oauth user; let the oauth server know we dont need this user anymore
 					const authConfig = await authSettings.config({
 						project: this,
 						useAuth: providers[externalUserId],
 					});
 					const adapter = await authSettings.adapter({ authConfig });
-					if (adapter && adapter.service && adapter.service.deleteUser) {
+					if (adapter?.service?.deleteUser) {
 						// TODO: niet getest
 						await adapter.service.deleteUser({
 							authConfig,
@@ -384,7 +374,7 @@ module.exports = (db, sequelize, DataTypes) => {
 	Project.prototype.isVoteActive = function () {
 		let voteIsActive = this.config.votes.isActive;
 		if (
-			(voteIsActive == null || typeof voteIsActive == "undefined") &&
+			(voteIsActive == null || typeof voteIsActive === "undefined") &&
 			this.config.votes.isActiveFrom &&
 			this.config.votes.isActiveTo
 		) {
@@ -403,7 +393,7 @@ module.exports = (db, sequelize, DataTypes) => {
 		deleteableBy: "admin",
 		canAnonymizeAllUsers: function (user, self) {
 			self = self || this;
-			if (!user) user = self.auth && self.auth.user;
+			if (!user) user = self.auth?.user;
 			if (!user || !user.role) user = { role: "all" };
 			const isValid = userHasRole(user, "admin", self.id);
 			return isValid;

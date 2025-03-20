@@ -1,4 +1,4 @@
-const fs = require('fs').promises;
+const fs = require('node:fs').promises;
 
 const removeProtocol = (url) => {
   return url ? url.replace('http://', '').replace('https://', '').replace(/\/$/, "") : '';
@@ -12,7 +12,7 @@ module.exports = async function seed(config, db) {
     const apiDomain = process.env.API_DOMAIN || removeProtocol(process.env.API_URL) || '';
     allowedDomains.push(apiDomain);
     const apiDomainWithoutPortnumber = apiDomain.replace(/:\d+/, '');
-    if (apiDomain != apiDomainWithoutPortnumber) allowedDomains.push(apiDomainWithoutPortnumber);
+    if (apiDomain !== apiDomainWithoutPortnumber) allowedDomains.push(apiDomainWithoutPortnumber);
 
     console.log('    add plannen insturen project');
     let project = await db.Project.create({

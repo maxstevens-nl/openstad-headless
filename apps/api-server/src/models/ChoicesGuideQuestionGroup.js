@@ -54,7 +54,7 @@ module.exports = (db, sequelize, DataTypes) => {
 				get: function () {
 					let value = this.getDataValue("images");
 					try {
-						if (typeof value == "string") {
+						if (typeof value === "string") {
 							value = JSON.parse(value);
 						}
 					} catch (err) {}
@@ -62,7 +62,7 @@ module.exports = (db, sequelize, DataTypes) => {
 				},
 				set: function (value) {
 					try {
-						if (typeof value == "string") {
+						if (typeof value === "string") {
 							value = JSON.parse(value);
 						}
 					} catch (err) {}

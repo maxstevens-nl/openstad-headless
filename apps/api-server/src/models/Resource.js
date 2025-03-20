@@ -1,17 +1,16 @@
 const Sequelize = require("sequelize");
 const { Op } = require("sequelize");
 
-const co = require("co"),
-	config = require("config"),
-	moment = require("moment-timezone"),
-	pick = require("lodash/pick");
+const co = require("co");
+const config = require("config");
+const moment = require("moment-timezone");
+const pick = require("lodash/pick");
 
 const sanitize = require("../util/sanitize");
 
 const merge = require("merge");
 
-const commentVoteThreshold =
-	config.resources && config.resources.commentVoteThreshold;
+const commentVoteThreshold = config.resources?.commentVoteThreshold;
 const userHasRole = require("../lib/sequelize-authorization/lib/hasRole");
 const roles = require("../lib/sequelize-authorization/lib/roles");
 const getExtraDataConfig = require("../lib/sequelize-authorization/lib/getExtraDataConfig");
@@ -34,7 +33,7 @@ function hideEmailsForNormalUsers(comments) {
 }
 
 module.exports = function (db, sequelize, DataTypes) {
-	var Resource = sequelize.define(
+	const Resource = sequelize.define(
 		"resource",
 		{
 			projectId: {
@@ -43,7 +42,7 @@ module.exports = function (db, sequelize, DataTypes) {
 					updateableBy: "editor",
 				},
 				defaultValue:
-					config.projectId && typeof config.projectId == "number"
+					config.projectId && typeof config.projectId === "number"
 						? config.projectId
 						: 0,
 			},
@@ -73,7 +72,7 @@ module.exports = function (db, sequelize, DataTypes) {
 			startDateHumanized: {
 				type: DataTypes.VIRTUAL,
 				get: function () {
-					var date = this.getDataValue("startDate");
+					const date = this.getDataValue("startDate");
 					try {
 						if (!date) return "Onbekende datum";
 						return moment(date).format("LLL");
@@ -115,16 +114,8 @@ module.exports = function (db, sequelize, DataTypes) {
 				validate: {
 					textLength(value) {
 						const len = sanitize.title(value.trim()).length;
-						const titleMinLength =
-							(this.config &&
-								this.config.resources &&
-								this.config.resources.titleMinLength) ||
-							10;
-						const titleMaxLength =
-							(this.config &&
-								this.config.resources &&
-								this.config.resources.titleMaxLength) ||
-							50;
+						const titleMinLength = this.config?.resources?.titleMinLength || 10;
+						const titleMaxLength = this.config?.resources?.titleMaxLength || 50;
 						if (len < titleMinLength || len > titleMaxLength)
 							throw new Error(
 								`Titel moet tussen ${titleMinLength} en ${titleMaxLength} tekens zijn`,
@@ -144,15 +135,9 @@ module.exports = function (db, sequelize, DataTypes) {
 						// We need to undo the sanitization before we can check the length
 						const len = htmlToText.fromString(value).length;
 						const summaryMinLength =
-							(this.config &&
-								this.config.resources &&
-								this.config.resources.summaryMinLength) ||
-							20;
+							this.config?.resources?.summaryMinLength || 20;
 						const summaryMaxLength =
-							(this.config &&
-								this.config.resources &&
-								this.config.resources.summaryMaxLength) ||
-							140;
+							this.config?.resources?.summaryMaxLength || 140;
 						if (
 							this.publishDate &&
 							(len < summaryMinLength || len > summaryMaxLength)
@@ -174,15 +159,9 @@ module.exports = function (db, sequelize, DataTypes) {
 					textLength(value) {
 						const len = sanitize.summary(value.trim()).length;
 						const descriptionMinLength =
-							(this.config &&
-								this.config.resources &&
-								this.config.resources.descriptionMinLength) ||
-							140;
+							this.config?.resources?.descriptionMinLength || 140;
 						const descriptionMaxLength =
-							(this.config &&
-								this.config.resources &&
-								this.config.resources.descriptionMaxLength) ||
-							5000;
+							this.config?.resources?.descriptionMaxLength || 5000;
 						if (
 							this.publishDate &&
 							(len < descriptionMinLength || len > descriptionMaxLength)
@@ -226,11 +205,7 @@ module.exports = function (db, sequelize, DataTypes) {
 
 			location: {
 				type: DataTypes.JSON,
-				allowNull: !(
-					config.resources &&
-					config.resources.location &&
-					config.resources.location.isMandatory
-				),
+				allowNull: !config.resources?.location?.isMandatory,
 			},
 
 			modBreak: {
@@ -267,7 +242,7 @@ module.exports = function (db, sequelize, DataTypes) {
 			modBreakDateHumanized: {
 				type: DataTypes.VIRTUAL,
 				get: function () {
-					var date = this.getDataValue("modBreakDate");
+					const date = this.getDataValue("modBreakDate");
 					try {
 						if (!date) return undefined;
 						return moment(date).format("LLL");
@@ -280,13 +255,10 @@ module.exports = function (db, sequelize, DataTypes) {
 			progress: {
 				type: DataTypes.VIRTUAL,
 				get: function () {
-					var minimumYesVotes =
-						(this.project &&
-							this.project.config &&
-							this.project.config.resources &&
-							this.project.config.resources.minimumYesVotes) ||
+					const minimumYesVotes =
+						this.project?.config?.resources?.minimumYesVotes ||
 						config.get("resources.minimumYesVotes");
-					var yes = this.getDataValue("yes");
+					const yes = this.getDataValue("yes");
 					return yes !== undefined
 						? Number((Math.min(1, yes / minimumYesVotes) * 100).toFixed(2))
 						: undefined;
@@ -296,7 +268,7 @@ module.exports = function (db, sequelize, DataTypes) {
 			createDateHumanized: {
 				type: DataTypes.VIRTUAL,
 				get: function () {
-					var date = this.getDataValue("createdAt");
+					const date = this.getDataValue("createdAt");
 					try {
 						if (!date) return "Onbekende datum";
 						return moment(date).format("LLL");
@@ -344,10 +316,7 @@ module.exports = function (db, sequelize, DataTypes) {
 					const value = this.extraData || {};
 					const validated = {};
 
-					const configExtraData =
-						this.config &&
-						this.config.resources &&
-						this.config.resources.extraData;
+					const configExtraData = this.config?.resources?.extraData;
 
 					function checkValue(value, config) {
 						if (config) {
@@ -357,8 +326,8 @@ module.exports = function (db, sequelize, DataTypes) {
 
 								// recursion on sub objects
 								if (
-									typeof value[key] == "object" &&
-									config[key].type == "object"
+									typeof value[key] === "object" &&
+									config[key].type === "object"
 								) {
 									if (config[key].subset) {
 										checkValue(value[key], config[key].subset);
@@ -379,7 +348,7 @@ module.exports = function (db, sequelize, DataTypes) {
 								if (value[key]) {
 									switch (config[key].type) {
 										case "boolean":
-											if (typeof value[key] != "boolean") {
+											if (typeof value[key] !== "boolean") {
 												error = `De waarde van ${key} is geen boolean`;
 											}
 											break;
@@ -391,13 +360,13 @@ module.exports = function (db, sequelize, DataTypes) {
 											break;
 
 										case "string":
-											if (typeof value[key] != "string") {
+											if (typeof value[key] !== "string") {
 												error = `De waarde van ${key} is geen string`;
 											}
 											break;
 
 										case "object":
-											if (typeof value[key] != "object") {
+											if (typeof value[key] !== "object") {
 												error = `De waarde van ${key} is geen object`;
 											}
 											break;
@@ -413,7 +382,7 @@ module.exports = function (db, sequelize, DataTypes) {
 											break;
 
 										case "enum":
-											if (config[key].values.indexOf(value[key]) == -1) {
+											if (config[key].values.indexOf(value[key]) === -1) {
 												error = `Ongeldige waarde voor ${key}`;
 											}
 											break;
@@ -447,7 +416,7 @@ module.exports = function (db, sequelize, DataTypes) {
 
 	Resource.scopes = function scopes() {
 		function voteCount(opinion) {
-			if (config.votes && config.votes.confirmationRequired) {
+			if (config.votes?.confirmationRequired) {
 				return [
 					sequelize.literal(`
 				(SELECT
@@ -465,9 +434,9 @@ module.exports = function (db, sequelize, DataTypes) {
 			`),
 					opinion,
 				];
-			} else {
-				return [
-					sequelize.literal(`
+			}
+			return [
+				sequelize.literal(`
 				(SELECT
 					COUNT(*)
 				FROM
@@ -480,9 +449,8 @@ module.exports = function (db, sequelize, DataTypes) {
 					v.resourceId     = resource.id AND
 					v.opinion    = "${opinion}")
 			`),
-					opinion,
-				];
-			}
+				opinion,
+			];
 		}
 
 		function commentCount(fieldName) {
@@ -552,18 +520,17 @@ module.exports = function (db, sequelize, DataTypes) {
 							],
 						},
 					};
-				} else {
-					return {
-						where: {
-							[Op.or]: [
-								{ viewableByRole: "all" },
-								{ viewableByRole: null },
-								{ viewableByRole: roles[userRole] || "" },
-							],
-							[Op.not]: [{ publishDate: null }],
-						},
-					};
 				}
+				return {
+					where: {
+						[Op.or]: [
+							{ viewableByRole: "all" },
+							{ viewableByRole: null },
+							{ viewableByRole: roles[userRole] || "" },
+						],
+						[Op.not]: [{ publishDate: null }],
+					},
+				};
 			},
 
 			api: {},
@@ -895,11 +862,10 @@ module.exports = function (db, sequelize, DataTypes) {
 		updateableBy: ["admin", "editor", "owner", "moderator"],
 		deleteableBy: ["admin", "editor", "owner", "moderator"],
 		canView: (user, self) => {
-			if (self && self.viewableByRole && self.viewableByRole != "all") {
+			if (self?.viewableByRole && self.viewableByRole !== "all") {
 				return userHasRole(user, [self.viewableByRole, "owner"], self.userId);
-			} else {
-				return true;
 			}
+			return true;
 		},
 		canVote: (user, self) => {
 			// TODO: dit wordt niet gebruikt omdat de logica helemaal in de route zit. Maar hier zou dus netter zijn.
@@ -1002,10 +968,10 @@ module.exports = function (db, sequelize, DataTypes) {
 
 		// count comments and votes
 		const canEditAfterFirstLikeOrComment =
-			(projectConfig && projectConfig.canEditAfterFirstLikeOrComment) || false;
+			projectConfig?.canEditAfterFirstLikeOrComment || false;
 		if (
 			!canEditAfterFirstLikeOrComment &&
-			!userHasRole(instance.auth && instance.auth.user, "moderator")
+			!userHasRole(instance.auth?.user, "moderator")
 		) {
 			const firstLikeSubmitted = await db.Vote.count({
 				where: { resourceId: instance.id },

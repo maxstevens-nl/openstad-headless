@@ -59,12 +59,11 @@ const addMissingDays = (results) => {
 
 		newResults.push({
 			date: formattedDate,
-			counted:
-				resultForDate && resultForDate.counted ? resultForDate.counted : 0,
+			counted: resultForDate?.counted ? resultForDate.counted : 0,
 		});
 
 		// set the next day as the start date so we keep the while going untill the last day
-		var newDate = start.setDate(start.getDate() + 1);
+		const newDate = start.setDate(start.getDate() + 1);
 		start = new Date(newDate);
 	}
 
@@ -88,9 +87,8 @@ router
 
 		if (isViewable) {
 			return next();
-		} else {
-			return next(createError(401, "Je kunt deze statistieken niet bekijken"));
 		}
+		return next(createError(401, "Je kunt deze statistieken niet bekijken"));
 	})
 	.get((req, res, next) => {
 		/**
@@ -237,7 +235,8 @@ router
 	})
 	.get((req, res, next) => {
 		queries = req.queries.map(async (query) => {
-			let result, fields;
+			let result;
+			let fields;
 
 			try {
 				[result, fields] = await req.mysqlConnection.execute(
@@ -252,7 +251,7 @@ router
 					e,
 				);
 				return next(
-					createError(401, "Error while executing statistic query: " + e),
+					createError(401, `Error while executing statistic query: ${e}`),
 				);
 			}
 

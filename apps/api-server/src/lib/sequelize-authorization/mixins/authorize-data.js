@@ -6,7 +6,7 @@ module.exports = function authorizeData(data, action, user, self, project) {
 
 	try {
 		if (!self.rawAttributes) throw "empty";
-		if (!user) user = self.auth && self.auth.user;
+		if (!user) user = self.auth?.user;
 		if (!user || !user.role) user = { role: "all" };
 
 		let userId = self.userId;
@@ -22,7 +22,7 @@ module.exports = function authorizeData(data, action, user, self, project) {
 		const result = {};
 		keys.forEach((key) => {
 			let testRole;
-			if (self.rawAttributes[key] && self.rawAttributes[key].auth) {
+			if (self.rawAttributes[key]?.auth) {
 				if (self.rawAttributes[key].auth.authorizeData) {
 					data[key] = self.rawAttributes[key].auth.authorizeData(
 						data[key],
@@ -34,13 +34,9 @@ module.exports = function authorizeData(data, action, user, self, project) {
 					// todo: ik denk dat hij hier moet return-en; een beetje heftige aanpassing voor even tussendoor
 				} else {
 					// dit is generieker dan de extraData versie; TODO: die moet dus ook zo generiek worden
-					testRole = self.rawAttributes[key].auth[action + "ableBy"] || [];
+					testRole = self.rawAttributes[key].auth[`${action}ableBy`] || [];
 					if (!Array.isArray(testRole)) testRole = [testRole];
-					const detailsFieldName =
-						"details" +
-						action[0].toUpperCase() +
-						action.substring(1) +
-						"ableByRole";
+					const detailsFieldName = `details${action[0].toUpperCase()}${action.substring(1)}ableByRole`;
 					if (testRole.includes(detailsFieldName)) {
 						if (self[detailsFieldName]) {
 							testRole = [self[detailsFieldName], "owner"];
@@ -49,10 +45,7 @@ module.exports = function authorizeData(data, action, user, self, project) {
 				}
 			}
 
-			testRole =
-				testRole && testRole.length
-					? testRole
-					: self.auth && self.auth[action + "ableBy"];
+			testRole = testRole?.length ? testRole : self.auth?.[`${action}ableBy`];
 
 			let ownerId = userId;
 			if (

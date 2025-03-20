@@ -33,7 +33,7 @@ module.exports =
 			const searchResult = list.filter((item) => {
 				return searchTerms.every((term) => {
 					return useSearchFields.some((field) => {
-						return item[field] && item[field].toLowerCase().includes(term);
+						return item[field]?.toLowerCase().includes(term);
 					});
 				});
 			});

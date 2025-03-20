@@ -77,7 +77,7 @@ router
 		const resourceId = Number.parseInt(req.params.resourceId) || 0;
 		if (!resourceId) return next(createError(404, "Resource not found"));
 		db.Resource.findByPk(resourceId).then((resource) => {
-			if (!resource || resource.projectId != req.params.projectId)
+			if (!resource || resource.projectId !== req.params.projectId)
 				return next(createError(400, "Resource not found"));
 			req.resource = resource;
 			return next();
@@ -88,7 +88,7 @@ router
 		// validations
 		if (
 			!req.project.config.polls ||
-			req.project.config.polls.canAddPolls != true
+			req.project.config.polls.canAddPolls !== true
 		)
 			return next(createError(400, "Poll toevoegen is niet toegestaan"));
 		if (!req.resource.auth.canAddPoll(req.user, req.resource))
@@ -123,9 +123,9 @@ router
 router
 	.route("/:pollId(\\d+)")
 	.all((req, res, next) => {
-		var pollId = Number.parseInt(req.params.pollId) || 1;
+		const pollId = Number.parseInt(req.params.pollId) || 1;
 		const scope = req.scope;
-		if (req.method == "PUT") scope.push("includeVotes");
+		if (req.method === "PUT") scope.push("includeVotes");
 		db.Poll.scope(scope)
 			.findOne({
 				where: { id: pollId, resourceId: req.params.resourceId },
@@ -156,8 +156,8 @@ router
 	// ---------------
 	.put(auth.useReqUser)
 	.put((req, res, next) => {
-		var poll = req.results;
-		if (!(poll && poll.can && poll.can("update")))
+		const poll = req.results;
+		if (!poll?.can?.("update"))
 			return next(new Error("You cannot update this poll"));
 		poll
 			.authorizeData(req.body, "update")
@@ -171,8 +171,8 @@ router
 	// delete poll
 	// ---------------
 	.delete((req, res, next) => {
-		var poll = req.results;
-		if (!(poll && poll.can && poll.can("delete")))
+		const poll = req.results;
+		if (!poll?.can?.("delete"))
 			return next(new Error("You cannot delete this poll"));
 		req.results
 			.destroy()
@@ -188,7 +188,7 @@ router
 	.route("/:pollId(\\d+)/vote")
 
 	.all((req, res, next) => {
-		var pollId = Number.parseInt(req.params.pollId) || 1;
+		const pollId = Number.parseInt(req.params.pollId) || 1;
 		db.Poll.scope(...req.scope)
 			.findOne({
 				where: { id: pollId, resourceId: req.params.resourceId },
@@ -207,7 +207,7 @@ router
 
 	.post((req, res, next) => {
 		const poll = req.results;
-		if (!(poll && poll.can && poll.can("vote")))
+		if (!poll?.can?.("vote"))
 			return next(new Error("You cannot vote for this poll"));
 
 		let pollVote;

@@ -1,16 +1,16 @@
-var config = require("config");
-var CronJob = require("cron").CronJob;
-var extend = require("lodash/extend");
-var util = require("./util");
+const config = require("config");
+const CronJob = require("cron").CronJob;
+const extend = require("lodash/extend");
+const util = require("./util");
 
 module.exports = {
 	jobs: new Map(),
 
 	start: function () {
-		var jobs = this.jobs;
+		const jobs = this.jobs;
 		util.invokeDir("./cron", (jobDef, fileName) => {
 			try {
-				var job = new CronJob(
+				const job = new CronJob(
 					extend({}, jobDef, {
 						timeZone: config.get("timeZone"),
 						start: true,
@@ -18,7 +18,7 @@ module.exports = {
 				);
 				jobs.set(fileName, job);
 			} catch (e) {
-				throw new Error("Invalid cron: " + e.message);
+				throw new Error(`Invalid cron: ${e.message}`);
 			}
 		});
 		return this;

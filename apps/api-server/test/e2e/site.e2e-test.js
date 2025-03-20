@@ -2,7 +2,8 @@ const db = require("../../src/db");
 const supertest = require("supertest");
 const appServer = require("./../../src/Server");
 
-let server, request;
+let server;
+let request;
 
 describe("Site endpoints", () => {
 	beforeAll(async (done) => {

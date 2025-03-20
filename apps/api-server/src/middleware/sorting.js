@@ -22,11 +22,12 @@ module.exports = (req, res, next) => {
 				case "random":
 					return db.sequelize.random();
 					break;
-				default:
+				default: {
 					column = column.replace(/[^a-z0-9_]+/gi, "");
 					const match = column.match(/(.*?)_(asc|desc)$/i);
 					if (match) return [match[1], match[2]];
 					return column;
+				}
 			}
 		});
 		req.dbQuery.order = sort;

@@ -30,10 +30,7 @@ router.all("*", (req, res, next) => {
 	if (!req.project.config.archivedVotes) {
 		if (
 			req.query.includeVoteCount &&
-			((req.project &&
-				req.project.config &&
-				req.project.config.votes &&
-				req.project.config.votes.isViewable) ||
+			(req.project?.config?.votes?.isViewable ||
 				userhasModeratorRights(req.user))
 		) {
 			req.scope.push({
@@ -56,10 +53,7 @@ router.all("*", (req, res, next) => {
 	}
 	// because includeVoteCount is used in other locations but should only be active if isViewable
 	if (
-		(req.project &&
-			req.project.config &&
-			req.project.config.votes &&
-			req.project.config.votes.isViewable) ||
+		req.project?.config?.votes?.isViewable ||
 		userhasModeratorRights(req.user)
 	) {
 		req.canIncludeVoteCount = true; // scope.push(undefined) would be easier but creates an error
@@ -189,7 +183,7 @@ router
 
 		if (
 			req.body.location &&
-			typeof req.body.location == "object" &&
+			typeof req.body.location === "object" &&
 			!Object.keys(req.body.location).length
 		) {
 			req.body.location = null;
@@ -198,7 +192,7 @@ router
 		let userId = req.user.id;
 		if (hasRole(req.user, "admin") && req.body.userId) userId = req.body.userId;
 
-		if (!!req.body.submittedData) {
+		if (req.body.submittedData) {
 			req.body = {
 				...req.body,
 				...req.body.submittedData,
@@ -228,7 +222,7 @@ router
 			!imageServer.startsWith("http://") &&
 			!imageServer.startsWith("https://")
 		) {
-			imageServer = "https://" + imageServer;
+			imageServer = `https://${imageServer}`;
 		}
 		const hostname = new URL(imageServer).hostname;
 		if (data.images && data.images.length > 0) {
@@ -239,7 +233,7 @@ router
 						!image.url.startsWith("http://") &&
 						!image.url.startsWith("https://")
 					) {
-						image.url = "https://" + image.url;
+						image.url = `https://${image.url}`;
 					}
 					const url = new URL(image.url);
 					if (url.hostname !== hostname) {
@@ -266,7 +260,7 @@ router
 			.catch((error) => {
 				// todo: dit komt uit de oude routes; maak het generieker
 				if (
-					typeof error == "object" &&
+					typeof error === "object" &&
 					error instanceof Sequelize.ValidationError
 				) {
 					const errors = [];
@@ -344,16 +338,16 @@ router
 	// TODO: Add notifications
 	.post(async (req, res, next) => {
 		const sendConfirmationToUser =
-			typeof req.body["confirmationUser"] !== "undefined"
-				? req.body["confirmationUser"]
+			typeof req.body.confirmationUser !== "undefined"
+				? req.body.confirmationUser
 				: false;
 		const sendConfirmationToAdmin =
-			typeof req.body["confirmationAdmin"] !== "undefined"
-				? req.body["confirmationAdmin"]
+			typeof req.body.confirmationAdmin !== "undefined"
+				? req.body.confirmationAdmin
 				: false;
 
 		res.json(req.results);
-		if (!req.query.nomail && req.body["publishDate"]) {
+		if (!req.query.nomail && req.body.publishDate) {
 			const tags = await req.results.getTags();
 			if (tags && tags.length > 0) {
 				// Convert to csv string
@@ -408,7 +402,7 @@ router
 					},
 				});
 			}
-		} else if (!req.query.nomail && !req.body["publishDate"]) {
+		} else if (!req.query.nomail && !req.body.publishDate) {
 			if (sendConfirmationToUser) {
 				db.Notification.create({
 					type: "new concept resource - user feedback",
@@ -465,13 +459,7 @@ router
 	// -----------
 	.put(auth.useReqUser)
 	.put((req, res, next) => {
-		if (
-			!(
-				req.project.config &&
-				req.project.config.resources &&
-				req.project.config.resources.canAddNewResources
-			)
-		) {
+		if (!req.project.config?.resources?.canAddNewResources) {
 			if (!req.results.dataValues.publishDate) {
 				return next(
 					createError(
@@ -490,14 +478,14 @@ router
 	.put((req, res, next) => {
 		const currentResource = req.results.dataValues;
 		const wasConcept = currentResource && !currentResource.publishDate;
-		const willNowBePublished = req.body["publishDate"];
+		const willNowBePublished = req.body.publishDate;
 		req.changedToPublished = wasConcept && willNowBePublished;
 		next();
 	})
 	.put((req, res, next) => {
-		var resource = req.results;
+		const resource = req.results;
 
-		if (!(resource && resource.can && resource.can("update")))
+		if (!resource?.can?.("update"))
 			return next(new Error("You cannot update this Resource"));
 
 		if (req.body.location) {
@@ -650,7 +638,7 @@ router
 	.delete(auth.useReqUser)
 	.delete((req, res, next) => {
 		const resource = req.results;
-		if (!(resource && resource.can && resource.can("delete")))
+		if (!resource?.can?.("delete"))
 			return next(new Error("You cannot delete this resource"));
 
 		resource

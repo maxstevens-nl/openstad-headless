@@ -10,14 +10,14 @@ beforeAll(async () => {
 });
 
 const resetDatabase = async () => {
-	var config = require("config");
+	const config = require("config");
 
 	process.env.DEBUG = config.logging;
 
-	var datafile = process.env.NODE_ENV || "development";
+	const datafile = process.env.NODE_ENV || "development";
 
-	var db = require("../src/db");
-	var dbConfig = config.get("database");
+	const db = require("../src/db");
+	const dbConfig = config.get("database");
 
 	const sequelize = new Sequelize("", dbConfig.user, dbConfig.password, {
 		dialect: "mysql",

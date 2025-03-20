@@ -4,8 +4,8 @@ module.exports = function toAuthorizedJSON(user) {
 	const self = this;
 
 	if (!self.rawAttributes) return {};
-	if (typeof user != "object") user = undefined;
-	if (!user) user = self.auth && self.auth.user;
+	if (typeof user !== "object") user = undefined;
+	if (!user) user = self.auth?.user;
 	if (!user || !user.role) user = { role: "all" };
 
 	if (!self.can("view", user)) return {};
@@ -18,13 +18,13 @@ module.exports = function toAuthorizedJSON(user) {
 
 	let keys = self._options.attributes || Object.keys(self.dataValues);
 	keys = keys.concat(
-		Object.keys(self).filter((key) => key != "dataValues" && !key.match(/^_/)),
+		Object.keys(self).filter((key) => key !== "dataValues" && !key.match(/^_/)),
 	);
 
 	let result = {};
 	keys.forEach((key) => {
 		const value = self.get(key);
-		if (key == "id") {
+		if (key === "id") {
 			// todo: primary keys, not id
 			result[key] = value;
 		} else {
@@ -32,14 +32,14 @@ module.exports = function toAuthorizedJSON(user) {
 		}
 	});
 
-	if (self.auth && self.auth.toAuthorizedJSON) {
+	if (self.auth?.toAuthorizedJSON) {
 		result = self.auth.toAuthorizedJSON(user, result, self);
 	}
 
 	return Object.keys(result).length ? result : undefined;
 
 	function authorizedValue(key, value, user) {
-		if (value && value.toJSON && value.authorizeData) {
+		if (value?.toJSON && value.authorizeData) {
 			// TODO: for associated models this should use the association key to check the validity
 			return value.toJSON(user);
 		}
@@ -54,7 +54,7 @@ module.exports = function toAuthorizedJSON(user) {
 		}
 
 		let testRole;
-		if (self.rawAttributes[key] && self.rawAttributes[key].auth) {
+		if (self.rawAttributes[key]?.auth) {
 			if (self.rawAttributes[key].auth.authorizeData) {
 				return self.rawAttributes[key].auth.authorizeData(
 					null,
@@ -63,34 +63,30 @@ module.exports = function toAuthorizedJSON(user) {
 					self,
 					self.project,
 				);
-			} else {
-				// todo: waarom loopt dit niet via authorizeData
-				testRole = self.rawAttributes[key].auth.viewableBy;
-				if (
-					Array.isArray(testRole)
-						? testRole.includes("detailsViewableByRole")
-						: testRole == "detailsViewableByRole"
-				) {
-					if (self.detailsViewableByRole) {
-						testRole = self.detailsViewableByRole;
-					}
+			}
+			// todo: waarom loopt dit niet via authorizeData
+			testRole = self.rawAttributes[key].auth.viewableBy;
+			if (
+				Array.isArray(testRole)
+					? testRole.includes("detailsViewableByRole")
+					: testRole === "detailsViewableByRole"
+			) {
+				if (self.detailsViewableByRole) {
+					testRole = self.detailsViewableByRole;
 				}
+			}
 
-				// todo: waarom loopt dit niet via authorizeData
-				testRole = self.rawAttributes[key].auth.viewableBy || [];
-				if (!Array.isArray(testRole)) testRole = [testRole];
-				if (testRole.includes("detailsViewableByRole")) {
-					if (self.detailsViewableByRole) {
-						testRole = [self.detailsViewableByRole, "owner"];
-					}
+			// todo: waarom loopt dit niet via authorizeData
+			testRole = self.rawAttributes[key].auth.viewableBy || [];
+			if (!Array.isArray(testRole)) testRole = [testRole];
+			if (testRole.includes("detailsViewableByRole")) {
+				if (self.detailsViewableByRole) {
+					testRole = [self.detailsViewableByRole, "owner"];
 				}
 			}
 		}
 
-		testRole =
-			testRole && testRole.length
-				? testRole
-				: self.auth && self.auth.viewableBy;
+		testRole = testRole?.length ? testRole : self.auth?.viewableBy;
 
 		//console.log(key, testRole, userId);
 

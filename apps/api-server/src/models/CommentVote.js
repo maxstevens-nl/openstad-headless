@@ -1,7 +1,7 @@
-var config = require("config");
+const config = require("config");
 
 module.exports = (db, sequelize, DataTypes) => {
-	var CommentVote = sequelize.define(
+	const CommentVote = sequelize.define(
 		"comment_vote",
 		{
 			commentId: {
@@ -46,7 +46,7 @@ module.exports = (db, sequelize, DataTypes) => {
 	};
 
 	CommentVote.prototype.toggle = function () {
-		var checked = this.get("checked");
+		const checked = this.get("checked");
 		return this.update({
 			checked: checked === null ? false : !checked,
 		});

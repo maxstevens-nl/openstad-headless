@@ -99,7 +99,7 @@ router
 	.delete(auth.useReqUser)
 	.delete((req, res, next) => {
 		const widget = req.results;
-		if (!(widget && widget.can && widget.can("delete")))
+		if (!widget?.can?.("delete"))
 			return next(new Error("You cannot delete this widget"));
 
 		widget

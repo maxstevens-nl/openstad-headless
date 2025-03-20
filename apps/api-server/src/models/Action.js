@@ -1,18 +1,18 @@
-const config = require("config"),
-	log = require("debug")("app:user"),
-	pick = require("lodash/pick");
+const config = require("config");
+const log = require("debug")("app:user");
+const pick = require("lodash/pick");
 const Sequelize = require("sequelize");
 const { Op } = require("sequelize");
 const _ = require("lodash");
 const moment = require("moment");
 
-const Url = require("url");
+const Url = require("node:url");
 
-var sanitize = require("../util/sanitize");
+const sanitize = require("../util/sanitize");
 const htmlToText = require("html-to-text");
 
 module.exports = function (db, sequelize, DataTypes) {
-	var Action = sequelize.define(
+	const Action = sequelize.define(
 		"action",
 		{
 			projectId: {
@@ -125,7 +125,7 @@ module.exports = function (db, sequelize, DataTypes) {
 				let pointer = updates;
 
 				keyToUpdate.split(".").map((key, index, arr) => {
-					pointer = pointer[key] = index == arr.length - 1 ? newValue : {};
+					pointer = pointer[key] = index === arr.length - 1 ? newValue : {};
 				});
 
 				let instanceData = instance.toJSON();
@@ -200,7 +200,7 @@ module.exports = function (db, sequelize, DataTypes) {
 					},
 				};
 				break;
-			case "afterCreate":
+			case "afterCreate": {
 				const escapedAfter = sequelize.escape(`${hours}`);
 
 				where = {
@@ -213,6 +213,7 @@ module.exports = function (db, sequelize, DataTypes) {
 					},
 				};
 				break;
+			}
 			case "update":
 				where = {
 					updatedAt: checkFromDate,
@@ -239,7 +240,7 @@ module.exports = function (db, sequelize, DataTypes) {
 		// so in this case current implementations in not sufficient
 		if (!projectId) {
 			throw new Error(
-				`No projectId defined, action only allowed to run within a project scope for security and data bug prevention`,
+				"No projectId defined, action only allowed to run within a project scope for security and data bug prevention",
 			);
 		}
 
@@ -318,7 +319,7 @@ module.exports = function (db, sequelize, DataTypes) {
 				],
 			});
 
-			for (var i = 0; i < actions.length; i++) {
+			for (let i = 0; i < actions.length; i++) {
 				const action = actions[i];
 
 				const actionType = db.Action.types.find(
@@ -340,7 +341,7 @@ module.exports = function (db, sequelize, DataTypes) {
 				console.log("selectionToActUpon", selectionToActUpon);
 
 				// there are also actions where all the instances should be bundled, or treated as one
-				for (var j = 0; j < selectionToActUpon.length; j++) {
+				for (let j = 0; j < selectionToActUpon.length; j++) {
 					const selectedInstance = selectionToActUpon[j];
 
 					try {
@@ -379,11 +380,7 @@ module.exports = function (db, sequelize, DataTypes) {
 			console.log("Error in action run ", e);
 			if (currentRun) {
 				const currentRunId = currentRun ? currentRun.id : "";
-				const errorMessage =
-					"Error while executing ActionSequence with id " +
-					currentRunId +
-					" with the following error: " +
-					e;
+				const errorMessage = `Error while executing ActionSequence with id ${currentRunId} with the following error: ${e}`;
 
 				console.log("errorMessage", errorMessage);
 

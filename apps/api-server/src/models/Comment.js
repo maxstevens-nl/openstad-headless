@@ -1,17 +1,17 @@
-var sanitize = require("../util/sanitize");
-var moment = require("moment-timezone");
-var config = require("config");
+const sanitize = require("../util/sanitize");
+const moment = require("moment-timezone");
+const config = require("config");
 const merge = require("merge");
 const { Op } = require("sequelize");
 
 // For detecting throwaway accounts in the email address validation.
-var emailBlackList = require("../../config/mail_blacklist"),
-	emailDomain = /^.+@(.+)$/;
+const emailBlackList = require("../../config/mail_blacklist");
+const emailDomain = /^.+@(.+)$/;
 
 const userHasRole = require("../lib/sequelize-authorization/lib/hasRole");
 
 module.exports = (db, sequelize, DataTypes) => {
-	var Comment = sequelize.define(
+	const Comment = sequelize.define(
 		"comment",
 		{
 			parentId: {
@@ -56,15 +56,9 @@ module.exports = (db, sequelize, DataTypes) => {
 					textLength(value) {
 						const len = sanitize.summary(value.trim()).length;
 						const descriptionMinLength =
-							(this.config &&
-								this.config.comments &&
-								this.config.comments.descriptionMinLength) ||
-							30;
+							this.config?.comments?.descriptionMinLength || 30;
 						const descriptionMaxLength =
-							(this.config &&
-								this.config.comments &&
-								this.config.comments.descriptionMaxLength) ||
-							500;
+							this.config?.comments?.descriptionMaxLength || 500;
 						if (len < descriptionMinLength || len > descriptionMaxLength)
 							throw new Error(
 								`Beschrijving moet tussen ${descriptionMinLength} en ${descriptionMaxLength} tekens zijn`,
@@ -97,7 +91,7 @@ module.exports = (db, sequelize, DataTypes) => {
 			createDateHumanized: {
 				type: DataTypes.VIRTUAL,
 				get: function () {
-					var date = this.getDataValue("createdAt");
+					const date = this.getDataValue("createdAt");
 					try {
 						if (!date) return "Onbekende datum";
 						return moment(date).format("LLL");
@@ -390,7 +384,7 @@ module.exports = (db, sequelize, DataTypes) => {
 	};
 
 	Comment.prototype.addUserVote = function (user, ip) {
-		var data = {
+		const data = {
 			commentId: this.id,
 			userId: user.id,
 			ip: ip,
@@ -401,11 +395,10 @@ module.exports = (db, sequelize, DataTypes) => {
 			.then((vote) => {
 				if (vote) {
 					return vote.destroy();
-				} else {
-					// HACK: See `Resource.addUserVote`.
-					data.deletedAt = null;
-					return db.CommentVote.upsert(data);
 				}
+				// HACK: See `Resource.addUserVote`.
+				data.deletedAt = null;
+				return db.CommentVote.upsert(data);
 			})
 			.then((result) => result && !!result.deletedAt);
 	};
@@ -424,7 +417,7 @@ module.exports = (db, sequelize, DataTypes) => {
 			return false;
 		},
 		canReply: (user, self) => {
-			if (user.role == "admin") return true;
+			if (user.role === "admin") return true;
 			if (!self.resource) return false;
 			if (self.resource.project?.config?.comments?.canReply === false)
 				return false;

@@ -4,7 +4,7 @@ const config = require("config");
 const db = require("../../db");
 const auth = require("../../middleware/sequelize-authorization-middleware");
 const pagination = require("../../middleware/pagination");
-const crypto = require("crypto");
+const crypto = require("node:crypto");
 
 const express = require("express");
 const router = express.Router({ mergeParams: true });

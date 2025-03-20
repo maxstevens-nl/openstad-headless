@@ -3,7 +3,7 @@ const prefillAllowedDomains = (allowedDomains) => {
 		if (process.env.BASE_DOMAIN) {
 			let baseDomain = process.env.BASE_DOMAIN;
 			if (baseDomain.indexOf("http") !== 0) {
-				baseDomain = "https://" + baseDomain;
+				baseDomain = `https://${baseDomain}`;
 			}
 			const baseUrl = new URL(baseDomain);
 			allowedDomains.push(baseUrl.host);
@@ -12,7 +12,7 @@ const prefillAllowedDomains = (allowedDomains) => {
 		if (process.env.HOSTNAME) {
 			let hostname = process.env.HOSTNAME;
 			if (hostname.indexOf("http") !== 0) {
-				hostname = "https://" + hostname;
+				hostname = `https://${hostname}`;
 			}
 			const url = new URL(hostname);
 			allowedDomains.push(url.host);

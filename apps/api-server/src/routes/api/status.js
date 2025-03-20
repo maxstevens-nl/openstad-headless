@@ -104,7 +104,7 @@ router
 	.put(auth.useReqUser)
 	.put((req, res, next) => {
 		const status = req.results;
-		if (!(status && status.can && status.can("update")))
+		if (!status?.can?.("update"))
 			return next(new Error("You cannot update this status"));
 		status
 			.authorizeData(req.body, "update")

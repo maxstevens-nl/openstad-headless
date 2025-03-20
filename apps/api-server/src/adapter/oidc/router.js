@@ -47,7 +47,7 @@ router
 
 			openStadUser = await db.User.upsert({
 				...mappedUserData,
-				id: openStadUser && openStadUser.id,
+				id: openStadUser?.id,
 				projectId: req.params.projectId,
 				email: mappedUserData.email,
 				idpUser: mappedUserData.idpUser,
@@ -59,7 +59,7 @@ router
 			// TODO: iss moet gecontroleerd
 			jwt.sign(
 				{ userId: openStadUser.id, authProvider: req.authConfig.provider },
-				config.auth["jwtSecret"],
+				config.auth.jwtSecret,
 				{ expiresIn: 182 * 24 * 60 * 60 },
 				(err, token) => {
 					if (err) return next(err);
@@ -89,23 +89,12 @@ router
 			(await isRedirectAllowed(req.project.id, req.query.redirectUri))
 		) {
 			const baseUrl = config.url;
-			let backToHereUrl =
-				baseUrl +
-				"/auth/project/" +
-				req.project.id +
-				"/login?useAuth=" +
-				req.authConfig.provider +
-				"&redirectUri=" +
-				encodeURIComponent(req.query.redirectUri);
+			let backToHereUrl = `${baseUrl}/auth/project/${req.project.id}/login?useAuth=${req.authConfig.provider}&redirectUri=${encodeURIComponent(req.query.redirectUri)}`;
 			backToHereUrl = encodeURIComponent(backToHereUrl);
-			const url =
-				baseUrl +
-				"/auth/project/" +
-				req.project.id +
-				"/logout?redirectUri=" +
-				backToHereUrl;
+			const url = `${baseUrl}/auth/project/${req.project.id}/logout?redirectUri=${backToHereUrl}`;
 			return res.redirect(url);
-		} else if (req.query.redirectUri) {
+		}
+		if (req.query.redirectUri) {
 			return next(createError(403, "redirectUri not found in allowlist."));
 		}
 		return next();
@@ -122,13 +111,7 @@ router
 			url = url.replace(
 				/\[\[redirectUri\]\]/,
 				encodeURIComponent(
-					config.url +
-						"/auth/project/" +
-						req.project.id +
-						"/digest-login?useAuth=" +
-						req.authConfig.provider +
-						"&returnTo=" +
-						req.query.redirectUri,
+					`${config.url}/auth/project/${req.project.id}/digest-login?useAuth=${req.authConfig.provider}&returnTo=${req.query.redirectUri}`,
 				),
 			);
 			res.redirect(url);
@@ -160,8 +143,8 @@ router
 
 		const contentType =
 			req.authConfig.serverExchangeContentType || "application/json";
-		if (contentType == "application/x-www-form-urlencoded")
-			data = `client_id=${encodeURIComponent(req.authConfig.clientId)}&client_secret=${encodeURIComponent(req.authConfig.clientSecret)}&code=${encodeURIComponent(code)}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(config.url + "/auth/project/" + req.project.id + "/digest-login?useAuth=" + req.authConfig.provider + "&returnTo=" + req.query.returnTo)}`;
+		if (contentType === "application/x-www-form-urlencoded")
+			data = `client_id=${encodeURIComponent(req.authConfig.clientId)}&client_secret=${encodeURIComponent(req.authConfig.clientSecret)}&code=${encodeURIComponent(code)}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(`${config.url}/auth/project/${req.project.id}/digest-login?useAuth=${req.authConfig.provider}&returnTo=${req.query.returnTo}`)}`;
 
 		fetch(url, {
 			method: "POST",
@@ -224,7 +207,7 @@ router
 			.then((result) => {
 				if (result && result.length > 1)
 					return next(createError(403, "Meerdere users gevonden"));
-				if (result && result.length == 1) {
+				if (result && result.length === 1) {
 					// user found; update and use
 					const user = result[0];
 
@@ -265,16 +248,16 @@ router
 	})
 	.get((req, res, next) => {
 		let returnTo = req.query.returnTo;
-		returnTo = returnTo || req.authConfig["afterLoginRedirectUri"];
+		returnTo = returnTo || req.authConfig.afterLoginRedirectUri;
 		let redirectUrl = returnTo
-			? returnTo + (returnTo.includes("?") ? "&" : "?") + "jwt=[[jwt]]"
+			? `${returnTo + (returnTo.includes("?") ? "&" : "?")}jwt=[[jwt]]`
 			: false;
 		redirectUrl =
 			redirectUrl ||
 			(req.query.returnTo
-				? req.query.returnTo +
-					(req.query.returnTo.includes("?") ? "&" : "?") +
-					"jwt=[[jwt]]"
+				? `${
+						req.query.returnTo + (req.query.returnTo.includes("?") ? "&" : "?")
+					}jwt=[[jwt]]`
 				: false);
 		redirectUrl = redirectUrl || "/";
 
@@ -293,10 +276,7 @@ router
 
 		//check if redirect domain is allowed
 		if (
-			isAllowedRedirectDomain(
-				redirectUrl,
-				req.project && req.project.config && req.project.config.allowedDomains,
-			)
+			isAllowedRedirectDomain(redirectUrl, req.project?.config?.allowedDomains)
 		) {
 			if (redirectUrl.match("[[jwt]]")) {
 				jwt.sign(
@@ -358,7 +338,8 @@ router
 			(await isRedirectAllowed(req.project.id, req.query.redirectUri))
 		) {
 			return res.redirect(req.query.redirectUri);
-		} else if (req.query.redirectUri) {
+		}
+		if (req.query.redirectUri) {
 			return next(createError(403, "redirectUri not found in allowlist."));
 		}
 		return res.json({ logout: "success" });

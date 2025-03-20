@@ -7,7 +7,7 @@ const { formatGeoJsonToPolygon } = require("../../util/geo-json-formatter");
 
 const express = require("express");
 const router = express.Router({ mergeParams: true });
-var createError = require("http-errors");
+const createError = require("http-errors");
 
 // scopes: for all get requests
 router.all("*", (req, res, next) => {
@@ -66,7 +66,7 @@ router
 router
 	.route("/:areaId(\\d+)")
 	.all((req, res, next) => {
-		var areaId = Number.parseInt(req.params.areaId) || 1;
+		const areaId = Number.parseInt(req.params.areaId) || 1;
 
 		db.Area.findOne({
 			// where: { id: areaId, projectId: req.params.projectId }
@@ -103,7 +103,7 @@ router
 	.put((req, res, next) => {
 		const area = req.results;
 
-		if (!(area && area.can && area.can("update")))
+		if (!area?.can?.("update"))
 			return next(new Error("You cannot update this area"));
 
 		area
@@ -142,7 +142,7 @@ router
 	.delete((req, res, next) => {
 		const result = req.results;
 
-		if (!(result && result.can && result.can("delete")))
+		if (!result?.can?.("delete"))
 			return next(new Error("You cannot delete this area"));
 
 		req.results

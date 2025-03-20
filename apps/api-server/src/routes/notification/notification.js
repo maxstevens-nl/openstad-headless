@@ -93,7 +93,7 @@ router
 	.put(auth.useReqUser)
 	.put((req, res, next) => {
 		const notification = req.results;
-		if (!(notification && notification.can && notification.can("update")))
+		if (!notification?.can?.("update"))
 			return next(new Error("You cannot update this notification"));
 		notification
 			.authorizeData(req.body, "update")
@@ -113,7 +113,7 @@ router
 	// -------------------
 	.delete((req, res, next) => {
 		const notification = req.results;
-		if (!(notification && notification.can && notification.can("delete")))
+		if (!notification?.can?.("delete"))
 			return next(new Error("You cannot delete this notification"));
 		req.results
 			.destroy()

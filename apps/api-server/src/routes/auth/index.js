@@ -18,9 +18,7 @@ router
 	.use(async (req, res, next) => {
 		// auth config
 		const useAuth =
-			req.query.useAuth ||
-			req.user.provider ||
-			(req.user.idpUser && req.user.idpUser.provider);
+			req.query.useAuth || req.user.provider || req.user.idpUser?.provider;
 		req.authConfig = await authSettings.config({
 			project: req.project,
 			useAuth: useAuth,

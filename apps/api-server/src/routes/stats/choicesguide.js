@@ -31,7 +31,7 @@ router.route("/total").get((req, res, next) => {
 	const bindvars = [req.params.projectId];
 
 	if (req.query.choicesGuideId) {
-		query += `AND choicesGuideResults.choicesGuideId=?`;
+		query += "AND choicesGuideResults.choicesGuideId=?";
 		bindvars.push(req.query.choicesGuideId);
 	}
 
@@ -39,7 +39,7 @@ router.route("/total").get((req, res, next) => {
 		.promise()
 		.query(query, bindvars)
 		.then(([rows, fields]) => {
-			const counted = (rows && rows[0] && rows[0].counted) || -1;
+			const counted = rows?.[0]?.counted || -1;
 			res.json({ count: counted });
 		})
 		.catch((err) => {

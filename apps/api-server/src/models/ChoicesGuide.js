@@ -44,7 +44,7 @@ module.exports = (db, sequelize, DataTypes) => {
 			get: function () {
 				let value = this.getDataValue("images");
 				try {
-					if (typeof value == "string") {
+					if (typeof value === "string") {
 						value = JSON.parse(value);
 					}
 				} catch (err) {}
@@ -52,7 +52,7 @@ module.exports = (db, sequelize, DataTypes) => {
 			},
 			set: function (value) {
 				try {
-					if (typeof value == "object") {
+					if (typeof value === "object") {
 						value = JSON.stringify(value);
 					}
 				} catch (err) {}
@@ -66,7 +66,7 @@ module.exports = (db, sequelize, DataTypes) => {
 			get: function () {
 				let value = this.getDataValue("config");
 				try {
-					if (typeof value == "string") {
+					if (typeof value === "string") {
 						value = JSON.parse(value);
 					}
 				} catch (err) {}
@@ -74,14 +74,14 @@ module.exports = (db, sequelize, DataTypes) => {
 			},
 			set: function (value) {
 				try {
-					if (typeof value == "string") {
+					if (typeof value === "string") {
 						value = JSON.parse(value) || {};
 					}
-					if (value.isActive == "true") value.isActive = true;
-					if (value.isActive == "false" || value.isActive == null)
+					if (value.isActive === "true") value.isActive = true;
+					if (value.isActive === "false" || value.isActive == null)
 						value.isActive = false;
-					if (value.isActive == false) value.submissionType = "form";
-					if (value.submissionType != "form") {
+					if (value.isActive === false) value.submissionType = "form";
+					if (value.submissionType !== "form") {
 						delete value.requiredUserRole;
 						delete value.withExisting;
 					}

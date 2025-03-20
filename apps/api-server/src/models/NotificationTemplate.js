@@ -66,7 +66,7 @@ module.exports = (db, sequelize, DataTypes) => {
 
 	// temp solution: the auth serrver should use this notification service (https://github.com/openstad/openstad-headless/issues/256) but until then auth templates are updated here
 	async function updateAuthClient(instance, options) {
-		if (instance.type != "login email") return;
+		if (instance.type !== "login email") return;
 
 		let project;
 		if (instance.projectId) {

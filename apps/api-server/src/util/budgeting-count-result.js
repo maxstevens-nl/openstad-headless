@@ -12,7 +12,7 @@ db.BudgetVote.findAll()
 		result.forEach((entry) => {
 			const vote = JSON.parse(entry.vote);
 			vote.forEach((id) => {
-				if (typeof voteResult[id] != "undefined") {
+				if (typeof voteResult[id] !== "undefined") {
 					voteResult[id]++;
 				} else {
 					voteResult[id] = 1;

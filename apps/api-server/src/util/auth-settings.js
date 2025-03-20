@@ -3,13 +3,12 @@ const config = require("config");
 const merge = require("merge");
 
 const createProjectConfig = ({ project, useOnlyDefinedOnProject = false }) => {
-	const defaultConfig = (config && config.auth) || {};
+	const defaultConfig = config?.auth || {};
 	const temp = { provider: {}, adapter: {} };
 	Object.keys(defaultConfig.provider).map((key) => (temp.provider[key] = {})); // todo: defaultConfig is non-extensible, that's why this very not robust fix
 	const apiAuthConfig = merge.recursive(temp, defaultConfig);
 
-	const projectSpecificConfig =
-		(project && project.config && project.config.auth) || {};
+	const projectSpecificConfig = project?.config?.auth || {};
 	const mergedConfig = merge.recursive(
 		{},
 		apiAuthConfig,
@@ -22,7 +21,7 @@ const createProjectConfig = ({ project, useOnlyDefinedOnProject = false }) => {
 		if (projectProviders) {
 			const mergedProviders = Object.keys(mergedConfig.provider || {});
 			mergedProviders.map((target) => {
-				if (!projectProviders.find((p) => p == target)) {
+				if (!projectProviders.find((p) => p === target)) {
 					delete mergedConfig.provider[target];
 				}
 			});
@@ -35,7 +34,7 @@ const createProjectConfig = ({ project, useOnlyDefinedOnProject = false }) => {
 const getConfig = async ({ project, useAuth = "default" }) => {
 	const projectConfig = createProjectConfig({ project });
 
-	if (useAuth == "default" && projectConfig.default)
+	if (useAuth === "default" && projectConfig.default)
 		useAuth = projectConfig.default;
 
 	let authConfig = {
@@ -48,7 +47,10 @@ const getConfig = async ({ project, useAuth = "default" }) => {
 	authConfig = merge.recursive(authConfig, adapterConfig);
 	authConfig = merge.recursive(authConfig, providerConfig);
 
-	if (!authConfig.jwtSecret || authConfig.jwtSecret == "REPLACE THIS VALUE!!") {
+	if (
+		!authConfig.jwtSecret ||
+		authConfig.jwtSecret === "REPLACE THIS VALUE!!"
+	) {
 		// todo: move this to a place where is called once, not every request
 		console.log("===========================");
 		console.log("jwtSecret is not configured");
@@ -64,7 +66,7 @@ const getAdapter = async ({ authConfig, project, useAuth = "default" }) => {
 
 	try {
 		const adapter = await require(
-			path.normalize(__dirname + "/../..") + "/" + authConfig.modulePath,
+			`${path.normalize(`${__dirname}/../..`)}/${authConfig.modulePath}`,
 		);
 		return adapter;
 	} catch (err) {

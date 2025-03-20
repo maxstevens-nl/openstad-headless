@@ -45,7 +45,7 @@ router
 		db.Resource.scope("includeProject")
 			.findByPk(resourceId)
 			.then((resource) => {
-				if (!resource || resource.projectId != req.params.projectId)
+				if (!resource || resource.projectId !== req.params.projectId)
 					return next(createError(400, "Resource not found"));
 				req.resource = resource;
 				return next();
@@ -55,16 +55,16 @@ router
 		// include one existing comment
 		// --------------------------
 
-		var commentId = Number.parseInt(req.params.commentId) || 1;
+		const commentId = Number.parseInt(req.params.commentId) || 1;
 
 		const sentiment = req.query.sentiment;
 		const where = { id: commentId };
 
 		if (
 			sentiment &&
-			(sentiment == "against" ||
-				sentiment == "for" ||
-				sentiment == "no sentiment")
+			(sentiment === "against" ||
+				sentiment === "for" ||
+				sentiment === "no sentiment")
 		) {
 			where.sentiment = sentiment;
 		}
@@ -99,9 +99,9 @@ router
 		const sentiment = req.query.sentiment;
 		if (
 			sentiment &&
-			(sentiment == "against" ||
-				sentiment == "for" ||
-				sentiment == "no sentiment")
+			(sentiment === "against" ||
+				sentiment === "for" ||
+				sentiment === "no sentiment")
 		) {
 			where.sentiment = sentiment;
 		}
@@ -144,7 +144,7 @@ router
 		db.Comment.scope("defaultScope", "includeResource")
 			.findByPk(req.body.parentId)
 			.then((comment) => {
-				if (!(comment && comment.can && comment.can("reply", req.user)))
+				if (!comment?.can?.("reply", req.user))
 					return next(new Error("You cannot reply to this comment"));
 				return next();
 			});
@@ -204,8 +204,8 @@ router
 	// ---------------
 	.put(auth.useReqUser)
 	.put((req, res, next) => {
-		var comment = req.results;
-		if (!(comment && comment.can && comment.can("update")))
+		const comment = req.results;
+		if (!comment?.can?.("update"))
 			return next(new Error("You cannot update this comment"));
 		comment
 			.authorizeData(req.body, "update")
@@ -221,7 +221,7 @@ router
 	.delete(auth.useReqUser)
 	.delete(async (req, res, next) => {
 		const comment = req.results;
-		if (!(comment && comment.can && comment.can("delete")))
+		if (!comment?.can?.("delete"))
 			return next(new Error("You cannot delete this comment"));
 
 		try {
@@ -248,10 +248,10 @@ router
 
 	.post(auth.useReqUser)
 	.post((req, res, next) => {
-		var user = req.user;
-		var comment = req.results;
+		const user = req.user;
+		const comment = req.results;
 
-		if (!(comment && comment.can && comment.can("vote")))
+		if (!comment?.can?.("vote"))
 			return next(new Error("You cannot vote for this comment"));
 
 		comment

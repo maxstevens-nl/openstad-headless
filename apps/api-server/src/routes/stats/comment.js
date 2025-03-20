@@ -28,10 +28,11 @@ router
 		const resourceId = req.query.resourceId;
 		const sentiment = req.query.sentiment;
 
-		let query = `SELECT count(comments.id) AS counted FROM resources LEFT JOIN comments ON comments.resourceId = resources.id `;
+		let query =
+			"SELECT count(comments.id) AS counted FROM resources LEFT JOIN comments ON comments.resourceId = resources.id ";
 		const bindvars = [];
 		if (sentiment) {
-			query += `AND comments.sentiment = ? `;
+			query += "AND comments.sentiment = ? ";
 			bindvars.push(sentiment);
 		}
 		query += "WHERE resources.deletedAt IS NULL AND resources.projectId = ? ";
@@ -45,7 +46,7 @@ router
 			.promise()
 			.query(query, bindvars)
 			.then(([rows, fields]) => {
-				const counted = (rows && rows[0] && rows[0].counted) || -1;
+				const counted = rows?.[0]?.counted || -1;
 				res.json({ count: counted });
 			})
 			.catch((err) => {

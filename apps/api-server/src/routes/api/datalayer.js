@@ -5,7 +5,7 @@ const searchInResults = require("../../middleware/search-in-results");
 
 const express = require("express");
 const router = express.Router({ mergeParams: true });
-var createError = require("http-errors");
+const createError = require("http-errors");
 
 // scopes: for all get requests
 router.all("*", (req, res, next) => {
@@ -57,7 +57,7 @@ router
 router
 	.route("/:datalayerId(\\d+)")
 	.all((req, res, next) => {
-		var datalayerId = Number.parseInt(req.params.datalayerId) || 1;
+		const datalayerId = Number.parseInt(req.params.datalayerId) || 1;
 
 		db.Datalayer.findOne({
 			// where: { id: datalayerId, projectId: req.params.projectId }
@@ -87,7 +87,7 @@ router
 	.put((req, res, next) => {
 		const datalayer = req.results;
 
-		if (!(datalayer && datalayer.can && datalayer.can("update")))
+		if (!datalayer?.can?.("update"))
 			return next(new Error("You cannot update this datalayer"));
 
 		datalayer
@@ -126,7 +126,7 @@ router
 	.delete((req, res, next) => {
 		const result = req.results;
 
-		if (!(result && result.can && result.can("delete")))
+		if (!result?.can?.("delete"))
 			return next(new Error("You cannot delete this datalayer"));
 
 		req.results

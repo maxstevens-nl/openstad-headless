@@ -2,9 +2,9 @@ const express = require("express");
 const merge = require("merge");
 const bruteForce = require("../../middleware/brute-force");
 const db = require("../../db");
-const fs = require("fs");
+const fs = require("node:fs");
 const config = require("config");
-const path = require("path");
+const path = require("node:path");
 const createError = require("http-errors");
 
 const getWidgetSettings = require("./widget-settings");
@@ -214,14 +214,14 @@ function getDefaultConfig(project, widgetType) {
 			url: logoutUrl,
 		},
 		projectId: project.id,
-		imageUrl: config.url + `/api/project/${project.id}/upload`,
+		imageUrl: `${config.url}/api/project/${project.id}/upload`,
 	};
 
 	if (
-		widgetType == "resourcedetailmap" ||
-		widgetType == "resourcesmap" ||
-		widgetType == "editormap" ||
-		widgetType == "resourceform"
+		widgetType === "resourcedetailmap" ||
+		widgetType === "resourcesmap" ||
+		widgetType === "editormap" ||
+		widgetType === "resourceform"
 	) {
 		result.area = project.area?.polygon;
 	}
@@ -277,6 +277,9 @@ function getWidgetJavascriptOutput(
 
 	const data = JSON.parse(widgetConfig);
 
+	const extraCssFile = data.project?.cssUrl
+		? `<link href="${data.project.cssUrl}" rel="stylesheet">`
+		: "";
 	const apiUrl = process.env.URL ?? "";
 
 	// TODO: Fix this, it's a hack to get the ChoiceGuide to work
@@ -332,34 +335,10 @@ function getWidgetJavascriptOutput(
 				css += fs.readFileSync(filePath, "utf8");
 			}
 		});
-	} else if (widgetSettings.componentName === "MultiProjectResourceOverview") {
-		widgetSettings.js.forEach((file) => {
-			const filePath = path.resolve(
-				__dirname,
-				"../../../../../packages/multi-project-resource-overview",
-				file,
-			);
-			if (!fs.existsSync(filePath)) {
-				console.error(`JS file not found: ${filePath}`);
-			} else {
-				widgetOutput += fs.readFileSync(filePath, "utf8");
-			}
-		});
-
-		widgetSettings.css.forEach((file) => {
-			const filePath = path.resolve(
-				__dirname,
-				"../../../../../packages/multi-project-resource-overview",
-				file,
-			);
-			if (!fs.existsSync(filePath)) {
-				console.error(`CSS file not found: ${filePath}`);
-			} else {
-				css += fs.readFileSync(filePath, "utf8");
-			}
-		});
 	} else {
 		widgetSettings.js.forEach((file) => {
+			console.log(`${widgetSettings.packageName}/${file}`);
+			console.log(require.resolve(`${widgetSettings.packageName}/${file}`));
 			widgetOutput += fs.readFileSync(
 				require.resolve(`${widgetSettings.packageName}/${file}`),
 				"utf8",
@@ -403,70 +382,18 @@ function getWidgetJavascriptOutput(
           const redirectUri = encodeURI(window.location.href);
           
           const config = JSON.parse(\`${widgetConfigWithCorrectEscapes}\`.replaceAll("[[REDIRECT_URI]]", redirectUri));
-          
-          function insertCssLinks(urls) {
-            const head = document.querySelector('head');
-            const body = document.querySelector('body');
-            const firstScript = body ? body.querySelector('script') : null;
-  
-            urls.forEach(urlObj => {
-              const url = urlObj?.url;
-              const loadFirst = urlObj?.loadFirst;
-              
-              const existingLinks = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).map(link => link.href);
-              if (!existingLinks.includes(url)) {
-                const link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = url;
-                
-                if (loadFirst === true && head) {
-                  head.insertBefore(link, head.firstChild);
-                } else if (head) {
-                  head.appendChild(link);
-                } else if (firstScript) {
-                  firstScript.parentNode.insertBefore(link, firstScript);
-                } else if (body) {
-                  body.appendChild(link);
-                }
-              }
-            });
-          }
-  
-          function normalizeCssUrls(cssUrls) {
-            if (!cssUrls) return [];
-          
-            if (typeof cssUrls === 'string') {
-              return [{ 'url': cssUrls, 'loadFirst': false }];
-            }
-          
-            if (Array.isArray(cssUrls)) {
-              return cssUrls.map(url => ({
-                'url': url,
-                'loadFirst': false
-              }));
-            }
-          
-            if (typeof cssUrls === 'object') {
-              return Object.values(cssUrls).map(url => ({
-                'url': url,
-                'loadFirst': false
-              }));
-            }
-          
-            return [];
-          }
-          
-          let customCssUrls = normalizeCssUrls(config.project?.cssUrl);
-  
           let customCss = '';
-          if (config.project?.cssCustom) {
+          
+          if (config.project.cssCustom) {
             const customCssUrl = '${apiUrl}/api/project/' + config.projectId + '/css/' + randomComponentId;
-            customCssUrls.push({url: customCssUrl, loadFirst: false});
+            customCss = \`<link href ="\${customCssUrl}" rel ="stylesheet">\`;
           }
-  
-          customCssUrls.push({url: "${apiUrl}/api/project/" + config.projectId + "/widget-css/${widgetType}", loadFirst: true});
-  
-          insertCssLinks(customCssUrls);
+          
+          document.querySelector('head').innerHTML += \`
+            <link href="${apiUrl}/api/project/\${config.projectId}/widget-css/${widgetType}" rel="stylesheet">
+            ${extraCssFile}
+            \${customCss}
+          \`;
           
           function renderWidget () {
             

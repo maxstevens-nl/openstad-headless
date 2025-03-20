@@ -56,7 +56,7 @@ try {
 // this value can be derived
 if (!process.env.DOMAIN && !process.env.API_DOMAIN) {
 	const url = URL.parse(process.env.URL || process.env.API_URL || "");
-	process.env.DOMAIN = url && url.hostname;
+	process.env.DOMAIN = url?.hostname;
 }
 
 const defaultConfig = {

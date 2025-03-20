@@ -46,10 +46,10 @@ module.exports = (db, sequelize, DataTypes) => {
 				beforeValidate: async (instance, options) => {
 					// set defaults - todo: opschonen en netter uitschrijven, maar eerst eens kijken of dit voldoet
 					let engine = instance.engine || "email";
-					if (instance.type == "login sms") {
+					if (instance.type === "login sms") {
 						engine = instance.engine || "sms";
 					}
-					if (instance.type == "message by carrier pigeon") {
+					if (instance.type === "message by carrier pigeon") {
 						engine = instance.engine || "carrier pigeon";
 					}
 					instance.engine = engine;
@@ -84,7 +84,7 @@ module.exports = (db, sequelize, DataTypes) => {
 							"message by carrier pigeon",
 						];
 
-						if (managerTypes.find((type) => type == instance.type)) {
+						if (managerTypes.find((type) => type === instance.type)) {
 							let defaultRecipient =
 								project.emailConfig?.notifications?.projectmanagerAddress;
 
@@ -102,14 +102,14 @@ module.exports = (db, sequelize, DataTypes) => {
 							instance.to = overwriteEmail || defaultRecipient;
 						}
 						const adminTypes = ["system issues warning"];
-						if (adminTypes.find((type) => type == instance.type)) {
+						if (adminTypes.find((type) => type === instance.type)) {
 							instance.to =
 								project.emailConfig?.notifications?.projectadminAddress;
 						}
 						if (!instance.to && instance.data?.userId) {
 							user = await db.User.findByPk(instance.data?.userId);
 							instance.to = user?.email;
-							if (instance.engine == "sms") {
+							if (instance.engine === "sms") {
 								instance.to = user?.phoneNumber;
 							}
 						}
@@ -138,7 +138,7 @@ module.exports = (db, sequelize, DataTypes) => {
 							"message by carrier pigeon",
 						];
 
-						if (immediateTypes.find((type) => type == instance.type)) {
+						if (immediateTypes.find((type) => type === instance.type)) {
 							const messageData = {
 								projectId: instance.projectId,
 								engine: instance.engine,
@@ -159,15 +159,11 @@ module.exports = (db, sequelize, DataTypes) => {
 									},
 								);
 
-								const widget = !!resource
+								const widget = resource
 									? await db.Widget.findByPk(resource.widgetId)
 									: instance.widgetId || null;
 
-								if (
-									widget &&
-									widget.dataValues.config &&
-									widget.dataValues.config.items
-								) {
+								if (widget?.dataValues.config?.items) {
 									const widgetItems = widget.dataValues.config.items;
 
 									const questionsAndAnswers = widgetItems.map((item) => {
@@ -272,14 +268,12 @@ module.exports = (db, sequelize, DataTypes) => {
 									instance.data.submissionId,
 								);
 
-								const widget = !!instance.data.widgetId
+								const widget = instance.data.widgetId
 									? await db.Widget.findByPk(instance.data.widgetId)
 									: null;
 
 								if (
-									widget &&
-									widget.dataValues.config &&
-									widget.dataValues.config.items &&
+									widget?.dataValues.config?.items &&
 									submission &&
 									submission.dataValues &&
 									submission.dataValues.submittedData
@@ -364,10 +358,10 @@ module.exports = (db, sequelize, DataTypes) => {
 								}
 							}
 
-							const recipients =
-								instance.to &&
-								instance.to.split(",").map((email) => email.trim());
-							if (recipients && recipients.length) {
+							const recipients = instance.to
+								?.split(",")
+								.map((email) => email.trim());
+							if (recipients?.length) {
 								await Promise.all(
 									recipients.map(async (recipient) => {
 										const message = await db.NotificationMessage.create(

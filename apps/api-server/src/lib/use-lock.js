@@ -9,9 +9,8 @@ useLock.executeLockedFunction = async ({ name, task }) => {
 		lock = await db.Lock.findOne({ where: { type: name } });
 		if (lock) {
 			return console.log(`LOCKED FUNCTION NOT RUNNING: ${name} is locked`);
-		} else {
-			lock = await db.Lock.create({ type: name });
 		}
+		lock = await db.Lock.create({ type: name });
 
 		// execute task
 		const error = await new Promise(task);
@@ -23,12 +22,11 @@ useLock.executeLockedFunction = async ({ name, task }) => {
 			await lock.destroy();
 		}
 
-		if (err.name == "SequelizeUniqueConstraintError") {
+		if (err.name === "SequelizeUniqueConstraintError") {
 			return console.log(`LOCKED FUNCTION NOT RUNNING: ${name} is locked`);
-		} else {
-			return console.log(`LOCKED FUNCTION FAILED: ${name}`);
-			console.log(err);
 		}
+		return console.log(`LOCKED FUNCTION FAILED: ${name}`);
+		console.log(err);
 	}
 };
 

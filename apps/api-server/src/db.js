@@ -1,13 +1,13 @@
-var Sequelize = require("sequelize");
-var _ = require("lodash");
-var util = require("./util");
+const Sequelize = require("sequelize");
+const _ = require("lodash");
+const util = require("./util");
 
-var config = require("config");
-var dbConfig = config.get("database");
+const config = require("config");
+const dbConfig = config.get("database");
 
 // newer versions of mysql (8+) have changed GeomFromText to ST_GeomFromText
 // this is a fix for sequalize
-if (dbConfig.mysqlSTGeoMode == "on") {
+if (dbConfig.mysqlSTGeoMode === "on") {
 	const wkx = require("wkx");
 	Sequelize.GEOMETRY.prototype._stringify = function _stringify(
 		value,
@@ -58,15 +58,16 @@ const dialectOptions = {
 
 const getDbPassword = async () => {
 	switch (dbConfig.authMethod) {
-		case "azure-auth-token":
+		case "azure-auth-token": {
 			const { getAzureAuthToken } = require("./util/azure");
 			return await getAzureAuthToken();
+		}
 		default:
 			return dbConfig.password;
 	}
 };
 
-var sequelize = new Sequelize({
+const sequelize = new Sequelize({
 	hooks: {
 		beforeConnect: async (config) => (config.password = await getDbPassword()),
 	},

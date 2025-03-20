@@ -1,9 +1,9 @@
-var moment = require("moment-timezone");
-var nlib = require("nunjucks/src/lib");
-var slice = Array.prototype.slice;
+const moment = require("moment-timezone");
+const nlib = require("nunjucks/src/lib");
+const slice = Array.prototype.slice;
 
 // Is set via `setDefaultFormat`.
-var defaultFormat = null;
+let defaultFormat = null;
 
 // Examples:
 // {{ var | date }}
@@ -12,11 +12,12 @@ function dateFilter(date, format) {
 	try {
 		if (!date) {
 			throw Error("Onbekende datum");
-		} else if (date === "now" || date === "today") {
+		}
+		if (date === "now" || date === "today") {
 			date = new Date();
 		}
 		// Timezone is set in `config/moment.js`.
-		var mom = moment(date);
+		const mom = moment(date);
 		return nlib.isFunction(mom[format])
 			? mom[format].apply(mom, slice.call(arguments, 2))
 			: mom.format(format || defaultFormat);

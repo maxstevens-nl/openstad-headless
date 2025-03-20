@@ -1,11 +1,11 @@
-const util = require("util");
-const fs = require("fs");
+const util = require("node:util");
+const fs = require("node:fs");
 const readdir = util.promisify(fs.readdir);
 const access = util.promisify(fs.access);
 const readFile = util.promisify(fs.readFile);
 
 async function getHeadlessDependencyTree() {
-	const path = require("path");
+	const path = require("node:path");
 
 	const packagesDir = "../../packages";
 	const headlessDependencyTree = {};

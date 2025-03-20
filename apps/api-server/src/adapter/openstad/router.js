@@ -49,7 +49,7 @@ router
 
 			openStadUser = await db.User.upsert({
 				...mappedUserData,
-				id: openStadUser && openStadUser.id,
+				id: openStadUser?.id,
 				projectId: req.params.projectId,
 				email: mappedUserData.email,
 				idpUser: mappedUserData.idpUser,
@@ -61,7 +61,7 @@ router
 			// TODO: iss moet gecontroleerd
 			jwt.sign(
 				{ userId: openStadUser.id, authProvider: req.authConfig.provider },
-				config.auth["jwtSecret"],
+				config.auth.jwtSecret,
 				{ expiresIn: 182 * 24 * 60 * 60 },
 				(err, token) => {
 					if (err) return next(err);
@@ -92,23 +92,12 @@ router
 			(await isRedirectAllowed(projectId, req.query.redirectUri))
 		) {
 			const baseUrl = config.url;
-			let backToHereUrl =
-				baseUrl +
-				"/auth/project/" +
-				req.project.id +
-				"/login?useAuth=" +
-				req.authConfig.provider +
-				"&redirectUri=" +
-				encodeURIComponent(req.query.redirectUri);
+			let backToHereUrl = `${baseUrl}/auth/project/${req.project.id}/login?useAuth=${req.authConfig.provider}&redirectUri=${encodeURIComponent(req.query.redirectUri)}`;
 			backToHereUrl = encodeURIComponent(backToHereUrl);
-			const url =
-				baseUrl +
-				"/auth/project/" +
-				req.project.id +
-				"/logout?redirectUri=" +
-				backToHereUrl;
+			const url = `${baseUrl}/auth/project/${req.project.id}/logout?redirectUri=${backToHereUrl}`;
 			return res.redirect(url);
-		} else if (req.query.redirectUri) {
+		}
+		if (req.query.redirectUri) {
 			return next(createError(403, "redirectUri not found in allowlist."));
 		}
 		return next();
@@ -122,20 +111,15 @@ router
 			(await isRedirectAllowed(projectId, req.query.redirectUri))
 		) {
 			const redirectUri = encodeURIComponent(
-				config.url +
-					"/auth/project/" +
-					req.project.id +
-					"/digest-login?useAuth=" +
-					req.authConfig.provider +
-					"&returnTo=" +
-					req.query.redirectUri,
+				`${config.url}/auth/project/${req.project.id}/digest-login?useAuth=${req.authConfig.provider}&returnTo=${req.query.redirectUri}`,
 			);
 			let url = `${req.authConfig.serverUrl}/dialog/authorize`;
 			if (req.query.loginPriviliged)
 				url = `${req.authConfig.serverUrl}/auth/admin/login`;
 			url = `${url}?redirect_uri=${redirectUri}&response_type=code&client_id=${req.authConfig.clientId}&scope=offline`;
 			return res.redirect(url);
-		} else if (req.query.redirectUri) {
+		}
+		if (req.query.redirectUri) {
 			return next(createError(403, "redirectUri not found in allowlist."));
 		}
 		return next();
@@ -151,17 +135,16 @@ router
 		let returnTo = req.query.returnTo;
 		returnTo = returnTo || "/?openstadlogintoken=[[jwt]]";
 		if (!returnTo.match(/\[\[jwt\]\]/))
-			returnTo =
-				returnTo +
-				(returnTo.includes("?") ? "&" : "?") +
-				"openstadlogintoken=[[jwt]]";
+			returnTo = `${
+				returnTo + (returnTo.includes("?") ? "&" : "?")
+			}openstadlogintoken=[[jwt]]`;
 		let redirectUrl = returnTo;
 		redirectUrl =
 			redirectUrl ||
 			(req.query.returnTo
-				? req.query.returnTo +
-					(req.query.returnTo.includes("?") ? "&" : "?") +
-					"openstadlogintoken=[[jwt]]"
+				? `${
+						req.query.returnTo + (req.query.returnTo.includes("?") ? "&" : "?")
+					}openstadlogintoken=[[jwt]]`
 				: false);
 		redirectUrl = redirectUrl || "/";
 
@@ -192,11 +175,10 @@ router
 		if (isAllowedRedirectDomain(redirectUrl, req.project)) {
 			req.redirectUrl = redirectUrl;
 			return next();
-		} else {
-			res.status(500).json({
-				status: "Redirect domain not allowed",
-			});
 		}
+		res.status(500).json({
+			status: "Redirect domain not allowed",
+		});
 	})
 	.get(async (req, res, next) => {
 		// get accesstoken for code
@@ -271,7 +253,7 @@ router
 			.then((result) => {
 				if (result && result.length > 1)
 					return next(createError(403, "Meerdere users gevonden"));
-				if (result && result.length == 1) {
+				if (result && result.length === 1) {
 					// user found; update and use
 					const user = result[0];
 
@@ -348,13 +330,7 @@ router
 		if (!req.query.ipdlogout) {
 			// redirect to idp server
 			const redirectUri = encodeURIComponent(
-				config.url +
-					"/auth/project/" +
-					req.project.id +
-					"/logout?ipdlogout=done&useAuth=" +
-					req.query.useAuth +
-					"&redirectUri=" +
-					encodeURIComponent(req.query.redirectUri),
+				`${config.url}/auth/project/${req.project.id}/logout?ipdlogout=done&useAuth=${req.query.useAuth}&redirectUri=${encodeURIComponent(req.query.redirectUri)}`,
 			);
 			const url = `${req.authConfig.serverUrl}/logout?redirectUrl=${redirectUri}&client_id=${req.authConfig.clientId}`;
 			return res.redirect(url);
@@ -369,7 +345,8 @@ router
 			(await isRedirectAllowed(projectId, req.query.redirectUri))
 		) {
 			return res.redirect(req.query.redirectUri);
-		} else if (req.query.redirectUri) {
+		}
+		if (req.query.redirectUri) {
 			return next(createError(403, "redirectUri not found in allowlist."));
 		}
 

@@ -10,7 +10,7 @@ module.exports = (db, sequelize, DataTypes) => {
 		projectId: {
 			type: DataTypes.INTEGER,
 			defaultValue:
-				config.projectId && typeof config.projectId == "number"
+				config.projectId && typeof config.projectId === "number"
 					? config.projectId
 					: 0,
 		},

@@ -95,7 +95,7 @@ router
 	.put(auth.useReqUser)
 	.put((req, res, next) => {
 		const template = req.results;
-		if (!(template && template.can && template.can("update")))
+		if (!template?.can?.("update"))
 			return next(new Error("You cannot update this notificationTemplate"));
 		template
 			.authorizeData(req.body, "update")
@@ -115,7 +115,7 @@ router
 	// ---------------
 	.delete((req, res, next) => {
 		const template = req.results;
-		if (!(template && template.can && template.can("delete")))
+		if (!template?.can?.("delete"))
 			return next(new Error("You cannot delete this notificationTemplate"));
 		req.results
 			.destroy()

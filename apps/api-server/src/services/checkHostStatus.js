@@ -1,4 +1,4 @@
-const dns = require("dns");
+const dns = require("node:dns");
 const db = require("../db");
 const k8s = require("@kubernetes/client-node");
 const ip = require("ip");
@@ -187,7 +187,7 @@ const checkHostStatus = async (conditions) => {
 				await project.save();
 			}
 
-			if (project && project.config && project.config.uniqueId) {
+			if (project?.config?.uniqueId) {
 				// get ingress config files
 				ingress = await getIngress(k8sApi, project.config.uniqueId, namespace);
 			}

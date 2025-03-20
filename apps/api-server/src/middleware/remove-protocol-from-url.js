@@ -4,7 +4,7 @@ module.exports = (req, res, next) => {
 	const protocolRegex = /(^\w+:|^)\/\//;
 
 	// Check if url has protocol
-	if (!!req.body.url.match(protocolRegex)) {
+	if (req.body.url.match(protocolRegex)) {
 		// Remove protocol from url
 		req.body.url = req.body.url.replace(protocolRegex, "");
 	}

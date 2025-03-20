@@ -1,4 +1,4 @@
-const fs = require("fs").promises;
+const fs = require("node:fs").promises;
 const nunjucks = require("nunjucks");
 const mjml2html = require("mjml");
 const sendMessage = require("../notifications/send-engines");
@@ -69,74 +69,71 @@ module.exports = (db, sequelize, DataTypes) => {
 			hooks: {
 				beforeValidate: async (instance, options) => {
 					if (options.data) {
-						let template, templateData;
-						try {
-							template = await db.NotificationTemplate.findOne({
-								where: {
-									projectId: instance.projectId,
-									type: instance.type,
-								},
-							});
-							if (!template) {
-								let file = await fs.readFile(
-									`src/notifications/default-templates/${instance.type}`,
-								);
-								file = file.toString();
-								const match = file.match(
-									/<subject>((?:.|\r|\n)*)<\/subject>(?:.|\r|\n)*<body>((?:.|\r|\n)*)<\/body>/,
-								);
-								const subject = match && match[1];
-								const body = match && match[2];
-								if (subject && body) template = { subject, body };
-							}
-							if (!template) throw new Error("Notification template not found");
+						let template;
+						let templateData;
+						template = await db.NotificationTemplate.findOne({
+							where: {
+								projectId: instance.projectId,
+								type: instance.type,
+							},
+						});
+						if (!template) {
+							let file = await fs.readFile(
+								`src/notifications/default-templates/${instance.type}`,
+							);
+							file = file.toString();
+							const match = file.match(
+								/<subject>((?:.|\r|\n)*)<\/subject>(?:.|\r|\n)*<body>((?:.|\r|\n)*)<\/body>/,
+							);
+							const subject = match?.[1];
+							const body = match?.[2];
+							if (subject && body) template = { subject, body };
+						}
+						if (!template) throw new Error("Notification template not found");
 
-							templateData = options.data;
-							templateData.project = await db.Project.scope(
-								"includeConfig",
-								"includeEmailConfig",
-							).findByPk(instance.projectId);
-							const keys = ["resource", "user", "comment", "submission"];
-							for (const key of keys) {
-								const idkey = key + "Id";
-								const model = key.charAt(0).toUpperCase() + key.slice(1);
+						templateData = options.data;
+						templateData.project = await db.Project.scope(
+							"includeConfig",
+							"includeEmailConfig",
+						).findByPk(instance.projectId);
+						const keys = ["resource", "user", "comment", "submission"];
+						for (const key of keys) {
+							const idkey = `${key}Id`;
+							const model = key.charAt(0).toUpperCase() + key.slice(1);
 
-								if (options.data[idkey]) {
-									// Handle array of ids
-									if (
-										Array.isArray(options.data[idkey]) &&
-										options.data[idkey].length == 1
-									) {
-										options.data[idkey] = options.data[idkey][0];
-									}
+							if (options.data[idkey]) {
+								// Handle array of ids
+								if (
+									Array.isArray(options.data[idkey]) &&
+									options.data[idkey].length === 1
+								) {
+									options.data[idkey] = options.data[idkey][0];
+								}
 
-									// If there are multiple IDs
-									if (Array.isArray(options.data[idkey])) {
-										templateData[`${key}s`] = await db[model].findAll({
-											where: { id: options.data[idkey] },
-										});
+								// If there are multiple IDs
+								if (Array.isArray(options.data[idkey])) {
+									templateData[`${key}s`] = await db[model].findAll({
+										where: { id: options.data[idkey] },
+									});
+								} else {
+									// Special handling for 'Resource'
+									if (model === "Resource") {
+										templateData[key] = await db.Resource.findByPk(
+											options.data[idkey],
+											{
+												include: [
+													{ model: db.Tag, attributes: ["name", "type"] },
+												],
+											},
+										);
 									} else {
-										// Special handling for 'Resource'
-										if (model === "Resource") {
-											templateData[key] = await db.Resource.findByPk(
-												options.data[idkey],
-												{
-													include: [
-														{ model: db.Tag, attributes: ["name", "type"] },
-													],
-												},
-											);
-										} else {
-											// Default behavior for other models
-											templateData[key] = await db[model].findByPk(
-												options.data[idkey],
-											);
-										}
+										// Default behavior for other models
+										templateData[key] = await db[model].findByPk(
+											options.data[idkey],
+										);
 									}
 								}
 							}
-						} catch (err) {
-							throw err;
 						}
 
 						try {

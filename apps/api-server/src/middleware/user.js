@@ -16,29 +16,28 @@ const adapters = {};
  */
 module.exports = async function getUser(req, res, next) {
 	try {
-		if (!req.headers["authorization"]) {
+		if (!req.headers.authorization) {
 			return nextWithEmptyUser(req, res, next);
-		} else {
-			const allowedUploadPaths = ["/upload/images", "/upload/documents"];
+		}
+		const allowedUploadPaths = ["/upload/images", "/upload/documents"];
 
-			const isUploadRequest = allowedUploadPaths.some((path) =>
-				req.path.endsWith(path),
-			);
+		const isUploadRequest = allowedUploadPaths.some((path) =>
+			req.path.endsWith(path),
+		);
 
-			if (isUploadRequest) {
-				const payload = {
-					userId: "9999999",
-					authProvider: "upload-service",
-					exp: Math.floor(Date.now() / 1000) + 5 * 60,
-				};
+		if (isUploadRequest) {
+			const payload = {
+				userId: "9999999",
+				authProvider: "upload-service",
+				exp: Math.floor(Date.now() / 1000) + 5 * 60,
+			};
 
-				const uploadJwt = jwt.sign(payload, config.auth.jwtSecret);
+			const uploadJwt = jwt.sign(payload, config.auth.jwtSecret);
 
-				req.headers["authorization"] = `Bearer ${uploadJwt}`;
-			}
+			req.headers.authorization = `Bearer ${uploadJwt}`;
 		}
 		const { userId, isFixed, authProvider } = parseAuthHeader(
-			req.headers["authorization"],
+			req.headers.authorization,
 		);
 		const authConfig = await authSettings.config({
 			project: req.project,
@@ -49,7 +48,7 @@ module.exports = async function getUser(req, res, next) {
 			return nextWithEmptyUser(req, res, next);
 		}
 
-		const projectId = req.project && req.project.id;
+		const projectId = req.project?.id;
 
 		const userEntity =
 			(await getUserInstance({
@@ -83,12 +82,11 @@ function nextWithEmptyUser(req, res, next) {
 
 function parseAuthHeader(authorizationHeader) {
 	// todo: // config moet authConfig zijn
-	const fixedAuthTokens =
-		config && config.auth && config.auth["fixedAuthTokens"];
+	const fixedAuthTokens = config?.auth?.fixedAuthTokens;
 
 	if (authorizationHeader.match(/^bearer /i)) {
 		const jwt = parseJwt(authorizationHeader);
-		return jwt && jwt.userId
+		return jwt?.userId
 			? { userId: jwt.userId, authProvider: jwt.authProvider }
 			: {};
 	}
@@ -116,7 +114,7 @@ function parseAuthHeader(authorizationHeader) {
  */
 function parseJwt(authorizationHeader) {
 	const token = authorizationHeader.replace(/^bearer /i, "");
-	return jwt.verify(token, config.auth["jwtSecret"]);
+	return jwt.verify(token, config.auth.jwtSecret);
 }
 
 /**
@@ -159,7 +157,7 @@ async function getUserInstance({
 		dbUser = await db.User.findOne({ where });
 
 		if (isFixed) {
-			if (!dbUser.projectId || dbUser.projectId == config.admin.projectId)
+			if (!dbUser.projectId || dbUser.projectId === config.admin.projectId)
 				dbUser.role = "superuser"; // !dbUser.projectId is backwards compatibility
 			return dbUser;
 		}
@@ -173,8 +171,8 @@ async function getUserInstance({
 	}
 
 	if (
-		dbUser.projectId != projectId &&
-		dbUser.projectId == config.admin.projectId
+		dbUser.projectId !== projectId &&
+		dbUser.projectId === config.admin.projectId
 	) {
 		// admin op config.admin.projectId = superuser; use the correct authConfig
 		const adminProject = await db.Project.findOne({
@@ -206,8 +204,8 @@ async function getUserInstance({
 
 		const mergedUser = merge(dbUser, userData);
 		if (
-			mergedUser.projectId == config.admin.projectId &&
-			mergedUser.role == "admin"
+			mergedUser.projectId === config.admin.projectId &&
+			mergedUser.role === "admin"
 		) {
 			// superusers mogen dingen over projecten heen, mindere goden alleen binnen hun eigen project
 			mergedUser.role = "superuser";
@@ -227,7 +225,7 @@ async function getUserInstance({
  * @returns {Promise<{}>}
  */
 async function resetUserToken(user) {
-	if (!(user && user.update)) return {};
+	if (!user?.update) return {};
 	const idpUser = { ...user.idpUser };
 	delete idpUser.accesstoken;
 	await user.update({

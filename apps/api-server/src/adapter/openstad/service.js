@@ -48,7 +48,7 @@ service.fetchUserData = async function fetchUserData({
 		let userData;
 		const json = await response.json();
 
-		if (json && json.data && json.data.length > 0) {
+		if (json?.data && json.data.length > 0) {
 			userData = json.data[0];
 		} else if (json.id) {
 			userData = json;
@@ -143,7 +143,7 @@ service.updateUser = async ({ authConfig, userData = {} }) => {
 
 	userData = unmapUserData(userData);
 
-	if (!(userData && userData.id)) throw new Error("No user id found");
+	if (!userData?.id) throw new Error("No user id found");
 
 	if (userData.role) {
 		// translate to what the auth server expects
@@ -185,7 +185,7 @@ service.updateUser = async ({ authConfig, userData = {} }) => {
 service.deleteUser = async ({ authConfig, userData = {} }) => {
 	// TODO: unmap userData
 
-	if (!(userData && userData.id)) throw new Error("No user id found");
+	if (!userData?.id) throw new Error("No user id found");
 
 	const url = `${authConfig.serverUrlInternal}/api/admin/user/${userData.id}/delete?client_id=${authConfig.clientId}`;
 
@@ -257,17 +257,17 @@ service.createClient = async ({ authConfig, project }) => {
 		// create client
 		let authTypes =
 			authConfig.authTypes ||
-			(authConfig.provider == "openstad" && "Url") ||
-			(authConfig.provider == "anonymous" && "Anonymous");
+			(authConfig.provider === "openstad" && "Url") ||
+			(authConfig.provider === "anonymous" && "Anonymous");
 		if (!Array.isArray(authTypes)) authTypes = [authTypes];
 		let twoFactorRoles =
 			authConfig.twoFactorRoles ||
-			(authConfig.provider == "openstad" && ["admin"]);
+			(authConfig.provider === "openstad" && ["admin"]);
 		if (!Array.isArray(twoFactorRoles)) twoFactorRoles = [authTypes];
 		let requiredUserFields =
 			authConfig.requiredUserFields ||
-			(authConfig.provider == "openstad" && "name") ||
-			(authConfig.provider == "anonymous" && "postcode");
+			(authConfig.provider === "openstad" && "name") ||
+			(authConfig.provider === "anonymous" && "postcode");
 		if (!Array.isArray(requiredUserFields))
 			requiredUserFields = [requiredUserFields];
 		const url = `${adminAuthConfig.serverUrlInternal}/api/admin/client`;
@@ -377,9 +377,9 @@ service.updateClient = async ({ authConfig, project }) => {
 			"configureTwoFactor",
 		];
 		properties.forEach((property) => {
-			if (authConfig?.config && authConfig.config[property]) {
+			if (authConfig?.config?.[property]) {
 				newClientConfig[property] = authConfig.config[property];
-			} else if (client?.config && client.config[property]) {
+			} else if (client?.config?.[property]) {
 				newClientConfig[property] = client.config[property];
 			}
 		});

@@ -97,7 +97,7 @@ Als de webmaster de website gesloten heeft is deze in principe nog wel te bezoek
 				},
 				template: {
 					type: "string",
-					default: `NO TEMPLATE DEFINED`,
+					default: "NO TEMPLATE DEFINED",
 				},
 				attachments: {
 					type: "arrayOfStrings",
@@ -119,7 +119,7 @@ Als de webmaster de website gesloten heeft is deze in principe nog wel te bezoek
 				},
 				template: {
 					type: "string",
-					default: `NO TEMPLATE DEFINED`,
+					default: "NO TEMPLATE DEFINED",
 				},
 				attachments: {
 					type: "arrayOfStrings",
@@ -141,7 +141,7 @@ Als de webmaster de website gesloten heeft is deze in principe nog wel te bezoek
 				},
 				template: {
 					type: "string",
-					default: `NO TEMPLATE DEFINED`,
+					default: "NO TEMPLATE DEFINED",
 				},
 				attachments: {
 					type: "arrayOfStrings",

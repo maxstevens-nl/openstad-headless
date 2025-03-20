@@ -114,7 +114,7 @@ router
 	.put(auth.useReqUser)
 	.put((req, res, next) => {
 		const tag = req.results;
-		if (!(tag && tag.can && tag.can("update")))
+		if (!tag?.can?.("update"))
 			return next(new Error("You cannot update this tag"));
 		tag
 			.authorizeData(req.body, "update")

@@ -7,7 +7,7 @@ const Sequelize = require("sequelize");
  */
 module.exports = function getSequelizeErrors(error) {
 	const errors = [];
-	if (typeof error == "object" && error instanceof Sequelize.ValidationError) {
+	if (typeof error === "object" && error instanceof Sequelize.ValidationError) {
 		error.errors.forEach((error) => {
 			// notNull kent geen custom messages in deze versie van sequelize; zie https://github.com/sequelize/sequelize/issues/1500
 			// TODO: we zitten op een nieuwe versie van seq; vermoedelijk kan dit nu wel

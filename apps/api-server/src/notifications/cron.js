@@ -37,7 +37,7 @@ module.exports = async function processQueuedNotifications() {
 						target.forEach((entry) => {
 							Object.keys(entry.data).map((key) => {
 								if (!data[key]) data[key] = [];
-								if (!data[key].find((d) => d == entry.data[key]))
+								if (!data[key].find((d) => d === entry.data[key]))
 									data[key].push(entry.data[key]);
 							});
 						});

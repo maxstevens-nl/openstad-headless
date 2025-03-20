@@ -1,8 +1,8 @@
-var config = require("config");
+const config = require("config");
 const userHasRole = require("../lib/sequelize-authorization/lib/hasRole");
 
 module.exports = (db, sequelize, DataTypes) => {
-	var Vote = sequelize.define(
+	const Vote = sequelize.define(
 		"vote",
 		{
 			resourceId: {
@@ -109,7 +109,7 @@ module.exports = (db, sequelize, DataTypes) => {
 	};
 
 	Vote.prototype.toggle = function () {
-		var checked = this.get("checked");
+		const checked = this.get("checked");
 		return this.update({
 			checked: checked === null ? false : !checked,
 		});

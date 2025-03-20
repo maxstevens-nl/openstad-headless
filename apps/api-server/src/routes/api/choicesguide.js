@@ -81,14 +81,8 @@ router
 		const where = {};
 		req.scope = ["defaultScope"];
 
-		if (req.params && req.params.projectId) {
+		if (req.params?.projectId) {
 			req.scope.push({ method: ["forProjectId", req.params.projectId] });
-		}
-
-		const { page = 0, limit = 50, widgetId } = req.query;
-
-		if (widgetId) {
-			where.widgetId = widgetId;
 		}
 
 		try {
@@ -96,8 +90,8 @@ router
 				...req.scope,
 			).findAndCountAll({
 				where,
-				offset: page * limit,
-				limit: Number.parseInt(limit),
+				offset: req.dbQuery.offset,
+				limit: req.dbQuery.limit,
 				order: req.dbQuery.order,
 			});
 
@@ -120,14 +114,7 @@ router
 		}
 	})
 	.get((req, res, next) => {
-		res.json({
-			data: req.results,
-			pagination: {
-				page: req.dbQuery.page,
-				totalPages: req.dbQuery.totalPages,
-				totalCount: req.dbQuery.count,
-			},
-		});
+		res.json(req.results);
 	})
 
 	// create choicesguide result
@@ -139,7 +126,7 @@ router
 	})
 	.post((req, res, next) => {
 		const data = {
-			userId: req.user && req.user.id,
+			userId: req.user?.id,
 			result: req.body.submittedData,
 			widgetId: req.body.widgetId,
 			projectId: req.params.projectId,
@@ -158,22 +145,6 @@ router
 			.create(data)
 			.then((result) => {
 				res.json(result);
-			})
-			.catch(next);
-	});
-
-// delete choiceguide result
-// ---------
-router
-	.route("/:choicesGuideId(\\d+)")
-	.delete(auth.can("ChoicesGuideResult", "delete"))
-	.delete((req, res, next) => {
-		const { choicesGuideId } = req.params;
-		db.ChoicesGuideResult.destroy({
-			where: { id: choicesGuideId },
-		})
-			.then(() => {
-				res.json({ message: "ChoiceGuide result deleted successfully." });
 			})
 			.catch(next);
 	});

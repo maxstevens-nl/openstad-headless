@@ -1,5 +1,5 @@
 module.exports = (db, sequelize, DataTypes) => {
-	var ActionRun = sequelize.define("action_run", {
+	const ActionRun = sequelize.define("action_run", {
 		status: {
 			type: DataTypes.ENUM("running", "finished", "errored"),
 			defaultValue: "running",

@@ -1,11 +1,11 @@
-var sanitize = require("../util/sanitize");
-var config = require("config");
+const sanitize = require("../util/sanitize");
+const config = require("config");
 const merge = require("merge");
 
 const userHasRole = require("../lib/sequelize-authorization/lib/hasRole");
 
 module.exports = (db, sequelize, DataTypes) => {
-	var Poll = sequelize.define(
+	const Poll = sequelize.define(
 		"poll",
 		{
 			resourceId: {
@@ -49,7 +49,7 @@ module.exports = (db, sequelize, DataTypes) => {
 				get: function () {
 					let value = this.getDataValue("choices");
 					try {
-						if (typeof value == "string") {
+						if (typeof value === "string") {
 							value = JSON.parse(value);
 						}
 					} catch (err) {}
@@ -57,9 +57,9 @@ module.exports = (db, sequelize, DataTypes) => {
 				},
 				set: function (value) {
 					try {
-						if (typeof value == "string") value = JSON.parse(value);
+						if (typeof value === "string") value = JSON.parse(value);
 					} catch (err) {}
-					if (typeof value != "object") value = {};
+					if (typeof value !== "object") value = {};
 					const sanatized = {};
 					Object.keys(value).forEach((key) => {
 						const skey = sanitize.title(key);
@@ -225,14 +225,14 @@ module.exports = (db, sequelize, DataTypes) => {
 			const votes = self.getDataValue("votes");
 			return (
 				userHasRole(user, "editor") ||
-				(userHasRole(user, "owner", self.userId) && !(votes && votes.length))
+				(userHasRole(user, "owner", self.userId) && !votes?.length)
 			);
 		},
 		canDelete: (user, self) => {
 			const votes = self.getDataValue("votes");
 			return (
 				userHasRole(user, "editor") ||
-				(userHasRole(user, "owner", self.userId) && !(votes && votes.length))
+				(userHasRole(user, "owner", self.userId) && !votes?.length)
 			);
 		},
 		canVote: (user, self) => {
@@ -241,12 +241,11 @@ module.exports = (db, sequelize, DataTypes) => {
 				self.resource.auth.canVoteOnPoll() &&
 				userHasRole(user, "member") &&
 				self.id &&
-				self.status == "OPEN"
+				self.status === "OPEN"
 			) {
 				return true;
-			} else {
-				return false;
 			}
+			return false;
 		},
 		toAuthorizedJSON(user, result, self) {
 			result.can = {};

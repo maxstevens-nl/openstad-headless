@@ -1,6 +1,6 @@
-var config = require("config"),
-	log = require("debug")("app:user"),
-	pick = require("lodash/pick");
+const config = require("config");
+const log = require("debug")("app:user");
+const pick = require("lodash/pick");
 
 const merge = require("merge");
 
@@ -12,16 +12,16 @@ const getExtraDataConfig = require("../lib/sequelize-authorization/lib/getExtraD
 const roles = require("../lib/sequelize-authorization/lib/roles");
 
 // For detecting throwaway accounts in the email address validation.
-var emailBlackList = require("../../config/mail_blacklist");
+const emailBlackList = require("../../config/mail_blacklist");
 
 module.exports = (db, sequelize, DataTypes) => {
-	var User = sequelize.define(
+	const User = sequelize.define(
 		"user",
 		{
 			projectId: {
 				type: DataTypes.INTEGER,
 				defaultValue:
-					config.projectId && typeof config.projectId == "number"
+					config.projectId && typeof config.projectId === "number"
 						? config.projectId
 						: null,
 			},
@@ -124,7 +124,7 @@ module.exports = (db, sequelize, DataTypes) => {
 						msg: "Geen geldig emailadres",
 					},
 					notBlackListed: (email) => {
-						var match = email && email.match(/^.+@(.+)$/);
+						const match = email?.match(/^.+@(.+)$/);
 						if (match) {
 							const domainName = match[1];
 							if (domainName in emailBlackList) {
@@ -206,7 +206,6 @@ module.exports = (db, sequelize, DataTypes) => {
 					"anonymous",
 					"all",
 				),
-				defaultValue: null,
 				auth: {
 					viewableBy: ["moderator", "owner"],
 					updateableBy: ["moderator", "owner"],
@@ -224,7 +223,6 @@ module.exports = (db, sequelize, DataTypes) => {
 					"anonymous",
 					"all",
 				),
-				defaultValue: null,
 				auth: {
 					viewableBy: ["moderator", "owner"],
 					updateableBy: ["moderator", "owner"],
@@ -408,7 +406,7 @@ module.exports = (db, sequelize, DataTypes) => {
 				// todo: owner wordt nu altijd toegevoegd, dat moet alleen als die in listableBy staat, maar zie vorige regel
 				// todo: gelijkttrekken met Resource.onlyVisible: die is nu exclusive en deze inclusive
 
-				const requiredRole = (this.auth && this.auth.listableBy) || "all";
+				const requiredRole = this.auth?.listableBy || "all";
 
 				// if requiredRole == all then listableByRole is not relevant and neither is userRole
 				if (requiredRole === "all") return;
@@ -462,14 +460,13 @@ module.exports = (db, sequelize, DataTypes) => {
 							{ viewableByRole: roles[userRole] || "all" },
 						),
 					};
-				} else {
-					return {
-						where: sequelize.or(
-							{ viewableByRole: "all" },
-							{ viewableByRole: roles[userRole] || "all" },
-						),
-					};
 				}
+				return {
+					where: sequelize.or(
+						{ viewableByRole: "all" },
+						{ viewableByRole: roles[userRole] || "all" },
+					),
+				};
 			},
 		};
 	};
@@ -482,20 +479,19 @@ module.exports = (db, sequelize, DataTypes) => {
 	};
 
 	User.prototype.authenticate = function (password) {
-		var method = "bcrypt";
+		const method = "bcrypt";
 		if (!this.passwordHash) {
 			log("user %d has no passwordHash", this.id);
 			return false;
-		} else {
-			var hash = JSON.parse(this.passwordHash);
-			var result = Password[method].compare(password, hash);
-			log(
-				"authentication for user %d %s",
-				this.id,
-				result ? "succeeded" : "failed",
-			);
-			return result;
 		}
+		const hash = JSON.parse(this.passwordHash);
+		const result = Password[method].compare(password, hash);
+		log(
+			"authentication for user %d %s",
+			this.id,
+			result ? "succeeded" : "failed",
+		);
+		return result;
 	};
 
 	User.prototype.isUnknown = function () {
@@ -526,7 +522,7 @@ module.exports = (db, sequelize, DataTypes) => {
 
 	User.prototype.hasVoted = function () {
 		return db.Vote.findOne({ where: { userId: this.id } }).then((vote) => {
-			return vote ? true : false;
+			return !!vote;
 		});
 	};
 
@@ -534,7 +530,7 @@ module.exports = (db, sequelize, DataTypes) => {
 		return db.Vote.findOne({
 			where: { userId: this.id, confirmed: 1, confirmResourceId: null },
 		}).then((vote) => {
-			return vote ? true : false;
+			return !!vote;
 		});
 	};
 
@@ -576,7 +572,7 @@ module.exports = (db, sequelize, DataTypes) => {
 
 			const extraData = {};
 			if (!this.project) throw Error("Project not found");
-			if (this.project.config.users && this.project.config.users.extraData) {
+			if (this.project.config.users?.extraData) {
 				Object.keys(this.project.config.users.extraData).map(
 					(key) => (extraData[key] = null),
 				);
@@ -591,11 +587,7 @@ module.exports = (db, sequelize, DataTypes) => {
 				viewableByRole: "admin",
 				email: null,
 				nickName: null,
-				name:
-					(config.users &&
-						config.users.anonymize &&
-						config.users.anonymize.name) ||
-					"Gebruiker is ganonimiseerd",
+				name: config.users?.anonymize?.name || "Gebruiker is ganonimiseerd",
 				postcode: null,
 				city: null,
 				country: null,
@@ -607,7 +599,7 @@ module.exports = (db, sequelize, DataTypes) => {
 			});
 
 			// remove existing votes
-			if (result.votes && result.votes.length) {
+			if (result.votes?.length) {
 				for (const vote of result.votes) {
 					await vote.destroy();
 				}
@@ -631,14 +623,10 @@ module.exports = (db, sequelize, DataTypes) => {
 			// copy the base functionality
 			self = self || this;
 
-			if (!user) user = self.auth && self.auth.user;
+			if (!user) user = self.auth?.user;
 			if (!user || !user.role) user = { role: "all" };
 
-			let valid = userHasRole(
-				user,
-				self.auth && self.auth.createableBy,
-				self.id,
-			);
+			let valid = userHasRole(user, self.auth?.createableBy, self.id);
 
 			// extra: geen acties op users met meer rechten dan je zelf hebt
 			valid = valid && (!self.role || userHasRole(user, self.role));
@@ -657,11 +645,7 @@ module.exports = (db, sequelize, DataTypes) => {
 
 			if (!user || !user.role) user = { role: "all" };
 
-			let valid = userHasRole(
-				self,
-				self.auth && self.auth.updateableBy,
-				self.id,
-			);
+			let valid = userHasRole(self, self.auth?.updateableBy, self.id);
 
 			// extra: isOwner through user on different project
 			valid =
@@ -669,7 +653,7 @@ module.exports = (db, sequelize, DataTypes) => {
 				(self.idpUser &&
 					user.idpUser &&
 					self.idpUser.identifier &&
-					self.idpUser.identifier == user.idpUser.identifier);
+					self.idpUser.identifier === user.idpUser.identifier);
 
 			valid = valid && userHasRole(self, user.role);
 
@@ -680,14 +664,10 @@ module.exports = (db, sequelize, DataTypes) => {
 			// copy the base functionality
 			self = self || this;
 
-			if (!user) user = self.auth && self.auth.user;
+			if (!user) user = self.auth?.user;
 			if (!user || !user.role) user = { role: "all" };
 
-			let valid = userHasRole(
-				user,
-				self.auth && self.auth.updateableBy,
-				self.id,
-			);
+			let valid = userHasRole(user, self.auth?.updateableBy, self.id);
 
 			// extra: admin on different project
 			valid = valid && userHasRole(user, "admin");

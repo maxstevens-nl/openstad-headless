@@ -1,9 +1,9 @@
 const config = require("config");
 const prefillAllowedDomains = require("../services/prefillAllowedDomains");
-const URL = require("url").URL;
+const URL = require("node:url").URL;
 
 module.exports = (req, res, next) => {
-	let url = req.headers && req.headers.origin;
+	let url = req.headers?.origin;
 
 	let domain = "";
 	try {
@@ -11,23 +11,21 @@ module.exports = (req, res, next) => {
 	} catch (err) {}
 
 	let allowedDomains =
-		(req.project && req.project.config && req.project.config.allowedDomains) ||
-		config.allowedDomains;
+		req.project?.config?.allowedDomains || config.allowedDomains;
 	allowedDomains = prefillAllowedDomains(allowedDomains || []);
 
 	if (!allowedDomains || allowedDomains.indexOf(domain) === -1) {
-		url = config.url || req.protocol + "://" + req.host;
+		url = config.url || `${req.protocol}://${req.host}`;
 
 		// Exception for URLs without project - we allow all origins
 		// see project middleware for list of exceptions
 		if (
-			req.headers &&
-			req.headers.origin &&
+			req.headers?.origin &&
 			(req.path.match(
 				"^(/api/repo|/api/template|/api/area|/api/widget|/api/image|/api/document|/api/widget-type|/widget|/$)",
 			) ||
 				req.path.match("^(/api/lock(/[^/]*)?)$") ||
-				(req.path.match("^(/api/user)") && req.method == "GET"))
+				(req.path.match("^(/api/user)") && req.method === "GET"))
 		) {
 			url = req.headers.origin;
 			console.log("no project, allowing origin", url);
@@ -35,9 +33,8 @@ module.exports = (req, res, next) => {
 	}
 
 	if (
-		config.dev &&
-		config.dev["Header-Access-Control-Allow-Origin"] &&
-		process.env.NODE_ENV == "development"
+		config.dev?.["Header-Access-Control-Allow-Origin"] &&
+		process.env.NODE_ENV === "development"
 	) {
 		res.header(
 			"Access-Control-Allow-Origin",
@@ -56,7 +53,7 @@ module.exports = (req, res, next) => {
 	);
 	res.header("Access-Control-Allow-Credentials", "true");
 
-	if (process.env.NODE_ENV != "development") {
+	if (process.env.NODE_ENV !== "development") {
 		res.header("Content-type", "application/json; charset=utf-8");
 		res.header(
 			"Strict-Transport-Security",

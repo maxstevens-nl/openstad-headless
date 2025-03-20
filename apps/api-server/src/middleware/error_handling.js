@@ -1,5 +1,5 @@
-var createError = require("http-errors");
-var statuses = require("statuses");
+const createError = require("http-errors");
+const statuses = require("statuses");
 
 module.exports = (app) => {
 	// We only get here when the request has not yet been handled by a route.
@@ -11,18 +11,18 @@ module.exports = (app) => {
 	app.use(function handleError(err, req, res, next) {
 		console.log(err);
 
-		var env = app.get("env");
-		var status =
+		const env = app.get("env");
+		const status =
 			err.status ||
-			(err.name && err.name == "SequelizeValidationError" && 400) ||
+			(err.name && err.name === "SequelizeValidationError" && 400) ||
 			500;
-		var userIsAdmin = req.user && req.user.role && req.user.role == "admin";
-		var showDebug = status == 500 && (env === "development" || userIsAdmin);
-		var friendlyStatus = statuses[status];
-		var stack = err.stack || err.toString();
-		var message = err.message || err.error;
-		message = message && message.replace(/Validation error:?\s*/, "");
-		var errorStack = showDebug ? stack : "";
+		const userIsAdmin = req.user?.role && req.user.role === "admin";
+		const showDebug = status === 500 && (env === "development" || userIsAdmin);
+		const friendlyStatus = statuses[status];
+		const stack = err.stack || err.toString();
+		let message = err.message || err.error;
+		message = message?.replace(/Validation error:?\s*/, "");
+		const errorStack = showDebug ? stack : "";
 
 		res.status(status);
 		res.json({

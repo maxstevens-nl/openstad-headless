@@ -51,7 +51,7 @@ router.all("*", (req, res, next) => {
 	// alleen admins of jezelf
 	if (!req.user.id)
 		return next(createError(401, "Je kunt deze activiteiten niet bekijken"));
-	if (!(req.params.userId == req.user.id || hasRole(req.user, "admin")))
+	if (!(req.params.userId === req.user.id || hasRole(req.user, "admin")))
 		return next(createError(401, "Je kunt deze activiteiten niet bekijken"));
 	next();
 });
@@ -65,20 +65,20 @@ router
 	.get((req, res, next) => {
 		req.activities = [];
 		["resources", "comments", "votes"].forEach((key) => {
-			const include = "include" + key.charAt(0).toUpperCase() + key.slice(1);
+			const include = `include${key.charAt(0).toUpperCase()}${key.slice(1)}`;
 			if (req.query[include]) {
 				req.activities.push(key);
 			}
 		});
-		if (req.activities.length == 0) req.activities = activityKeys;
+		if (req.activities.length === 0) req.activities = activityKeys;
 
 		if (
-			req.query.includeOtherProjects == "false" ||
-			req.query.includeOtherProjects == "0"
+			req.query.includeOtherProjects === "false" ||
+			req.query.includeOtherProjects === "0"
 		)
 			req.query.includeOtherProjects = false;
 		req.includeOtherProjects =
-			typeof req.query.includeOtherProjects != "undefined"
+			typeof req.query.includeOtherProjects !== "undefined"
 				? !!req.query.includeOtherProjects
 				: true;
 		req.results = {};
@@ -206,11 +206,10 @@ router
 		let activity = [];
 
 		req.activities.forEach((which) => {
-			req.results[which] &&
-				req.results[which].forEach((result) => {
-					result.auth = result.auth || {};
-					result.auth.user = req.user;
-				});
+			req.results[which]?.forEach((result) => {
+				result.auth = result.auth || {};
+				result.auth.user = req.user;
+			});
 
 			if (activityConfig[which]) {
 				const formattedAsActivities =
@@ -245,8 +244,8 @@ router
 		// sort activities on createdAt
 
 		activity.sort((a, b) => {
-			var dateA = new Date(a.createdAt),
-				dateB = new Date(b.createdAt);
+			const dateA = new Date(a.createdAt);
+			const dateB = new Date(b.createdAt);
 			return dateB - dateA;
 		});
 

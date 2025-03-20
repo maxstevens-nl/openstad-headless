@@ -1,4 +1,4 @@
-var log = require("debug")("app:cron");
+const log = require("debug")("app:cron");
 const db = require("../db");
 
 // -------

@@ -15,7 +15,7 @@ const hasRole = require("../../lib/sequelize-authorization/lib/hasRole");
 const removeProtocolFromUrl = require("../../middleware/remove-protocol-from-url");
 const messageStreaming = require("../../services/message-streaming");
 const service = require("../../adapter/openstad/service");
-const fs = require("fs");
+const fs = require("node:fs");
 const getWidgetSettings = require("./../widget/widget-settings");
 const widgetDefinitions = getWidgetSettings();
 const createError = require("http-errors");
@@ -35,7 +35,7 @@ async function getProject(req, res, next, include = []) {
 		if (req.query.includeAuthConfig && hasRole(req.user, "admin")) {
 			const providers = await authSettings.providers({ project });
 			for (const provider of providers) {
-				if (provider == "default") continue;
+				if (provider === "default") continue;
 				const authConfig = await authSettings.config({
 					project,
 					useAuth: provider,
@@ -748,7 +748,7 @@ router
 				});
 				const adapter = await authSettings.adapter({ authConfig });
 
-				if (!!allowedDomains) {
+				if (allowedDomains) {
 					authConfig.allowedDomains = allowedDomains;
 				}
 
@@ -770,21 +770,21 @@ router
 	})
 	.put(async (req, res, next) => {
 		const project = await db.Project.findOne({ where: { id: req.results.id } });
-		if (!(project && project.can && project.can("update")))
+		if (!project?.can?.("update"))
 			return next(new Error("You cannot update this project"));
 
 		req.pendingMessages = [
 			{ key: `project-${project.id}-update`, value: "event" },
 		];
-		if (req.body.url && req.body.url != project.url)
-			req.pendingMessages.push({ key: `project-urls-update`, value: "event" });
+		if (req.body.url && req.body.url !== project.url)
+			req.pendingMessages.push({ key: "project-urls-update", value: "event" });
 
 		// Update allowedDomains if creating a new site
 		const updateBody = req.body;
 		const hasInitDomain =
 			project?.config?.allowedDomains !== undefined &&
 			project.config.allowedDomains.length === 1 &&
-			project.config.allowedDomains[0] == "api.openstad.org";
+			project.config.allowedDomains[0] === "api.openstad.org";
 		if (
 			((project?.config?.allowedDomains || []).length === 0 || hasInitDomain) &&
 			req?.body?.url
@@ -792,7 +792,7 @@ router
 			// Check if url has protocol
 			let reqUrl = req.body.url;
 			if (!reqUrl.includes("http://") && !reqUrl.includes("https://")) {
-				reqUrl = "http://" + reqUrl;
+				reqUrl = `http://${reqUrl}`;
 			}
 			const url = new URL(reqUrl);
 			const host = url.host;
@@ -926,7 +926,7 @@ router
 		try {
 			const result = await req.project.willAnonymizeAllUsers();
 			req.results = result;
-			if (req.params.willOrDo == "do") {
+			if (req.params.willOrDo === "do") {
 				result.message = "Ok";
 
 				req.project.doAnonymizeAllUsers(
@@ -944,14 +944,12 @@ router
 		// customized version of auth.useReqUser
 		delete req.results.externalUserIds;
 		Object.keys(req.results).forEach((which) => {
-			req.results[which] &&
-				req.results[which].forEach &&
-				req.results[which].forEach((result) => {
-					if (typeof result == "object") {
-						result.auth = result.auth || {};
-						result.auth.user = req.user;
-					}
-				});
+			req.results[which]?.forEach?.((result) => {
+				if (typeof result === "object") {
+					result.auth = result.auth || {};
+					result.auth.user = req.user;
+				}
+			});
 		});
 		return next();
 	})

@@ -1,11 +1,10 @@
-var config = require("config"),
-	express = require("express");
+const config = require("config");
+const express = require("express");
 
 // Misc
-var util = require("./util");
-var log = require("debug")("app:http");
+const util = require("./util");
+const log = require("debug")("app:http");
 const morgan = require("morgan");
-const db = require("./db");
 
 module.exports = {
 	app: undefined,
@@ -14,7 +13,7 @@ module.exports = {
 		log("initializing...");
 
 		// var Raven       = require('../config/raven');
-		var compression = require("compression");
+		const compression = require("compression");
 		// var cors        = require('cors');
 
 		this.app = express();
@@ -66,10 +65,10 @@ module.exports = {
 		this._initBasicMiddleware();
 		this._initSessionMiddleware();
 
-		var middleware = config.express.middleware;
+		const middleware = config.express.middleware;
 
 		middleware.forEach((entry) => {
-			if (typeof entry == "object") {
+			if (typeof entry === "object") {
 				// nieuwe versie: use route
 				this.app.use(entry.route, require(entry.router));
 			} else {
@@ -88,7 +87,7 @@ module.exports = {
 	},
 
 	_initStatics: () => {
-		var headerOptions = {
+		const headerOptions = {
 			setHeaders: (res) => {
 				res.set({
 					"Cache-Control": "private",
@@ -97,8 +96,8 @@ module.exports = {
 		};
 	},
 	_initBasicMiddleware: function () {
-		var bodyParser = require("body-parser");
-		var methodOverride = require("method-override");
+		const bodyParser = require("body-parser");
+		const methodOverride = require("method-override");
 
 		// Middleware to fill `req.project` with a `Project` instance.
 		const reqProject = require("./middleware/project");
@@ -110,7 +109,7 @@ module.exports = {
 		this.app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 		this.app.use(
 			methodOverride((req, res) => {
-				var method;
+				let method;
 				if (req.body && req.body instanceof Object && "_method" in req.body) {
 					method = req.body._method;
 					delete req.body._method;
@@ -121,7 +120,7 @@ module.exports = {
 						req.get("X-Method-Override");
 				}
 				if (method) {
-					log("method override: " + method);
+					log(`method override: ${method}`);
 				}
 				return method;
 			}),

@@ -1,12 +1,12 @@
-var bcrypt = require("bcrypt");
-var config = require("config");
+const bcrypt = require("bcrypt");
+const config = require("config");
 
 module.exports = {
 	bcrypt: {
 		hash: (input) => {
-			var cost = 10;
-			var salt = bcrypt.genSaltSync(cost);
-			var hash = bcrypt.hashSync(input, salt);
+			const cost = 10;
+			const salt = bcrypt.genSaltSync(cost);
+			const hash = bcrypt.hashSync(input, salt);
 			return {
 				method: "bcrypt",
 				cost: cost,

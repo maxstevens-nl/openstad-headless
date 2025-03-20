@@ -2,8 +2,8 @@ const config = require("config");
 
 module.exports = {
 	init: function init(req, res, next) {
-		if (typeof req.query.page == "undefined") return next();
-		if (typeof req.query.search != "undefined") return next(); // if search then pagination after the search
+		if (typeof req.query.page === "undefined") return next();
+		if (typeof req.query.search !== "undefined") return next(); // if search then pagination after the search
 
 		const currentPage = Number.parseInt(req.query.page) || 0;
 
@@ -18,7 +18,7 @@ module.exports = {
 	},
 
 	paginateResults: function paginateResults(req, res, next) {
-		if (typeof req.query.page == "undefined") return next();
+		if (typeof req.query.page === "undefined") return next();
 
 		let list = req.results;
 
@@ -54,7 +54,7 @@ module.exports = {
 			totalCount: listLength,
 			links: {
 				self: url.replace(/(\?|&)page=.*?(&|$)/, `$1page=${currentPage}$2`),
-				first: url.replace(/(\?|&)page=.*?(&|$)/, `$1page=0$2`),
+				first: url.replace(/(\?|&)page=.*?(&|$)/, "$1page=0$2"),
 				last: url.replace(/(\?|&)page=.*?(&|$)/, `$1page=${pageCount - 1}$2`),
 			},
 		};

@@ -12,7 +12,7 @@ const isRedirectAllowed = async (projectId, redirectUri) => {
 	allowedDomains = allowedDomains.map((domain) => {
 		// check if url has http or https and add http if not
 		if (!domain.startsWith("http://") && !domain.startsWith("https://")) {
-			domain = "http://" + domain; // add http so we can parse the url
+			domain = `http://${domain}`; // add http so we can parse the url
 		}
 		try {
 			const url = new URL(domain);
