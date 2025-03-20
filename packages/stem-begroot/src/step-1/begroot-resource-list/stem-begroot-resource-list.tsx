@@ -1,11 +1,4 @@
-import {
-	Carousel,
-	Icon,
-	Image,
-	List,
-	Pill,
-	Spacer,
-} from "@openstad-headless/ui/src";
+import { Carousel, Icon, Image, List, Spacer } from "@openstad-headless/ui/src";
 import type React from "react";
 
 import { elipsizeHTML } from "@openstad-headless/lib/ui-helpers";
@@ -15,7 +8,6 @@ import "@utrecht/design-tokens/dist/root.css";
 import {
 	Button,
 	Heading,
-	Heading5,
 	Link,
 	Paragraph,
 } from "@utrecht/component-library-react";

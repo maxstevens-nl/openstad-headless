@@ -7,9 +7,8 @@ import {
 	withApiUrl,
 } from "@/lib/server-side-props-definition";
 import type { ResourceOverviewMapWidgetProps } from "@openstad-headless/leaflet-map/src/types/resource-overview-map-widget-props";
-import { type BaseProps, ProjectSettingProps } from "@openstad-headless/types";
+import type { BaseProps } from "@openstad-headless/types";
 import { useRouter } from "next/router";
-import React from "react";
 import { PageLayout } from "../../../../../../components/ui/page-layout";
 import {
 	Tabs,

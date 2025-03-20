@@ -1,7 +1,7 @@
 import DataStore from "@openstad-headless/data-store/src";
 import Form from "@openstad-headless/form/src/form";
 import { loadWidget } from "@openstad-headless/lib/load-widget";
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChoiceGuideSidebar } from "./includes/sidebar.js";
 import { InitializeFormFields } from "./parts/init-fields.js";
 import type { ChoiceGuideProps, WeightOverview } from "./props.js";

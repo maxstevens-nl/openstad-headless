@@ -6,7 +6,6 @@ import "@utrecht/design-tokens/dist/root.css";
 import { loadWidget } from "@openstad-headless/lib/load-widget";
 import {
 	Button,
-	ButtonLink,
 	Checkbox,
 	FormLabel,
 	Heading,
@@ -20,7 +19,7 @@ import { useEffect, useRef, useState } from "react";
 import "./document-map.css";
 import { getResourceId } from "@openstad-headless/lib/get-resource-id";
 import type { BaseProps, ProjectSettingProps } from "@openstad-headless/types";
-import { CRS, Icon, type LatLngBoundsLiteral } from "leaflet";
+import { CRS, type LatLngBoundsLiteral } from "leaflet";
 import {
 	ImageOverlay,
 	MapContainer,

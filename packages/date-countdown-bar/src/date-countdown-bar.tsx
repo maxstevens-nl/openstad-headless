@@ -12,8 +12,6 @@ import {
 import { useEffect, useState } from "react";
 import "./date-countdown-bar.css";
 
-import React from "react";
-
 export type DateCountdownBarWidgetProps = {
 	beforeText?: string;
 	afterText?: string;

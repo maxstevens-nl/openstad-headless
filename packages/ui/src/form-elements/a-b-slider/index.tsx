@@ -1,9 +1,7 @@
 import React, { type FC, useState } from "react";
 import "./a-b-slider.css";
 import {
-	Accordion,
 	AccordionProvider,
-	AccordionSection,
 	Paragraph,
 	Strong,
 } from "@utrecht/component-library-react";

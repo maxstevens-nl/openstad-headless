@@ -1,6 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from "next/router";
-import * as React from "react";
 import { PageLayout } from "../../../components/ui/page-layout";
 import CreateUserGeneral from "./general";
 import CreateUserProjects from "./projects";

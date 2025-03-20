@@ -1,7 +1,7 @@
 import Form from "@openstad-headless/form/src/form";
 import type { CombinedFieldPropsWithType } from "@openstad-headless/form/src/props";
 import { Spacer } from "@openstad-headless/ui/src";
-import React, { useContext } from "react";
+import { useContext } from "react";
 
 import "@utrecht/component-library-css";
 import "@utrecht/design-tokens/dist/root.css";

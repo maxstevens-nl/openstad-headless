@@ -1,12 +1,4 @@
-import {
-	Icon,
-	IconButton,
-	Image,
-	Pill,
-	Carousel as Slider,
-	Spacer,
-} from "@openstad-headless/ui/src";
-import React from "react";
+import { Image, Carousel as Slider } from "@openstad-headless/ui/src";
 import { createRoot } from "react-dom/client";
 import "./carousel.css";
 

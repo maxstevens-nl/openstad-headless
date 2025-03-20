@@ -29,7 +29,6 @@ import type { EditFieldProps } from "@/lib/form-widget-helpers/EditFieldProps";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { CounterWidgetProps } from "@openstad-headless/counter/src/counter";
 import { useRouter } from "next/router";
-import React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 

@@ -1,14 +1,7 @@
 import "./stem-begroot-detail-dialog.css";
 
-import {
-	Icon,
-	IconButton,
-	Image,
-	Pill,
-	SecondaryButton,
-	Spacer,
-} from "@openstad-headless/ui/src";
-import React, { useState } from "react";
+import { Icon, Image, Pill, Spacer } from "@openstad-headless/ui/src";
+import { useState } from "react";
 
 import { Carousel } from "@openstad-headless/ui/src";
 import { Dialog } from "@openstad-headless/ui/src";
@@ -20,10 +13,8 @@ import {
 	Button,
 	Heading1,
 	Heading4,
-	Heading5,
 	Link,
 	Paragraph,
-	Strong,
 } from "@utrecht/component-library-react";
 
 export const StemBegrootResourceDetailDialog = ({

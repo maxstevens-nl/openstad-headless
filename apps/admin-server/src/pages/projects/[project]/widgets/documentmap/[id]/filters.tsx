@@ -6,7 +6,6 @@ import {
 	FormField,
 	FormItem,
 	FormLabel,
-	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
@@ -15,13 +14,12 @@ import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/typography";
 import useTags from "@/hooks/use-tags";
 import { useFieldDebounce } from "@/hooks/useFieldDebounce";
-import { YesNoSelect } from "@/lib/form-widget-helpers";
 import type { EditFieldProps } from "@/lib/form-widget-helpers/EditFieldProps";
 import { handleTagCheckboxGroupChange } from "@/lib/form-widget-helpers/TagGroupHelper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { DocumentMapProps } from "@openstad-headless/document-map/src/document-map";
 import _ from "lodash";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 

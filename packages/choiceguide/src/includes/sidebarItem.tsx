@@ -1,5 +1,5 @@
 import type React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { calculateColor, calculateScoreForItem } from "../parts/scoreUtils";
 import type { ChoiceOptions, Score } from "../props";
 

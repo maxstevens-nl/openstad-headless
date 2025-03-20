@@ -1,5 +1,5 @@
 import { loadWidget } from "@openstad-headless/lib/load-widget";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ChoiceGuideSidebar } from "../../choiceguide/src/includes/sidebar.js";
 import type { ChoiceGuideResultsProps } from "./props.js";
 import "./style.css";

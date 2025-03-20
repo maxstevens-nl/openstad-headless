@@ -4,14 +4,7 @@ import DataStore from "@openstad-headless/data-store/src";
 import { getResourceId } from "@openstad-headless/lib/get-resource-id";
 import { loadWidget } from "@openstad-headless/lib/load-widget";
 import type { BaseProps, ProjectSettingProps } from "@openstad-headless/types";
-import {
-	Carousel,
-	Icon,
-	IconButton,
-	Image,
-	Pill,
-	Spacer,
-} from "@openstad-headless/ui/src";
+import { Carousel, Icon, Image, Pill, Spacer } from "@openstad-headless/ui/src";
 import "@utrecht/component-library-css";
 import "@utrecht/design-tokens/dist/root.css";
 import {
@@ -27,11 +20,10 @@ import {
 	ButtonGroup,
 	ButtonLink,
 	Heading,
-	Heading2,
 	Link,
 	Paragraph,
 } from "@utrecht/component-library-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ResourceDetailMap } from "@openstad-headless/leaflet-map/src/resource-detail-map";
 import { Button } from "@utrecht/component-library-react";

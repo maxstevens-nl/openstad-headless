@@ -1,7 +1,7 @@
 import "@utrecht/component-library-css";
 import "@utrecht/design-tokens/dist/root.css";
 import { loadWidget } from "@openstad-headless/lib/load-widget";
-import React, { useState } from "react";
+import { useState } from "react";
 import "./resourceOverviewWithMap.css";
 import {
 	ResourceOverview,

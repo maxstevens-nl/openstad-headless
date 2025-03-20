@@ -1,7 +1,6 @@
 import type React from "react";
 import "../index.css";
 import "./index.css";
-import { Button, SecondaryButton } from "../button";
 import { IconButton } from "../iconbutton";
 
 const Paginator = ({

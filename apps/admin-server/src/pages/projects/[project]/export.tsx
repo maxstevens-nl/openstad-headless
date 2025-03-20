@@ -1,4 +1,3 @@
-import React from "react";
 import { PageLayout } from "../../../components/ui/page-layout";
 
 import { Separator } from "@/components/ui/separator";

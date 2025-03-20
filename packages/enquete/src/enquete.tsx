@@ -11,7 +11,6 @@ import {
 	Heading6,
 	Paragraph,
 } from "@utrecht/component-library-react";
-import React from "react";
 import NotificationProvider from "../../lib/NotificationProvider/notification-provider";
 import NotificationService from "../../lib/NotificationProvider/notification-service";
 import hasRole from "../../lib/has-role";

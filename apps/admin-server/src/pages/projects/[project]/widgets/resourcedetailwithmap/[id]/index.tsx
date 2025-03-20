@@ -2,7 +2,6 @@ import { useWidgetConfig } from "@/hooks/use-widget-config";
 import { useWidgetPreview } from "@/hooks/useWidgetPreview";
 import type { ResourceDetailWidgetProps } from "@openstad-headless/resource-detail-with-map/src/resourceDetailWithMap";
 import { useRouter } from "next/router";
-import React from "react";
 import { PageLayout } from "../../../../../../components/ui/page-layout";
 import {
 	Tabs,

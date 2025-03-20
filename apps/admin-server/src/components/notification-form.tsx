@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import nunjucks from "nunjucks";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as z from "zod";
 

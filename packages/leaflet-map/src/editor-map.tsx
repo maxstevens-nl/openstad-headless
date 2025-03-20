@@ -6,8 +6,6 @@ import parseLocation from "./lib/parse-location";
 
 import "leaflet/dist/leaflet.css";
 import "./css/base-map.css";
-
-import React from "react";
 import { BaseMap } from "./base-map";
 import type { EditorMapWidgetProps } from "./types/editormap-widget-props";
 import type { MarkerProps } from "./types/marker-props";

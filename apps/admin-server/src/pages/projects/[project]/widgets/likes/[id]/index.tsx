@@ -11,7 +11,6 @@ import {
 import type { LikeWidgetProps } from "@openstad-headless/likes/src/likes";
 import type { BaseProps, ProjectSettingProps } from "@openstad-headless/types";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
 import LikesDisplay from "./weergave";
 
 export const getServerSideProps = withApiUrl;

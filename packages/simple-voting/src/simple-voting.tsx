@@ -4,8 +4,6 @@ import {
 	StemBegroot,
 	type StemBegrootWidgetProps,
 } from "@openstad-headless/stem-begroot/src/stem-begroot";
-import { BaseProps, ProjectSettingProps } from "@openstad-headless/types";
-import React from "react";
 
 import "@utrecht/component-library-css";
 import "@utrecht/design-tokens/dist/root.css";

@@ -20,7 +20,6 @@ import { YesNoSelect } from "@/lib/form-widget-helpers";
 import type { EditFieldProps } from "@/lib/form-widget-helpers/EditFieldProps";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { EnqueteWidgetProps } from "@openstad-headless/enquete/src/enquete";
-import React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 

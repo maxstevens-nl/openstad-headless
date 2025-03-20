@@ -14,7 +14,7 @@ import { useWidgetsHook } from "@/hooks/use-widgets";
 import { exportChoiceGuideToCSV } from "@/lib/export-helpers/choiceguide-export";
 import { Paginator } from "@openstad-headless/ui/src";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Button } from "../../../../components/ui/button";
 import { PageLayout } from "../../../../components/ui/page-layout";

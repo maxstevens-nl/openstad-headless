@@ -2,7 +2,6 @@ import { loadWidget } from "@openstad-headless/lib/load-widget";
 import "@utrecht/component-library-css";
 import "@utrecht/design-tokens/dist/root.css";
 import { ButtonLink, Paragraph } from "@utrecht/component-library-react";
-import React from "react";
 import "./counter.css";
 import DataStore from "@openstad-headless/data-store/src";
 import type { BaseProps, ProjectSettingProps } from "@openstad-headless/types";

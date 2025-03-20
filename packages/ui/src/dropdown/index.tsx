@@ -1,5 +1,5 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import React, { ReactNode, useState } from "react";
+import { useState } from "react";
 import type { PropsWithChildren } from "react";
 import "./index.css";
 

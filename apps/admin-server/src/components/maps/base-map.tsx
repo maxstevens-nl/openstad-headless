@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { FeatureGroup, MapContainer, Polygon, TileLayer } from "react-leaflet";
 // import { EditControl } from "react-leaflet-draw"
 

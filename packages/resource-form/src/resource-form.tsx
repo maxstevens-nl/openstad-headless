@@ -5,7 +5,7 @@ import NotificationService from "@openstad-headless/lib/NotificationProvider/not
 import { loadWidget } from "@openstad-headless/lib/load-widget";
 import { Banner, Button, Spacer } from "@openstad-headless/ui/src/index.js";
 import { Heading } from "@utrecht/component-library-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import hasRole from "../../lib/has-role";
 import { InitializeFormFields } from "./parts/init-fields.js";
 import type { ResourceFormWidgetProps } from "./props.js";

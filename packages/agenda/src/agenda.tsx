@@ -3,7 +3,6 @@ import "./agenda.css";
 import { loadWidget } from "@openstad-headless/lib/load-widget";
 import type { BaseProps, ProjectSettingProps } from "@openstad-headless/types";
 import { Spacer } from "@openstad-headless/ui/src";
-import React from "react";
 
 import "@utrecht/component-library-css";
 import "@utrecht/design-tokens/dist/root.css";

@@ -5,8 +5,6 @@ import parseLocation from "./lib/parse-location";
 
 import "leaflet/dist/leaflet.css";
 import "./css/base-map.css";
-
-import React from "react";
 import { BaseMap } from "./base-map";
 import type { MarkerProps } from "./types/marker-props";
 import type { ResourceDetailMapWidgetProps } from "./types/resource-detail-map-widget-props";

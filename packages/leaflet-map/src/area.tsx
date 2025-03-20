@@ -1,6 +1,5 @@
 import DataStore from "@openstad-headless/data-store/src";
 import { LatLng } from "leaflet";
-import React from "react";
 import { useEffect, useState } from "react";
 import { Polygon, Popup } from "react-leaflet";
 import type { AreaProps } from "./types/area-props";

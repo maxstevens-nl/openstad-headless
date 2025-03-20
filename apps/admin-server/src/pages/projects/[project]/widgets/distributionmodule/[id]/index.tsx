@@ -9,7 +9,6 @@ import {
 import WidgetDistributionModuleDistribute from "@/pages/projects/[project]/widgets/distributionmodule/[id]/distribute";
 import type { DistributionModuleProps } from "@openstad-headless/distribution-module/src/distribution-module";
 import { useRouter } from "next/router";
-import React from "react";
 import { PageLayout } from "../../../../../../components/ui/page-layout";
 import {
 	Tabs,

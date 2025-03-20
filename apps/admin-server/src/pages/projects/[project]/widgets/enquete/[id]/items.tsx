@@ -29,10 +29,9 @@ import type {
 	Item,
 	Option,
 } from "@openstad-headless/enquete/src/types/enquete-props";
-import { ProjectSettingProps } from "@openstad-headless/types";
 import { ArrowDown, ArrowUp, X } from "lucide-react";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 

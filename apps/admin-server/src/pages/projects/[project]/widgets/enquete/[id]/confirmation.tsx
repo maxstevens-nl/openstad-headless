@@ -21,7 +21,7 @@ import { Heading } from "@/components/ui/typography";
 import { useWidgetConfig } from "@/hooks/use-widget-config";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Switch from "@radix-ui/react-switch";
-import React, { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 

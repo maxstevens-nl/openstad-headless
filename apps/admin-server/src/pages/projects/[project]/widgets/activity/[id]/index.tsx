@@ -8,7 +8,6 @@ import {
 } from "@/lib/server-side-props-definition";
 import type { ActivityWidgetProps } from "@openstad-headless/activity/src/activity";
 import { useRouter } from "next/router";
-import React from "react";
 import { PageLayout } from "../../../../../../components/ui/page-layout";
 import {
 	Tabs,

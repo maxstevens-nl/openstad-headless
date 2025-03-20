@@ -1,5 +1,3 @@
-import fetch from "./fetch";
-
 export default {
 	fetch: async ({ projectId, type }) => {
 		// todo, maar voor nu ff niet relevant

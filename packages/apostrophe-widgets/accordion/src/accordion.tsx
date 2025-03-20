@@ -1,4 +1,3 @@
-import React from "react";
 import { createRoot } from "react-dom/client";
 import "@utrecht/component-library-css";
 import "@utrecht/design-tokens/dist/root.css";

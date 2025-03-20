@@ -102,7 +102,6 @@ const rdToWgs84 = (x: number, y: number) => {
 import "leaflet/dist/leaflet.css";
 import "./css/base-map.css";
 import L from "leaflet";
-import React from "react";
 import type { LocationType } from "./types/location";
 import type { MarkerProps } from "./types/marker-props";
 

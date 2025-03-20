@@ -1,4 +1,3 @@
-import WidgetPreview from "@/components/widget-preview";
 import WidgetPublish from "@/components/widget-publish";
 import { useWidgetConfig } from "@/hooks/use-widget-config";
 import { useWidgetPreview } from "@/hooks/useWidgetPreview";
@@ -8,7 +7,6 @@ import {
 } from "@/lib/server-side-props-definition";
 import type { BaseMapWidgetProps } from "@openstad-headless/leaflet-map/src/types/basemap-widget-props";
 import { useRouter } from "next/router";
-import React from "react";
 import { PageLayout } from "../../../../../../components/ui/page-layout";
 import {
 	Tabs,

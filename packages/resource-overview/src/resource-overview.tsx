@@ -2,7 +2,6 @@ import "./resource-overview.css";
 //@ts-ignore D.type def missing, will disappear when datastore is ts
 import DataStore from "@openstad-headless/data-store/src";
 import { ResourceOverviewMap } from "@openstad-headless/leaflet-map/src/resource-overview-map";
-import { hasRole } from "@openstad-headless/lib";
 import { loadWidget } from "@openstad-headless/lib/load-widget";
 import type { BaseProps, ProjectSettingProps } from "@openstad-headless/types";
 import { Carousel, Icon, Paginator } from "@openstad-headless/ui/src";
@@ -21,7 +20,7 @@ import type {
 	dataLayerArray,
 } from "@openstad-headless/leaflet-map/src/types/resource-overview-map-widget-props";
 import { renderRawTemplate } from "@openstad-headless/raw-resource/includes/template-render";
-import { Button, Heading4, Paragraph } from "@utrecht/component-library-react";
+import { Heading4, Paragraph } from "@utrecht/component-library-react";
 
 export type ResourceOverviewWidgetProps = BaseProps &
 	ProjectSettingProps & {

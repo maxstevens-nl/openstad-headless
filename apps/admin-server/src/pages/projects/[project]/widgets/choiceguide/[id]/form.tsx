@@ -5,7 +5,7 @@ import { useWidgetConfig } from "@/hooks/use-widget-config";
 import { YesNoSelect, undefinedToTrueOrProp } from "@/lib/form-widget-helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { ChoiceGuide } from "@openstad-headless/choiceguide/src/props";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "../../../../../../components/ui/button";
@@ -62,11 +62,7 @@ const formSchema = z.object({
 export default function ChoicesSelectorForm(props: ChoiceGuide) {
 	const category = "choiceGuide";
 
-	const {
-		data: widget,
-		isLoading: isLoadingWidget,
-		updateConfig,
-	} = useWidgetConfig<any>();
+	const { data: widget, updateConfig } = useWidgetConfig<any>();
 
 	const defaults = useCallback(
 		() => ({

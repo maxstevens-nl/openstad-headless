@@ -2,7 +2,6 @@ import MapInput from "@/components/maps/leaflet-input";
 import { PageLayout } from "@/components/ui/page-layout";
 import useSubmissions from "@/hooks/use-submission";
 import { useRouter } from "next/router";
-import * as React from "react";
 
 export default function ProjectStatusEdit() {
 	const router = useRouter();

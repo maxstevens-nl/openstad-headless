@@ -7,7 +7,7 @@ import {
 	FormMessage,
 } from "./ui/form";
 
-import _, { uniqueId } from "lodash";
+import _ from "lodash";
 import { Checkbox } from "./ui/checkbox";
 
 type Props<T> = {

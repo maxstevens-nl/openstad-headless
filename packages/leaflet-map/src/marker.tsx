@@ -1,5 +1,4 @@
 import type { LeafletMouseEvent } from "leaflet";
-import React from "react";
 import { Marker as LeafletMarker } from "react-leaflet";
 import { useMap } from "react-leaflet/hooks";
 import { addToClassname, removeFromClassName } from "../../lib/class-name.js";

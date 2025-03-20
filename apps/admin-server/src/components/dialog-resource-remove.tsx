@@ -1,22 +1,11 @@
 import { DialogClose } from "@radix-ui/react-dialog";
-import { MoreHorizontal, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Heading, Paragraph } from "@/components/ui/typography";
 
-import {
-	Dialog,
-	DialogContent,
-	DialogFooter,
-	DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 
 type Props = {
 	header: string;

@@ -7,7 +7,6 @@ import type { EditFieldProps } from "@/lib/form-widget-helpers/EditFieldProps";
 import type { DocumentMapProps } from "@openstad-headless/document-map/src/document-map";
 import * as Switch from "@radix-ui/react-switch";
 import { useState } from "react";
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "../../../../../../components/ui/button";

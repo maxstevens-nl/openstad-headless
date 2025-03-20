@@ -5,7 +5,6 @@ import { BudgetStatusPanel } from "../reuseables/budget-status-panel";
 import "@utrecht/component-library-css";
 import "@utrecht/design-tokens/dist/root.css";
 import {
-	Heading,
 	Heading3,
 	Heading5,
 	Paragraph,

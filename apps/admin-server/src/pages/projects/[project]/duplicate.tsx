@@ -12,7 +12,7 @@ import { Heading } from "@/components/ui/typography";
 import { useProject } from "@/hooks/use-project";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as z from "zod";

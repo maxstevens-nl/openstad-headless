@@ -1,4 +1,3 @@
-import Preview from "@/components/widget-preview";
 import WidgetPreview from "@/components/widget-preview";
 import WidgetPublish from "@/components/widget-publish";
 import { useWidgetConfig } from "@/hooks/use-widget-config";
@@ -10,7 +9,6 @@ import {
 import WidgetResourceFormItems from "@/pages/projects/[project]/widgets/resourceform/[id]/items";
 import type { ResourceFormWidgetProps } from "@openstad-headless/resource-form/src/props";
 import { useRouter } from "next/router";
-import React from "react";
 import { PageLayout } from "../../../../../../components/ui/page-layout";
 import {
 	Tabs,

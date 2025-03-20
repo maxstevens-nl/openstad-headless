@@ -1,6 +1,5 @@
 import { SimpleCalendar } from "@/components/simple-calender-popup";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
 	Dialog,
 	DialogContent,
@@ -27,7 +26,6 @@ import { validateProjectNumber } from "@/lib/validateProjectNumber";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Switch from "@radix-ui/react-switch";
 import { useRouter } from "next/router";
-import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";

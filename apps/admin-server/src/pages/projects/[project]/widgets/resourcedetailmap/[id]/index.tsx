@@ -8,7 +8,6 @@ import {
 } from "@/lib/server-side-props-definition";
 import type { ResourceDetailMapWidgetProps } from "@openstad-headless/leaflet-map/src/types/resource-detail-map-widget-props";
 import { useRouter } from "next/router";
-import React from "react";
 import { PageLayout } from "../../../../../../components/ui/page-layout";
 import {
 	Tabs,

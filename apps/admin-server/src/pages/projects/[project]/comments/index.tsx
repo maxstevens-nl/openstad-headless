@@ -10,11 +10,11 @@ import { searchTable, sortTable } from "@/components/ui/sortTable";
 import { ListHeading, Paragraph } from "@/components/ui/typography";
 import useComments from "@/hooks/use-comments";
 import useResources from "@/hooks/use-resources";
-import { exportComments } from "@/lib/export-helpers/comments-export";
-import Link from "next/link";
+import flattenObject from "@/lib/export-helpers/flattenObject";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import * as XLSX from "xlsx";
 import { Button } from "../../../../components/ui/button";
 import { PageLayout } from "../../../../components/ui/page-layout";
 
@@ -23,17 +23,26 @@ export default function ProjectComments() {
 	const { project } = router.query;
 	const { data, removeComment } = useComments(
 		project as string,
-		"?includeAllComments=1&includeVoteCount=1&includeTags",
+		"?includeAllComments=1&includeTags",
 		true,
 	);
 	const { data: resources } = useResources(project as string);
 	const [comments, setComments] = useState<any[]>([]);
 
+	const exportData = (data: any[], fileName: string) => {
+		const flattenedData = data.map((item) => flattenObject(item));
+
+		const workbook = XLSX.utils.book_new();
+		const worksheet = XLSX.utils.json_to_sheet(flattenedData);
+		XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+		XLSX.writeFile(workbook, fileName);
+	};
 	function transform() {
 		const today = new Date();
 		const projectId = router.query.project;
 		const formattedDate = today.toISOString().split("T")[0].replace(/-/g, "");
-		exportComments(filterData, `${projectId}_reacties_${formattedDate}.xlsx`);
+		exportData(filterData, `${projectId}_reacties_${formattedDate}.xlsx`);
 	}
 
 	function categorizeTags(tags: { type: string; name: string }[]) {
@@ -116,7 +125,7 @@ export default function ProjectComments() {
 					let title = usedResource?.title ? usedResource?.title : "";
 
 					title =
-						!!title && title.length > 50 ? title.slice(0, 50) + "..." : title;
+						!!title && title.length > 50 ? `${title.slice(0, 50)}...` : title;
 
 					resourceArray.push({
 						id: usedResource.id,
@@ -149,7 +158,9 @@ export default function ProjectComments() {
 				{comments.map((comment: any) => (
 					<React.Fragment key={comment.id}>
 						<li
-							className={`grid grid-cols-3 lg:grid-cols-9 items-center py-3 px-2`}
+							className={
+								"grid grid-cols-3 lg:grid-cols-9 items-center py-3 px-2"
+							}
 						>
 							<div className="col-span-1 truncate">
 								<Paragraph>{comment.id}</Paragraph>

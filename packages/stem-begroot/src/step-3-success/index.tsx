@@ -1,6 +1,5 @@
 import { Spacer } from "@openstad-headless/ui/src";
 import { Heading3 } from "@utrecht/component-library-react";
-import React from "react";
 
 type Props = {
 	step3success: string;

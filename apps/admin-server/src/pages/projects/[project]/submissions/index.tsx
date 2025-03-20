@@ -13,7 +13,7 @@ import useUsers from "@/hooks/use-users";
 import { useWidgetsHook } from "@/hooks/use-widgets";
 import { exportDataToCSV } from "@/lib/export-helpers/csv-export";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Button } from "../../../../components/ui/button";
 import { PageLayout } from "../../../../components/ui/page-layout";

@@ -1,5 +1,3 @@
-import fetch from "./fetch";
-
 export default {
 	fetch: async function ({ projectId, userId }) {
 		const url = `/api/project/${projectId}/user/${userId}`;

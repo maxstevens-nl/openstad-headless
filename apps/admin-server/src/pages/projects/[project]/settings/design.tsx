@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import type React from "react";
-import { useState } from "react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -25,7 +24,7 @@ import toast from "react-hot-toast";
 import { useProject } from "../../../../hooks/use-project";
 
 const formSchema = z.object({
-	cssUrls: z.array(z.object({ url: z.string().optional() })).optional(),
+	cssUrl: z.string().optional(),
 	cssCustom: z.string().optional(),
 });
 
@@ -35,20 +34,8 @@ export default function ProjectSettingsDesign() {
 	const { data, updateProject } = useProject();
 
 	const defaults = useCallback(() => {
-		const existingCssUrl = data?.config?.project?.cssUrl ?? "";
-
-		let urlsArray: Array<{ url: string }> = [];
-		if (Array.isArray(existingCssUrl)) {
-			urlsArray = existingCssUrl.map((url) => ({ url }));
-		} else if (
-			typeof existingCssUrl === "string" &&
-			existingCssUrl.trim() !== ""
-		) {
-			urlsArray = [{ url: existingCssUrl }];
-		}
-
 		return {
-			cssUrls: urlsArray,
+			cssUrl: data?.config?.project?.cssUrl || "",
 			cssCustom: data?.config?.project?.cssCustom || "",
 		};
 	}, [data]);
@@ -62,21 +49,11 @@ export default function ProjectSettingsDesign() {
 		form.reset(defaults());
 	}, [form, defaults]);
 
-	const { fields, append, remove } = useFieldArray({
-		name: "cssUrls",
-		control: form.control,
-	});
-
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		try {
-			const cssUrlsArray =
-				values.cssUrls
-					?.map((item) => item?.url?.trim() ?? "")
-					.filter(Boolean) || [];
-
 			const project = await updateProject({
 				project: {
-					cssUrl: cssUrlsArray.length > 0 ? cssUrlsArray : "",
+					cssUrl: values.cssUrl,
 					cssCustom: values.cssCustom,
 				},
 			});
@@ -126,12 +103,12 @@ export default function ProjectSettingsDesign() {
 		event: React.KeyboardEvent<HTMLTextAreaElement>,
 	) => {
 		const code = element.value;
-		if (event.key == "Tab") {
+		if (event.key === "Tab") {
 			event.preventDefault();
 			const before_tab = code.slice(0, element.selectionStart);
 			const after_tab = code.slice(element.selectionEnd, element.value.length);
 			const cursor_pos = element.selectionStart + 1;
-			element.value = before_tab + "\t" + after_tab;
+			element.value = `${before_tab}\t${after_tab}`;
 			element.selectionStart = cursor_pos;
 			element.selectionEnd = cursor_pos;
 			update(element.value);
@@ -165,37 +142,21 @@ export default function ProjectSettingsDesign() {
 							onSubmit={form.handleSubmit(onSubmit)}
 							className="w-5/6 grid grid-cols-1 lg:grid-cols-1 gap-x-4 gap-y-8"
 						>
-							<Heading size="lg">CSS URL&apos;s</Heading>
-							{fields.map((item, index) => (
-								<div key={item.id} className="flex gap-2 items-center">
-									<Controller
-										control={form.control}
-										name={`cssUrls.${index}.url`}
-										render={({ field }) => (
-											<Input
-												{...field}
-												placeholder="Voer een CSS URL in"
-												className="w-full"
-											/>
-										)}
-									/>
-									<Button
-										type="button"
-										onClick={() => remove(index)}
-										variant="secondary"
-										className={"text-primary-foreground"}
-									>
-										✖
-									</Button>
-								</div>
-							))}
-							<Button
-								type="button"
-								onClick={() => append({ url: "" })}
-								variant="default"
-							>
-								+ URL toevoegen
-							</Button>
+							<FormField
+								control={form.control}
+								name="cssUrl"
+								render={({ field }) => (
+									<FormItem className="col-span-full md:col-span-1 flex flex-col">
+										<FormLabel>
+											Geef de URL voor de huisstijl op (css bestand)
+										</FormLabel>
+										<FormControl>
+											<Input placeholder="Url" {...field} />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
 
 							<FormField
 								control={form.control}
@@ -229,7 +190,7 @@ export default function ProjectSettingsDesign() {
 													<code
 														className="language-css"
 														id="highlighting-content"
-													></code>
+													/>
 												</pre>
 											</div>
 										</FormControl>

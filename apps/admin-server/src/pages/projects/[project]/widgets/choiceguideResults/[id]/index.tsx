@@ -1,4 +1,5 @@
-import WidgetPreview from "@/components/widget-preview";
+import { PageLayout } from "@/components/ui/page-layout";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import WidgetPublish from "@/components/widget-publish";
 import { useWidgetConfig } from "@/hooks/use-widget-config";
 import { useWidgetPreview } from "@/hooks/useWidgetPreview";
@@ -8,14 +9,6 @@ import {
 } from "@/lib/server-side-props-definition";
 import type { ChoiceGuideResultsProps } from "@openstad-headless/choiceguide-results/src/props";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
-import { PageLayout } from "../../../../../../components/ui/page-layout";
-import {
-	Tabs,
-	TabsContent,
-	TabsList,
-	TabsTrigger,
-} from "../../../../../../components/ui/tabs";
 import ChoiceGuideResultSettings from "./settings";
 
 export const getServerSideProps = withApiUrl;
@@ -79,16 +72,6 @@ export default function WidgetChoiceGuide({ apiUrl }: WithApiUrlProps) {
 							<WidgetPublish apiUrl={apiUrl} />
 						</TabsContent>
 					</Tabs>
-
-					{/*<div className='py-6 mt-6 bg-white rounded-md'>*/}
-					{/*    {previewConfig ? (*/}
-					{/*      <WidgetPreview*/}
-					{/*        type="choiceguideResults"*/}
-					{/*        config={previewConfig}*/}
-					{/*        projectId={projectId as string}*/}
-					{/*      />*/}
-					{/*    ) : null}*/}
-					{/*  </div>*/}
 				</div>
 			</PageLayout>
 		</div>

@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -27,7 +26,6 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/typography";
 import useArea from "@/hooks/use-areas";
-import * as Switch from "@radix-ui/react-switch";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";

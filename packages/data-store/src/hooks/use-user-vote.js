@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 export default function useUserVote(props) {
 	const projectId = props.projectId;
 	const type = props.type;

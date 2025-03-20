@@ -7,7 +7,7 @@ import {
 } from "@utrecht/component-library-react";
 import React, { type FC, useEffect, useState } from "react";
 
-import { FilePondErrorDescription, type FilePondFile } from "filepond";
+import type { FilePondFile } from "filepond";
 import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import "./document-upload.css";

@@ -4,7 +4,7 @@ import { useUsers, type userType } from "@/hooks/use-users";
 import { ChevronRight, Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import { PageLayout } from "../../components/ui/page-layout";
 import { ListHeading, Paragraph } from "../../components/ui/typography";

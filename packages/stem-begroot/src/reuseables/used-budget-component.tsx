@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import "@utrecht/component-library-css";
 import "@utrecht/design-tokens/dist/root.css";
 import { Paragraph } from "@utrecht/component-library-react";

@@ -1,7 +1,7 @@
 import * as RadixDialog from "@radix-ui/react-dialog";
 import "../index.css";
 import "./index.css";
-import React, { type PropsWithChildren, useEffect } from "react";
+import { type PropsWithChildren, useEffect } from "react";
 import { IconButton } from "../iconbutton";
 
 const focusActiveResource = () => {

@@ -23,7 +23,6 @@ import useTags from "@/hooks/use-tags";
 import type { EditFieldProps } from "@/lib/form-widget-helpers/EditFieldProps";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { DocumentMapProps } from "@openstad-headless/document-map/src/document-map";
-import React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 

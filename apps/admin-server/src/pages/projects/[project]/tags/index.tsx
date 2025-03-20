@@ -7,7 +7,7 @@ import useTags from "@/hooks/use-tags";
 import { ChevronRight, Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function ProjectTags() {

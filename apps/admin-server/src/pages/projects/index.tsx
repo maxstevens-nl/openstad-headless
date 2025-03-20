@@ -6,7 +6,6 @@ import { ChevronRight, Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import React from "react";
 import projectListSwr from "../../hooks/use-project-list";
 
 export default function Projects() {

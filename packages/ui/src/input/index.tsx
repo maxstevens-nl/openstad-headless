@@ -1,7 +1,7 @@
 import "../index.css";
 import "./index.css";
 import type React from "react";
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef } from "react";
 
 import "@utrecht/component-library-css";
 import "@utrecht/design-tokens/dist/root.css";

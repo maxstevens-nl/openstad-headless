@@ -1,3 +1,18 @@
+import { Button } from "@/components/ui/button";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+} from "@/components/ui/form";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/typography";
 import { useWidgetsHook } from "@/hooks/use-widgets";
@@ -5,24 +20,9 @@ import type { EditFieldProps } from "@/lib/form-widget-helpers/EditFieldProps";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { ChoiceGuideResultsProps } from "@openstad-headless/choiceguide-results/src/props";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Button } from "../../../../../../components/ui/button";
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-} from "../../../../../../components/ui/form";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "../../../../../../components/ui/select";
 
 const formSchema = z.object({
 	choiceguideWidgetId: z.string().optional(),

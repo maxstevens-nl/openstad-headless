@@ -1,12 +1,9 @@
 const polygons = require("../../../../config/map").default.polygons;
-const _ = require("lodash");
 const eventEmitter = require("../../../../events").emitter;
 
 const crypto = require("node:crypto");
 const deepl = require("deepl-node");
-const cache = require("../../../../services/cache").cache;
 
-const cacheLifespan = 8 * 60 * 60; // set lifespan of 8 hours;
 const translatorConfig = { maxRetries: 5, minTimeout: 10000 };
 
 module.exports = (self, options) => {

@@ -1,7 +1,5 @@
-import { PageLayout } from "@/components/ui/page-layout";
 import useResources from "@/hooks/use-resources";
 import { useRouter } from "next/router";
-import React from "react";
 
 import ResourceForm from "@/components/resource-form";
 

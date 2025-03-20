@@ -8,8 +8,6 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/typography";
 import useTags from "@/hooks/use-tags";

@@ -9,7 +9,6 @@ import {
 import { extractConfig } from "@/lib/sub-widget-helper";
 import type { ResourceOverviewWidgetProps } from "@openstad-headless/resource-overview/src/resource-overview";
 import { useRouter } from "next/router";
-import React from "react";
 import { PageLayout } from "../../../../../../components/ui/page-layout";
 import {
 	Tabs,

@@ -10,7 +10,6 @@ import {
 import InfoDialog from "@/components/ui/info-hover";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
 import { Heading } from "@/components/ui/typography";
 import { useWidgetConfig } from "@/hooks/use-widget-config";
 import { zodResolver } from "@hookform/resolvers/zod";

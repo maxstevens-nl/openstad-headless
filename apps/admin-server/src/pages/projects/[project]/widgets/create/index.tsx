@@ -4,7 +4,6 @@ import {
 	CardDescription,
 	CardFooter,
 	CardHeader,
-	CardTitle,
 } from "@/components/ui/card";
 import {
 	Dialog,
@@ -24,7 +23,7 @@ import {
 } from "@/lib/server-side-props-definition";
 import { WidgetDefinitions } from "@/lib/widget-definitions";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 export const getServerSideProps = withApiUrl;

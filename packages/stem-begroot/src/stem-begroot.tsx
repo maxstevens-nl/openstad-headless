@@ -21,7 +21,6 @@ import { Step4 } from "./step-4";
 import "@utrecht/component-library-css";
 import "@utrecht/design-tokens/dist/root.css";
 import { Button, Heading } from "@utrecht/component-library-react";
-import useTags from "admin-server/src/hooks/use-tag";
 import NotificationProvider from "../../lib/NotificationProvider/notification-provider";
 import NotificationService from "../../lib/NotificationProvider/notification-service";
 

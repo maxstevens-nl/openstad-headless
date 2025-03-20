@@ -15,8 +15,7 @@ import { useFieldDebounce } from "@/hooks/useFieldDebounce";
 import type { EditFieldProps } from "@/lib/form-widget-helpers/EditFieldProps";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { ResourceDetailWidgetProps } from "@openstad-headless/resource-detail/src/resource-detail";
-import { useCallback, useEffect, useState } from "react";
-import * as React from "react";
+import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 

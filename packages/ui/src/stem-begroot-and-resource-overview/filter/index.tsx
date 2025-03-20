@@ -1,5 +1,5 @@
-import { Input, SecondaryButton, Select } from "@openstad-headless/ui/src";
-import React, { useState, useEffect, useRef } from "react";
+import { Input, Select } from "@openstad-headless/ui/src";
+import { useEffect, useState } from "react";
 import { useDebounce } from "rooks";
 import { MultiSelectTagFilter } from "./multiselect-tag-filter";
 import { SelectTagFilter } from "./select-tag-filter";

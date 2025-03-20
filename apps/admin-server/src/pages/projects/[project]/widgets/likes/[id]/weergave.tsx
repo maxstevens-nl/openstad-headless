@@ -1,5 +1,4 @@
 import { FormObjectSelectField } from "@/components/ui/form-object-select-field";
-import { ObjectListSelect } from "@/components/ui/object-select";
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/typography";
 import useResources from "@/hooks/use-resources";
@@ -7,9 +6,8 @@ import { useFieldDebounce } from "@/hooks/useFieldDebounce";
 import { YesNoSelect, undefinedToTrueOrProp } from "@/lib/form-widget-helpers";
 import type { EditFieldProps } from "@/lib/form-widget-helpers/EditFieldProps";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LikeWidgetProps } from "@openstad-headless/likes/src/likes";
 import * as Switch from "@radix-ui/react-switch";
-import React, { type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import type { LikeWidgetTabProps } from ".";

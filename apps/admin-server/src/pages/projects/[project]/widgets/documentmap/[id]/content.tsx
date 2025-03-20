@@ -22,7 +22,6 @@ import { Heading } from "@/components/ui/typography";
 import type { EditFieldProps } from "@/lib/form-widget-helpers/EditFieldProps";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { DocumentMapProps } from "@openstad-headless/document-map/src/document-map";
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 

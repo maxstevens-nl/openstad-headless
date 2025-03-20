@@ -1,7 +1,6 @@
 import type React from "react";
 import { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
-import { marker } from "leaflet";
 
 interface LeafletComponents {
 	MapContainer: React.ComponentType<any>;

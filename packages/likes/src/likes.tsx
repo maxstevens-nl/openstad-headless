@@ -9,7 +9,6 @@ import { ProgressBar } from "@openstad-headless/ui/src";
 import {
 	Button,
 	Heading4,
-	Heading5,
 	Heading6,
 	Paragraph,
 } from "@utrecht/component-library-react";

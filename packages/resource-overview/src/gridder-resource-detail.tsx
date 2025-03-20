@@ -1,11 +1,4 @@
-import {
-	IconButton,
-	Image,
-	Pill,
-	SecondaryButton,
-	Spacer,
-} from "@openstad-headless/ui/src";
-import React from "react";
+import { Image, Pill, Spacer } from "@openstad-headless/ui/src";
 import "./gridder-resource-detail.css";
 
 import "@utrecht/component-library-css";

@@ -6,7 +6,7 @@ import flattenObject from "@/lib/export-helpers/flattenObject";
 import { ChevronRight, Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import * as XLSX from "xlsx";
 import { Button } from "../../../../components/ui/button";

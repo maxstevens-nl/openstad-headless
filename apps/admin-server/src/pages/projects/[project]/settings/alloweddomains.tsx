@@ -5,7 +5,6 @@ import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/typography";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
-import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import {
 	Controller,

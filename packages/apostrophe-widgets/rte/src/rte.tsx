@@ -1,4 +1,3 @@
-import React from "react";
 import { createRoot } from "react-dom/client";
 import RenderContent from "../../../ui/src/rte-formatting/rte-formatting";
 

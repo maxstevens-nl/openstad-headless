@@ -10,7 +10,6 @@ import WidgetChoiceGuideChoiceOptions from "@/pages/projects/[project]/widgets/c
 import WidgetChoiceGuideItems from "@/pages/projects/[project]/widgets/choiceguide/[id]/items";
 import WidgetChoiceGuideGeneralSettings from "@/pages/projects/[project]/widgets/choiceguide/[id]/settings";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
 import { PageLayout } from "../../../../../../components/ui/page-layout";
 import {
 	Tabs,

@@ -3,7 +3,7 @@ import { ListHeading, Paragraph } from "@/components/ui/typography";
 import useUsers from "@/hooks/use-users";
 import useVotes from "@/hooks/use-votes";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function ProjectResourceVotes() {

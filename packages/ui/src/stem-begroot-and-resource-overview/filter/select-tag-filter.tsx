@@ -1,6 +1,6 @@
 import { Select } from "@openstad-headless/ui/src";
 import { FormLabel } from "@utrecht/component-library-react";
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 
 //Todo correctly type resources. Will be possible when the datastore is correctly typed
 

@@ -1,17 +1,17 @@
-.env
-.env.*
-*.pub
-node_modules/
 .DS_Store
 nginx.config.example
-*.pem
-*.csr
+
 .packages-build-hash
+node_modules/
+/.idea
+.turbo
+
+# Secrets
 secrets.yml
 secrets.yaml
-/.idea
-
 *.agekey
-
-.turbo
+*.pem
+*.csr
 *.pub
+.env
+.env*

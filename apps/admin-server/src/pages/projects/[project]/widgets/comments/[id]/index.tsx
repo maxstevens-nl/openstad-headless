@@ -10,7 +10,6 @@ import ArgumentsSorting from "@/pages/projects/[project]/widgets/comments/[id]/s
 import type { CommentsWidgetProps } from "@openstad-headless/comments/src/comments";
 import type { BaseProps, ProjectSettingProps } from "@openstad-headless/types";
 import { useRouter } from "next/router";
-import React from "react";
 import { PageLayout } from "../../../../../../components/ui/page-layout";
 import {
 	Tabs,

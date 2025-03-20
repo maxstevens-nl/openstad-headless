@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 // import { Checkbox } from '../checkbox';
 import { Icon } from "../icon";
 import "./index.css";

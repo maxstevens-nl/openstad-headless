@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/typography";
 import { useRouter } from "next/router";
-import React from "react";
 import { toast } from "react-hot-toast";
 
 export default function WidgetPublish({ apiUrl }: { apiUrl: string }) {

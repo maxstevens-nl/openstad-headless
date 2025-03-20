@@ -11,7 +11,7 @@ import type { CommentsWidgetProps } from "@openstad-headless/comments/src/commen
 import type { ResourceDetailMapWidgetProps } from "@openstad-headless/leaflet-map/src/types/resource-detail-map-widget-props";
 import type { LikeWidgetProps } from "@openstad-headless/likes/src/likes";
 import { Heading, Paragraph } from "@utrecht/component-library-react";
-import { Button, ButtonLink } from "@utrecht/component-library-react";
+import { ButtonLink } from "@utrecht/component-library-react";
 import type React from "react";
 import { ShareLinks } from "../../apostrophe-widgets/share-links/src/share-links";
 

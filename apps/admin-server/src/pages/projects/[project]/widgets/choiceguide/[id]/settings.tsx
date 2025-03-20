@@ -4,7 +4,7 @@ import { useWidgetConfig } from "@/hooks/use-widget-config";
 import { YesNoSelect } from "@/lib/form-widget-helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { ChoiceGuide } from "@openstad-headless/choiceguide/src/props";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "../../../../../../components/ui/button";
@@ -17,13 +17,6 @@ import {
 	FormLabel,
 } from "../../../../../../components/ui/form";
 import { Input } from "../../../../../../components/ui/input";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "../../../../../../components/ui/select";
 
 const formSchema = z.object({
 	submitButtonText: z.string().optional(),

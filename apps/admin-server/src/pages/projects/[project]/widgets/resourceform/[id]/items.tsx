@@ -32,7 +32,7 @@ import type {
 } from "@openstad-headless/resource-form/src/props";
 import { ArrowDown, ArrowUp, X } from "lucide-react";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 

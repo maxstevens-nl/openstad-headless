@@ -1,6 +1,5 @@
 import DataStore from "@openstad-headless/data-store/src";
 import type { FieldProps } from "@openstad-headless/form/src/props.js";
-import React from "react";
 
 const getMinMaxByField = (key, data) => {
 	return !!data &&

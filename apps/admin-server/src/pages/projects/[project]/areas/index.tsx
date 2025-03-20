@@ -6,7 +6,7 @@ import useDatalayers from "@/hooks/use-datalayers";
 import { ChevronRight, Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Button } from "../../../../components/ui/button";
 import { PageLayout } from "../../../../components/ui/page-layout";

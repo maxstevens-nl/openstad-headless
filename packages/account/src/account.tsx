@@ -7,7 +7,7 @@ import {
 	Heading,
 	Paragraph,
 } from "@utrecht/component-library-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./account.css";
 import DataStore from "@openstad-headless/data-store/src";
 import type { BaseProps, ProjectSettingProps } from "@openstad-headless/types";

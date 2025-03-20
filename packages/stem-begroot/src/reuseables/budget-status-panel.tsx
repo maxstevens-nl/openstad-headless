@@ -1,5 +1,3 @@
-import { Spacer } from "@openstad-headless/ui/src";
-import React from "react";
 import "@utrecht/component-library-css";
 import "@utrecht/design-tokens/dist/root.css";
 import { Heading4, Paragraph, Strong } from "@utrecht/component-library-react";

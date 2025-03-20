@@ -2,7 +2,6 @@ import {
 	Parser as HtmlToReactParser,
 	ProcessNodeDefinitions,
 } from "html-to-react";
-import React from "react";
 import ReactDOMServer from "react-dom/server";
 
 import "@utrecht/component-library-css";

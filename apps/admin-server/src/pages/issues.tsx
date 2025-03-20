@@ -1,10 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { PageLayout } from "@/components/ui/page-layout";
 import { ListHeading, Paragraph } from "@/components/ui/typography";
-import { ChevronRight, Plus } from "lucide-react";
-import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import { useRouter } from "next/router";
-import React from "react";
 import projectListSwr from "../hooks/use-project-list";
 
 export default function Projects() {

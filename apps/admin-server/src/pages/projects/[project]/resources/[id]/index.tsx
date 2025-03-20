@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import React from "react";
 import { PageLayout } from "../../../../../../src/components/ui/page-layout";
 import {
 	Tabs,

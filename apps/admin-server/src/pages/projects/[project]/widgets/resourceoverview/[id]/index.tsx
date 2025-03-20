@@ -11,7 +11,6 @@ import type { LikeWidgetTabProps } from "@/pages/projects/[project]/widgets/like
 import LikesDisplay from "@/pages/projects/[project]/widgets/likes/[id]/weergave";
 import type { MultiProjectResourceOverviewProps } from "@openstad-headless/multi-project-resource-overview/src/multi-project-resource-overview";
 import { useRouter } from "next/router";
-import React from "react";
 import { PageLayout } from "../../../../../../components/ui/page-layout";
 import {
 	Tabs,
@@ -21,7 +20,6 @@ import {
 } from "../../../../../../components/ui/tabs";
 import type { ResourceOverviewMapWidgetTabProps } from "../../resourcesmap/[id]";
 import WidgetResourcesMapButton from "../../resourcesmap/[id]/buttons";
-import WidgetResourcesMapContent from "../../resourcesmap/[id]/content";
 import WidgetResourcesMapMap from "../../resourcesmap/[id]/map";
 import WidgetResourcesMapPolygons from "../../resourcesmap/[id]/polygons";
 import WidgetResourceOverviewDisplay from "./display";

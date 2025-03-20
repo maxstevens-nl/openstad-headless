@@ -1,11 +1,9 @@
-import Preview from "@/components/widget-preview";
 import WidgetPublish from "@/components/widget-publish";
 import {
 	type WithApiUrlProps,
 	withApiUrl,
 } from "@/lib/server-side-props-definition";
 import { useRouter } from "next/router";
-import React from "react";
 import { PageLayout } from "../../../../../../components/ui/page-layout";
 import {
 	Tabs,

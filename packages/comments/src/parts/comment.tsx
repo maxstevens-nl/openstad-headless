@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import "../index.css";
 import DataStore from "@openstad-headless/data-store/src";
 import { Spacer } from "@openstad-headless/ui/src";

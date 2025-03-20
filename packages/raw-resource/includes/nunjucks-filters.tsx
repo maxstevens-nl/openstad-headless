@@ -1,5 +1,3 @@
-import nunjucks from "nunjucks";
-
 type Tag = {
 	label?: string;
 	name?: string;

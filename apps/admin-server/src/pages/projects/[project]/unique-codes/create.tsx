@@ -1,5 +1,4 @@
 import { PageLayout } from "@/components/ui/page-layout";
-import React from "react";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -14,7 +13,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/typography";
-import { useProject } from "@/hooks/use-project";
 import useUniqueCodes from "@/hooks/use-unique-codes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";

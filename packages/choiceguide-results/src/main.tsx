@@ -1,10 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { ChoiceguideResults } from "./choiceguide-results";
 import { defaultFormValues } from "./parts/default-values.tsx";
-import type { ChoiceGuideFormWidgetProps } from "./props.js";
 
-const config: ChoiceGuideFormWidgetProps = {
+const config = {
 	api: {
 		url: import.meta.env.VITE_API_URL,
 	},
