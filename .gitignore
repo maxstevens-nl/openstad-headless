@@ -1,4 +1,6 @@
 .env
+.env.*
+*.pub
 node_modules/
 .DS_Store
 nginx.config.example
@@ -11,3 +13,5 @@ secrets.yaml
 /.idea
 
 *.agekey
+
+.turbo
