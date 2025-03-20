@@ -1,6 +1,6 @@
-const fs = require("fs").promises;
-const util = require("util");
-const exec = util.promisify(require("child_process").exec);
+const fs = require("node:fs").promises;
+const util = require("node:util");
+const exec = util.promisify(require("node:child_process").exec);
 
 exports.contructComponentsCdn = async () => {
 	// construct cdn urls
@@ -16,19 +16,17 @@ exports.contructComponentsCdn = async () => {
 
 			// get current published version
 			({ stdout, stderr } = await exec("npm view --json openstad-components"));
-			let info = stdout && stdout.toString();
+			let info = stdout?.toString();
 			info = JSON.parse(info);
 			let version = info["dist-tags"][tag];
 			if (!version) {
 				// fallback
 				const packageFile =
 					(await fs.readFile(`${__dirname}/../package.json`).toString()) || "";
-				const match =
-					packageFile &&
-					packageFile.match(
-						/"openstad-components":\s*"(?:[^"\d]*)((?:\d+\.)*\d+)"/,
-					);
-				version = (match && match[1]) || "";
+				const match = packageFile?.match(
+					/"openstad-components":\s*"(?:[^"\d]*)((?:\d+\.)*\d+)"/,
+				);
+				version = match?.[1] || "";
 			}
 			openstadComponentsCdn = openstadComponentsCdn.replace(
 				"@{version}",
@@ -56,19 +54,17 @@ exports.contructReactAdminCdn = async () => {
 
 			// get current published version
 			({ stdout, stderr } = await exec("npm view --json openstad-react-admin"));
-			let info = stdout && stdout.toString();
+			let info = stdout?.toString();
 			info = JSON.parse(info);
 			let version = info["dist-tags"][tag];
 			if (!version) {
 				// fallback
 				const packageFile =
 					(await fs.readFile(`${__dirname}/../package.json`).toString()) || "";
-				const match =
-					packageFile &&
-					packageFile.match(
-						/"openstad-react-openstadComponentsCdn":\s*"(?:[^"\d]*)((?:\d+\.)*\d+)"/,
-					);
-				version = (match && match[1]) || "";
+				const match = packageFile?.match(
+					/"openstad-react-openstadComponentsCdn":\s*"(?:[^"\d]*)((?:\d+\.)*\d+)"/,
+				);
+				version = match?.[1] || "";
 			}
 			openstadReactAdminCdn = openstadReactAdminCdn.replace(
 				"@{version}",
@@ -84,15 +80,15 @@ exports.contructReactAdminCdn = async () => {
 };
 
 async function getTag() {
-	const util = require("util");
-	const exec = util.promisify(require("child_process").exec);
+	const util = require("node:util");
+	const exec = util.promisify(require("node:child_process").exec);
 
 	let branch = "";
 	let tag = "alpha";
 
 	try {
 		const { stdout, stderr } = await exec("git rev-parse --abbrev-ref HEAD");
-		branch = stdout && stdout.toString().trim();
+		branch = stdout?.toString().trim();
 	} catch (error) {
 		// As a fallback we check for the CDN_DIST_TAG env variable
 		if (process.env.CDN_DIST_TAG) {
@@ -101,8 +97,8 @@ async function getTag() {
 		console.warn(`Could not get branch via git; fallback to ${tag}`);
 	}
 
-	if (branch == "release") tag = "beta";
-	if (branch == "master") tag = "latest";
+	if (branch === "release") tag = "beta";
+	if (branch === "master") tag = "latest";
 
 	return tag;
 }

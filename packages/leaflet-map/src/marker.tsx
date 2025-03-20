@@ -47,8 +47,7 @@ export default function Marker({
 		"dragStart",
 		"dragEnd",
 	]) {
-		const EventName =
-			"on" + eventname.charAt(0).toUpperCase() + eventname.slice(1);
+		const EventName = `on${eventname.charAt(0).toUpperCase()}${eventname.slice(1)}`;
 		eventname = eventname.toLowerCase();
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 		let onEvent = (props as any)[EventName] || [];
@@ -90,7 +89,7 @@ export default function Marker({
 		}
 	}
 
-	const draggable = eventHandlers["dragstart"] || eventHandlers["dragend"];
+	const draggable = eventHandlers.dragstart || eventHandlers.dragend;
 
 	return isVisible && typeof lat === "number" && typeof lng === "number" ? (
 		<LeafletMarker

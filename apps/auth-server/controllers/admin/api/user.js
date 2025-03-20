@@ -9,17 +9,17 @@ const outputUser = (req, res, next) => {
 	delete result.hashedPhoneNumber;
 	if (result.roles) {
 		result.roles.map((role) => {
-			const client = req.clients.find((c) => c.id == role.clientId);
+			const client = req.clients.find((c) => c.id === role.clientId);
 			role.clientId = client.clientId;
 		});
 		const clientId = getClientIdFromRequest(req);
 		if (clientId) {
 			const roles = result.roles
-				.filter((role) => role.clientId == clientId)
+				.filter((role) => role.clientId === clientId)
 				.map((role) => role.roleId);
-			if (roles.length == 1) {
+			if (roles.length === 1) {
 				const roleId = roles[0];
-				const role = req.roles.find((role) => role.id == roleId);
+				const role = req.roles.find((role) => role.id === roleId);
 				result.role = role?.name;
 			}
 		}

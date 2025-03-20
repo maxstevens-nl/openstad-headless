@@ -28,7 +28,7 @@ function Carousel({
 	imagesize = "full",
 }: Item) {
 	const image = JSON.parse(images);
-	const titleVisible = title === "true" ? true : false;
+	const titleVisible = title === "true";
 
 	const getSize = (size: any) => {
 		if (!size) {

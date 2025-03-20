@@ -8,13 +8,13 @@ export const getSchemaForField = (field: CombinedFieldPropsWithType) => {
 	});
 
 	switch (field.type) {
-		case "text":
+		case "text": {
 			let min = field.minCharacters || 0;
 			let minWarning =
 				field.minCharactersWarning ||
 				"Tekst moet minimaal {minCharacters} karakters bevatten";
 
-			if (field.fieldRequired && min == 0) {
+			if (field.fieldRequired && min === 0) {
 				min = 1;
 				minWarning = field.requiredWarning || "Dit veld is verplicht";
 			} else {
@@ -29,28 +29,26 @@ export const getSchemaForField = (field: CombinedFieldPropsWithType) => {
 
 			if (field.fieldRequired) {
 				return z.string().min(min, minWarning).max(max, maxWarning);
-			} else {
-				return z.string().min(min, minWarning).max(max, maxWarning).optional();
 			}
+			return z.string().min(min, minWarning).max(max, maxWarning).optional();
+		}
 
 		case "checkbox":
 			if (typeof field.fieldRequired !== "undefined" && field.fieldRequired) {
 				return z
 					.string()
 					.min(3, field.requiredWarning || "Dit veld is verplicht");
-			} else {
-				return undefined;
 			}
+			return undefined;
 		case "documentUpload":
 		case "imageUpload":
 			if (typeof field.fieldRequired !== "undefined" && field.fieldRequired) {
 				return z
 					.array(fileSchema)
 					.min(1, field.requiredWarning || "Dit veld is verplicht");
-			} else {
-				return undefined;
 			}
-		case "map":
+			return undefined;
+		case "map": {
 			const mapSchema = z.object({
 				lat: z.number().optional(),
 				lng: z.number().optional(),
@@ -63,6 +61,7 @@ export const getSchemaForField = (field: CombinedFieldPropsWithType) => {
 			}
 
 			return mapSchema.optional();
+		}
 
 		case "range":
 		case "radiobox":
@@ -75,9 +74,8 @@ export const getSchemaForField = (field: CombinedFieldPropsWithType) => {
 						? (field.customWarning as string)
 						: "Dit veld is verplicht";
 				return z.string().nonempty(warning);
-			} else {
-				return undefined;
 			}
+			return undefined;
 		case "hidden":
 			return undefined;
 

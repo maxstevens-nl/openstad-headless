@@ -5,7 +5,7 @@ import DataStore from "@openstad-headless/data-store/src";
 import { getResourceId } from "@openstad-headless/lib/get-resource-id";
 import { loadWidget } from "@openstad-headless/lib/load-widget";
 import type { BaseProps, ProjectSettingProps } from "@openstad-headless/types";
-import { Banner, Paginator } from "@openstad-headless/ui/src";
+import { Banner } from "@openstad-headless/ui/src";
 import { Spacer } from "@openstad-headless/ui/src";
 import hasRole from "../../lib/has-role";
 import CommentForm from "./parts/comment-form.js";
@@ -50,10 +50,6 @@ export type CommentsWidgetProps = BaseProps &
 		defaultSorting?: string;
 		sorting?: Array<{ value: string; label: string }>;
 		setRefreshComments?: React.Dispatch<any>;
-		itemsPerPage?: number;
-		overridePage?: number;
-		displayPagination?: boolean;
-		onGoToLastPage?: (goToLastPage: () => void) => void;
 	} & Partial<Pick<CommentFormProps, "formIntro" | "placeholder">>;
 
 export const CommentWidgetContext = createContext<
@@ -71,37 +67,10 @@ function CommentsInner({
 	formIntro,
 	selectedComment,
 	loginText,
-	itemsPerPage,
-	onGoToLastPage,
-	displayPagination = false,
-	overridePage = 0,
 	setRefreshComments: parentSetRefreshComments = () => {}, // parent setter as fallback
 	...props
 }: CommentsWidgetProps) {
 	const [refreshKey, setRefreshKey] = useState(0); // Key for SWR refresh
-	const [page, setPage] = useState<number>(0);
-	const [totalPages, setTotalPages] = useState(0);
-	const [pageSize, setPageSize] = useState<number>(
-		displayPagination ? itemsPerPage || 9999 : 9999,
-	);
-
-	const goToLastPage = () => {
-		if (totalPages > 0 && displayPagination) {
-			setPage(totalPages - 1);
-		}
-	};
-
-	useEffect(() => {
-		if (onGoToLastPage) {
-			onGoToLastPage(goToLastPage);
-		}
-	}, [onGoToLastPage]);
-
-	useEffect(() => {
-		if (overridePage !== page) {
-			setPage(overridePage);
-		}
-	}, [overridePage]);
 
 	const refreshComments = () => {
 		setRefreshKey((prevKey) => prevKey + 1); // Increment the key to trigger a refresh
@@ -124,18 +93,18 @@ function CommentsInner({
 		placeholder,
 		formIntro,
 		canComment:
-			typeof props.comments?.canComment != "undefined"
+			typeof props.comments?.canComment !== "undefined"
 				? props.comments.canComment
 				: true,
 		canLike:
-			typeof props.comments?.canLike != "undefined"
+			typeof props.comments?.canLike !== "undefined"
 				? props.comments.canLike
 				: true,
 		canReply:
-			typeof props.comments?.canReply != "undefined"
+			typeof props.comments?.canReply !== "undefined"
 				? props.comments.canReply
 				: true,
-		showForm: typeof props.showForm != "undefined" ? props.showForm : true,
+		showForm: typeof props.showForm !== "undefined" ? props.showForm : true,
 		closedText:
 			props.comments?.closedText ||
 			"Het insturen van reacties is gesloten, u kunt niet meer reageren",
@@ -205,12 +174,12 @@ function CommentsInner({
 
 		try {
 			if (formDataCopy.id) {
-				let comment = comments.find((c: any) => c.id == formDataCopy.id);
+				let comment = comments.find((c: any) => c.id === formDataCopy.id);
 				if (formDataCopy.parentId) {
 					const parent = comments.find(
-						(c: any) => c.id == formDataCopy.parentId,
+						(c: any) => c.id === formDataCopy.parentId,
 					);
-					comment = parent.replies.find((c: any) => c.id == formDataCopy.id);
+					comment = parent.replies.find((c: any) => c.id === formDataCopy.id);
 				}
 				await comment.update(formDataCopy);
 
@@ -245,27 +214,6 @@ function CommentsInner({
 		}
 	}, [comments]);
 
-	useEffect(() => {
-		if (
-			comments &&
-			Array.isArray(comments) &&
-			comments.length > 0 &&
-			displayPagination
-		) {
-			setTotalPages(Math.ceil(comments.length / pageSize));
-		}
-	}, [comments, pageSize]);
-
-	const randomId = Math.random().toString(36).replace("0.", "container_");
-
-	const scrollToTop = () => {
-		const divElement = document.getElementById(randomId);
-
-		if (divElement) {
-			divElement.scrollIntoView({ block: "start", behavior: "auto" });
-		}
-	};
-
 	return (
 		<CommentWidgetContext.Provider
 			value={{
@@ -273,7 +221,7 @@ function CommentsInner({
 				setRefreshComments: refreshComments || defaultSetRefreshComments,
 			}}
 		>
-			<section className="osc" id={randomId}>
+			<section className="osc">
 				<Heading3 className="comments-title">
 					{comments && title?.replace(/\[\[nr\]\]/, commentCount.toString())}
 					{!comments && title}
@@ -375,7 +323,6 @@ function CommentsInner({
 						const dateB = new Date(b.createdAt).getTime();
 						return sort === "createdAt_desc" ? dateB - dateA : dateA - dateB;
 					})
-					.slice(page * pageSize, (page + 1) * pageSize)
 					?.map((comment: any, index: number) => {
 						const attributes = {
 							...args,
@@ -393,23 +340,6 @@ function CommentsInner({
 							/>
 						);
 					})}
-
-				{displayPagination && (
-					<>
-						<Spacer size={4} />
-						<div className="osc-comments-paginator col-span-full">
-							<Paginator
-								page={page || 0}
-								totalPages={totalPages || 1}
-								onPageChange={(newPage) => {
-									setPage(newPage);
-									scrollToTop();
-								}}
-							/>
-						</div>
-					</>
-				)}
-
 				<NotificationProvider />
 			</section>
 		</CommentWidgetContext.Provider>
@@ -425,8 +355,6 @@ function Comments({
 	selectedComment,
 	loginText = "Inloggen om deel te nemen aan de discussie.",
 	setRefreshComments = () => {},
-	onGoToLastPage,
-	overridePage,
 	...props
 }: CommentsWidgetProps) {
 	const [refreshKey, setRefreshKey] = useState(false);
@@ -453,8 +381,6 @@ function Comments({
 				selectedComment={selectedComment}
 				loginText={loginText}
 				setRefreshComments={triggerRefresh}
-				onGoToLastPage={onGoToLastPage}
-				overridePage={overridePage}
 				{...props}
 			/>
 		</div>

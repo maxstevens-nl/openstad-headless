@@ -1,4 +1,4 @@
-const fs = require("fs").promises;
+const fs = require("node:fs").promises;
 const authDb = require("mysql2/promise");
 const execute = require("./execute");
 
@@ -40,7 +40,7 @@ module.exports = async function setupAuthServer(actions) {
 		// check database
 		let doCreateDBTables = false;
 		const rows = await connection.query("SHOW TABLES;");
-		if (!(rows && rows.length)) {
+		if (!rows?.length) {
 			doCreateDBTables = true;
 		}
 

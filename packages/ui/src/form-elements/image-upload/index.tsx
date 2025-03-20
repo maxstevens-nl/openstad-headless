@@ -76,8 +76,6 @@ export type ImageUploadProps = {
 	moreInfoButton?: string;
 	moreInfoContent?: string;
 	infoImage?: string;
-	randomId?: string;
-	fieldInvalid?: boolean;
 };
 
 const ImageUploadField: FC<ImageUploadProps> = ({
@@ -93,11 +91,12 @@ const ImageUploadField: FC<ImageUploadProps> = ({
 	moreInfoButton = "Meer informatie",
 	moreInfoContent = "",
 	infoImage = "",
-	randomId = "",
-	fieldInvalid = false,
 	...props
 }) => {
 	const datastore = new DataStore({ props });
+	const randomID =
+		Math.random().toString(36).substring(2, 15) +
+		Math.random().toString(36).substring(2, 15);
 
 	const [files, setImages] = useState<FilePondFile[]>([]);
 	const [uploadedImages, setUploadedImages] = useState<
@@ -154,7 +153,7 @@ const ImageUploadField: FC<ImageUploadProps> = ({
 	return (
 		<FormField type="text">
 			<Paragraph className="utrecht-form-field__label">
-				<FormLabel htmlFor={randomId}>{title}</FormLabel>
+				<FormLabel htmlFor={randomID}>{title}</FormLabel>
 			</Paragraph>
 
 			{description && (
@@ -195,10 +194,10 @@ const ImageUploadField: FC<ImageUploadProps> = ({
 					allowMultiple={multiple}
 					server={{
 						process: {
-							url: props?.imageUrl + "/images",
+							url: `${props?.imageUrl}/images`,
 							method: "POST",
 							headers: {
-								Authorization: "Bearer " + datastore.api?.currentUserJWT,
+								Authorization: `Bearer ${datastore.api?.currentUserJWT}`,
 							},
 							onload: (response: any) => {
 								const currentImages = [...uploadedImages];
@@ -209,7 +208,7 @@ const ImageUploadField: FC<ImageUploadProps> = ({
 								return JSON.stringify(currentImages); // Dit heeft echt geen nut, maar het lost wel de TS problemen op
 							},
 						},
-						fetch: props?.imageUrl + "/image",
+						fetch: `${props?.imageUrl}/image`,
 						revert: null,
 					}}
 					onremovefile={(
@@ -217,14 +216,14 @@ const ImageUploadField: FC<ImageUploadProps> = ({
 						file: FilePondFile,
 					) => {
 						const fileName = file?.file?.name;
-						if (!!fileName) {
+						if (fileName) {
 							const updatedImages = uploadedImages.filter(
 								(item) => item.name !== fileName,
 							);
 							setUploadedImages(updatedImages);
 						}
 					}}
-					id={randomId}
+					id={randomID}
 					required={fieldRequired}
 					disabled={disabled}
 					acceptedFileTypes={
@@ -232,8 +231,6 @@ const ImageUploadField: FC<ImageUploadProps> = ({
 							? [acceptAttribute]
 							: acceptAttribute
 					}
-					aria-invalid={fieldInvalid}
-					aria-describedby={`${randomId}_error`}
 					{...filePondSettings}
 				/>
 			</div>

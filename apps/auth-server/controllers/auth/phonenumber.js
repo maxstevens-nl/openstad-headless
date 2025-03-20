@@ -6,7 +6,7 @@ const authService = require("../../services/authService");
 const tokenSMS = require("../../services/tokenSMS");
 const authPhonenumberConfig = require("../../config/auth").get("Phonenumber");
 const verificationService = require("../../services/verificationService");
-const URL = require("url").URL;
+const URL = require("node:url").URL;
 
 /**
  * Render the index.html or index-with-code.js depending on if query param has code or not
@@ -31,10 +31,9 @@ exports.index = (req, res) => {
  */
 exports.login = (req, res) => {
 	const config = req.client.config ? req.client.config : {};
-	const configAuthType =
-		config.authTypes && config.authTypes["Phonenumber"]
-			? config.authTypes["Phonenumber"]
-			: {};
+	const configAuthType = config.authTypes?.Phonenumber
+		? config.authTypes.Phonenumber
+		: {};
 
 	res.render("auth/phonenumber/login", {
 		loginUrl: authPhonenumberConfig.loginUrl,
@@ -94,10 +93,9 @@ const getUser = async (phoneNumber) => {
 exports.postLogin = async (req, res, next) => {
 	const clientConfig = req.client.config ? req.client.config : {};
 
-	req.redirectUrl =
-		clientConfig && clientConfig.emailRedirectUrl
-			? clientConfig.emailRedirectUrl
-			: encodeURIComponent(req.query.redirect_uri);
+	req.redirectUrl = clientConfig?.emailRedirectUrl
+		? clientConfig.emailRedirectUrl
+		: encodeURIComponent(req.query.redirect_uri);
 	const redirectUrl = req.query.redirect_uri
 		? req.query.redirect_uri
 		: req.client.redirectUrl;
@@ -134,7 +132,7 @@ exports.postLogin = async (req, res, next) => {
 		req.user.phoneNumber = phoneNumber;
 		await verificationService.sendSMS(req.user, req.client);
 		req.flash("success", {
-			msg: "Een SMS met een code is verstuurd naar " + phoneNumber,
+			msg: `Een SMS met een code is verstuurd naar ${phoneNumber}`,
 		});
 		return res.redirect(authorizeUrl);
 	} catch (err) {
@@ -154,10 +152,9 @@ exports.postLogin = async (req, res, next) => {
  */
 exports.smsCode = (req, res) => {
 	const config = req.client.config ? req.client.config : {};
-	const configAuthType =
-		config.authTypes && config.authTypes["Phonenumber"]
-			? config.authTypes["Phonenumber"]
-			: {};
+	const configAuthType = config.authTypes?.Phonenumber
+		? config.authTypes.Phonenumber
+		: {};
 
 	res.render("auth/phonenumber/sms-code", {
 		loginUrl: authPhonenumberConfig.smsCodeUrl,

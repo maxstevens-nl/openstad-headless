@@ -111,8 +111,8 @@ module.exports = (db, sequelize, Sequelize) => {
 			.then((userRoles) => {
 				const userRole = userRoles.find(
 					(userRole) =>
-						userRole.client.clientId == clientId ||
-						userRole.client.id == clientId,
+						userRole.client.clientId === clientId ||
+						userRole.client.id === clientId,
 				);
 				const role = userRole?.role;
 				return role?.name;

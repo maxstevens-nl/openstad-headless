@@ -11,28 +11,27 @@ export default defineConfig(({ command }) => {
 			css: prefix(),
 		};
 		// During build, use the classic runtime and build as an IIFE so we can deliver it to the browser
-	} else {
-		return {
-			plugins: [react({ jsxRuntime: "classic" })],
-			css: prefix(),
-			build: {
-				outDir: "./dist/resource-detail-map",
-				lib: {
-					formats: ["iife"],
-					entry: "src/resource-detail-map.tsx",
-					name: "OpenstadHeadlessResourceDetailMap",
-					fileName: "resource-detail-map",
-				},
-				rollupOptions: {
-					external: ["react", "react-dom", "remixicon/fonts/remixicon.css"],
-					output: {
-						globals: {
-							react: "React",
-							"react-dom": "ReactDOM",
-						},
+	}
+	return {
+		plugins: [react({ jsxRuntime: "classic" })],
+		css: prefix(),
+		build: {
+			outDir: "./dist/resource-detail-map",
+			lib: {
+				formats: ["iife"],
+				entry: "src/resource-detail-map.tsx",
+				name: "OpenstadHeadlessResourceDetailMap",
+				fileName: "resource-detail-map",
+			},
+			rollupOptions: {
+				external: ["react", "react-dom", "remixicon/fonts/remixicon.css"],
+				output: {
+					globals: {
+						react: "React",
+						"react-dom": "ReactDOM",
 					},
 				},
 			},
-		};
-	}
+		},
+	};
 });

@@ -1,5 +1,5 @@
 require("dotenv").config();
-const fs = require("fs").promises;
+const fs = require("node:fs").promises;
 
 async function create() {
 	setupEnvVars();
@@ -37,9 +37,9 @@ async function setupEnvVars() {
 		process.env.API_PORT || BASE_PORT + 10);
 	const API_DOMAIN = (process.env.API_DOMAIN =
 		process.env.API_DOMAIN ||
-		(process.env.BASE_DOMAIN == "localhost"
-			? "localhost:" + API_PORT
-			: "api." + process.env.BASE_DOMAIN));
+		(process.env.BASE_DOMAIN === "localhost"
+			? `localhost:${API_PORT}`
+			: `api.${process.env.BASE_DOMAIN}`));
 	const API_URL =
 		(process.env.API_URL =
 		process.env.API_URL =
@@ -57,9 +57,9 @@ async function setupEnvVars() {
 		process.env.AUTH_PORT || BASE_PORT + 30);
 	const AUTH_DOMAIN = (process.env.AUTH_DOMAIN =
 		process.env.AUTH_DOMAIN ||
-		(process.env.BASE_DOMAIN == "localhost"
-			? "localhost:" + AUTH_PORT
-			: "auth." + process.env.BASE_DOMAIN));
+		(process.env.BASE_DOMAIN === "localhost"
+			? `localhost:${AUTH_PORT}`
+			: `auth.${process.env.BASE_DOMAIN}`));
 	const AUTH_URL = (process.env.AUTH_URL =
 		process.env.AUTH_URL ||
 		(process.env.FORCE_HTTP ? "http://" : "https://") + AUTH_DOMAIN);
@@ -79,9 +79,9 @@ async function setupEnvVars() {
 		process.env.IMAGE_PORT_API || BASE_PORT + 50);
 	const IMAGE_DOMAIN = (process.env.IMAGE_DOMAIN =
 		process.env.IMAGE_DOMAIN ||
-		(process.env.BASE_DOMAIN == "localhost"
-			? "localhost:" + IMAGE_PORT_API
-			: "image." + process.env.BASE_DOMAIN));
+		(process.env.BASE_DOMAIN === "localhost"
+			? `localhost:${IMAGE_PORT_API}`
+			: `image.${process.env.BASE_DOMAIN}`));
 	const IMAGE_APP_URL = (process.env.IMAGE_APP_URL =
 		process.env.IMAGE_APP_URL ||
 		(process.env.FORCE_HTTP ? "http://" : "https://") + IMAGE_DOMAIN);
@@ -95,9 +95,9 @@ async function setupEnvVars() {
 		process.env.ADMIN_PORT || BASE_PORT + 70);
 	const ADMIN_DOMAIN = (process.env.ADMIN_DOMAIN =
 		process.env.ADMIN_DOMAIN ||
-		(process.env.BASE_DOMAIN == "localhost"
-			? "localhost:" + ADMIN_PORT
-			: "admin." + process.env.BASE_DOMAIN));
+		(process.env.BASE_DOMAIN === "localhost"
+			? `localhost:${ADMIN_PORT}`
+			: `admin.${process.env.BASE_DOMAIN}`));
 	const ADMIN_URL = (process.env.ADMIN_URL =
 		process.env.ADMIN_URL ||
 		(process.env.FORCE_HTTP ? "http://" : "https://") + ADMIN_DOMAIN);
@@ -108,16 +108,16 @@ async function setupEnvVars() {
 		process.env.CMS_PORT || BASE_PORT + 90);
 	const CMS_DOMAIN = (process.env.CMS_DOMAIN =
 		process.env.CMS_DOMAIN ||
-		(process.env.BASE_DOMAIN == "localhost"
-			? "localhost:" + CMS_PORT
-			: "cms." + process.env.BASE_DOMAIN));
+		(process.env.BASE_DOMAIN === "localhost"
+			? `localhost:${CMS_PORT}`
+			: `cms.${process.env.BASE_DOMAIN}`));
 	const CMS_URL = (process.env.CMS_URL =
 		process.env.CMS_URL ||
 		(process.env.FORCE_HTTP ? "http://" : "https://") + CMS_DOMAIN);
 	const CMS_OVERWRITE_URL = (process.env.CMS_OVERWRITE_URL =
 		process.env.CMS_OVERWRITE_URL ||
-		(process.env.BASE_DOMAIN == "localhost"
-			? "http://localhost:" + CMS_PORT
+		(process.env.BASE_DOMAIN === "localhost"
+			? `http://localhost:${CMS_PORT}`
 			: ""));
 	const CMS_MONGODB_URI = (process.env.CMS_MONGODB_URI =
 		process.env.CMS_MONGODB_URI || "");
@@ -138,7 +138,7 @@ async function setupEnvVars() {
 	process.env.API_DB_NAME =
 		process.env.API_DB_NAME ||
 		(process.env.DB_BASE_NAME
-			? process.env.DB_BASE_NAME + "-api"
+			? `${process.env.DB_BASE_NAME}-api`
 			: "openstad-api");
 	process.env.API_DB_DIALECT =
 		process.env.API_DB_DIALECT || process.env.DB_DIALECT || "mysql";
@@ -173,11 +173,10 @@ async function setupEnvVars() {
 
 	process.env.API_COOKIE_SECRET =
 		process.env.API_COOKIE_SECRET || generateRandomToken({ length: 32 });
-	process.env.API_COOKIE_ONLY_SECURE =
+	process.env.API_COOKIE_ONLY_SECURE = !!(
 		process.env.API_COOKIE_ONLY_SECURE ||
-		process.env.API_COOKIE_ONLY_SECURE != "false"
-			? true
-			: false;
+		process.env.API_COOKIE_ONLY_SECURE !== "false"
+	);
 	process.env.API_JWT_SECRET =
 		process.env.API_JWT_SECRET || generateRandomToken({ length: 64 });
 
@@ -198,7 +197,7 @@ async function setupEnvVars() {
 	process.env.AUTH_DB_NAME =
 		process.env.AUTH_DB_NAME ||
 		(process.env.DB_BASE_NAME
-			? process.env.DB_BASE_NAME + "-auth"
+			? `${process.env.DB_BASE_NAME}-auth`
 			: "openstad-auth");
 	process.env.AUTH_DB_DIALECT =
 		process.env.AUTH_DB_DIALECT || process.env.DB_DIALECT || "mysql";
@@ -225,7 +224,7 @@ async function setupEnvVars() {
 		process.env.AUTH_SESSION_SECRET || generateRandomToken({ length: 32 });
 	// TODO: dev vs prod
 	(process.env.AUTH_COOKIE_SECURE_OFF =
-		typeof process.env.AUTH_COOKIE_SECURE_OFF != "undefined"
+		typeof process.env.AUTH_COOKIE_SECURE_OFF !== "undefined"
 			? process.env.AUTH_COOKIE_SECURE_OFF
 			: process.env.COOKIE_SECURE_OFF ||
 				"yes"), // TODO: COOKIE_SECURE_OFF;
@@ -409,7 +408,7 @@ CMS_DEFAULT_SETTINGS=${process.env.CMS_DEFAULT_SETTINGS}
 }
 
 function generateRandomToken(params) {
-	var token = "";
+	let token = "";
 
 	params.chars =
 		params.chars ||

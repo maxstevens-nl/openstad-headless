@@ -26,8 +26,8 @@ initializeApp().then((app) => {
 	// for dev allow http
 	app.listen(app.get("port"), () => {
 		console.log(
-			"OAuth 2.0 Authorization Server started on port " + app.get("port"),
+			`OAuth 2.0 Authorization Server started on port ${app.get("port")}`,
 		);
-		console.log("Express server listening on port " + app.get("port"));
+		console.log(`Express server listening on port ${app.get("port")}`);
 	});
 });

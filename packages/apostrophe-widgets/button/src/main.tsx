@@ -20,6 +20,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             "target": "_self"
           }
         ]`}
-		></Button>
+		/>
 	</React.StrictMode>,
 );

@@ -18,7 +18,7 @@ export function Icon({
 		<div
 			className={`icon ${text === undefined || iconOnly === true ? "no-label" : ""}`}
 		>
-			<i className={`${icon} ${variant}`}></i>
+			<i className={`${icon} ${variant}`} />
 			<p>
 				{description ? <span className="sr-only">{description}</span> : null}
 				{text}

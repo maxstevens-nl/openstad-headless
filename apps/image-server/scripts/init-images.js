@@ -1,12 +1,12 @@
 require("dotenv").config();
-const fs = require("fs").promises;
+const fs = require("node:fs").promises;
 
 (async () => {
 	try {
 		console.log("Init default images...");
 
 		try {
-			const files = await fs.readdir(`seeds/lorem-images`);
+			const files = await fs.readdir("seeds/lorem-images");
 			const targetDir = `${process.env.PWD}${process.env.IMAGES_DIR || "/images"}`;
 			for (const file of files) {
 				console.log(`  ${file}`);

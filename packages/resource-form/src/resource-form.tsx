@@ -120,12 +120,7 @@ function ResourceFormWidget(props: ResourceFormWidgetProps) {
 						!redirectUrl.startsWith("http://") &&
 						!redirectUrl.startsWith("https://")
 					) {
-						redirectUrl =
-							document.location.origin +
-							"/" +
-							(redirectUrl.startsWith("/")
-								? redirectUrl.substring(1)
-								: redirectUrl);
+						redirectUrl = `${document.location.origin}/${redirectUrl.startsWith("/") ? redirectUrl.substring(1) : redirectUrl}`;
 					}
 					document.location.href = redirectUrl.replace("[id]", result.id);
 				} else {

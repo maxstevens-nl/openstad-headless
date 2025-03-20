@@ -55,9 +55,8 @@ const ChoiceItem: React.FC<ChoiceItemProps> = (props) => {
 			const getClass = (perc: number) => {
 				if (perc < 0) {
 					return "osc-choice-bar-progress-negative";
-				} else {
-					return "osc-choice-bar-progress-positive";
 				}
+				return "osc-choice-bar-progress-positive";
 			};
 
 			const percentageValue =
@@ -72,31 +71,30 @@ const ChoiceItem: React.FC<ChoiceItemProps> = (props) => {
 					<div className="osc-choice-bar osc-from-center">
 						<div
 							className={`osc-choice-bar-progress ${getClass(percentage)}`}
-						></div>
-					</div>
-				</div>
-			);
-		} else {
-			const percentageValue = Number.parseFloat(score.x.toString()) || 0;
-
-			document.documentElement.style.setProperty(
-				"--choiceguide-not-minus-to-plus-bg",
-				defaultBarColor.default,
-			);
-
-			return (
-				<div className="osc-choice-default not-minus-to-plus">
-					<h4>{props.choiceOption?.title}</h4>
-					<div className="osc-choice-bar">
-						<div className="osc-choice-bar-mask"></div>
-						<div
-							className="osc-choice-bar-progress"
-							data-score={Math.round(percentageValue)}
-						></div>
+						/>
 					</div>
 				</div>
 			);
 		}
+		const percentageValue = Number.parseFloat(score.x.toString()) || 0;
+
+		document.documentElement.style.setProperty(
+			"--choiceguide-not-minus-to-plus-bg",
+			defaultBarColor.default,
+		);
+
+		return (
+			<div className="osc-choice-default not-minus-to-plus">
+				<h4>{props.choiceOption?.title}</h4>
+				<div className="osc-choice-bar">
+					<div className="osc-choice-bar-mask" />
+					<div
+						className="osc-choice-bar-progress"
+						data-score={Math.round(percentageValue)}
+					/>
+				</div>
+			</div>
+		);
 	};
 
 	return renderScore();

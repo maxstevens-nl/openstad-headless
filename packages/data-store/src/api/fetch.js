@@ -7,7 +7,7 @@ export default async function doFetch(url = "", options = {}) {
 			options.headers["Content-Type"] || "application/json";
 
 		if (this.currentUserJWT) {
-			options.headers["Authorization"] = "Bearer " + this.currentUserJWT;
+			options.headers.Authorization = `Bearer ${this.currentUserJWT}`;
 		}
 
 		let response;

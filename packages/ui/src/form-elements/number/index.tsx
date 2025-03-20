@@ -27,8 +27,6 @@ export type NumberInputProps = {
 	append?: string;
 	type?: string;
 	placeholder?: string;
-	randomId?: string;
-	fieldInvalid?: boolean;
 };
 
 const NumberInput: FC<NumberInputProps> = ({
@@ -43,8 +41,6 @@ const NumberInput: FC<NumberInputProps> = ({
 	prepend,
 	append,
 	placeholder = "",
-	randomId = "",
-	fieldInvalid = false,
 }) => {
 	const randomID =
 		Math.random().toString(36).substring(2, 15) +
@@ -108,7 +104,7 @@ const NumberInput: FC<NumberInputProps> = ({
 				</>
 			)}
 
-			<div className={`utrecht-form-field__input`}>
+			<div className={"utrecht-form-field__input"}>
 				{prepend && (
 					<span className="utrecht-form-field__prepend">{prepend}</span>
 				)}
@@ -142,8 +138,6 @@ const NumberInput: FC<NumberInputProps> = ({
 					disabled={disabled}
 					autoComplete="off"
 					placeholder={placeholder}
-					aria-invalid={fieldInvalid}
-					aria-describedby={`${randomId}_error`}
 				/>
 				{append && <span className="utrecht-form-field__append">{append}</span>}
 			</div>

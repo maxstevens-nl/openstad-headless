@@ -183,12 +183,10 @@ function ResourceDetailWithMap({
 				)[0] || resource.statuses[0]
 		: false;
 
-	const colorClass =
-		firstStatus && firstStatus.color ? `color-${firstStatus.color}` : "";
-	const backgroundColorClass =
-		firstStatus && firstStatus.backgroundColor
-			? `bgColor-${firstStatus.backgroundColor}`
-			: "";
+	const colorClass = firstStatus?.color ? `color-${firstStatus.color}` : "";
+	const backgroundColorClass = firstStatus?.backgroundColor
+		? `bgColor-${firstStatus.backgroundColor}`
+		: "";
 
 	const statusClasses = `${colorClass} ${backgroundColorClass}`.trim();
 

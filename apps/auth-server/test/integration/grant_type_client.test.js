@@ -7,7 +7,7 @@ const {
 } = require("./common/properties.js");
 
 const supertest = require("supertest");
-const config = require("../../knexfile.js")["test"];
+const config = require("../../knexfile.js").test;
 const db = require("knex")(config);
 
 const app = require("../../app-init");

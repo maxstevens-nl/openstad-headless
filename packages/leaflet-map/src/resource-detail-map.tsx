@@ -33,7 +33,7 @@ const ResourceDetailMap = ({
 
 	if (!resourceId && resourceIdRelativePath.includes("[id]")) {
 		const paramNameMatch = resourceIdRelativePath.match(/[?&]([^=]+)=\[id]/);
-		if (paramNameMatch && paramNameMatch[1]) {
+		if (paramNameMatch?.[1]) {
 			const paramName = paramNameMatch[1];
 			resourceId = urlParams.get(paramName);
 		}
@@ -65,7 +65,7 @@ const ResourceDetailMap = ({
 	const areaId = props?.map?.areaId || false;
 	const polygon =
 		areaId && Array.isArray(areas) && areas.length > 0
-			? (areas.find((area) => area.id.toString() === areaId) || {}).polygon
+			? areas.find((area) => area.id.toString() === areaId)?.polygon
 			: [];
 
 	const zoom = {

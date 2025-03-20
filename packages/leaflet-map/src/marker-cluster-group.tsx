@@ -34,7 +34,7 @@ export default function MarkerClusterGroup({
 			}
 
 			if (typeof iconCreateFunction !== "function") {
-				console.warn(`iconCreateFunction is not a valid function.`);
+				console.warn("iconCreateFunction is not a valid function.");
 				return null;
 			}
 

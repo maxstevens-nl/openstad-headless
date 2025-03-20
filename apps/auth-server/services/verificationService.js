@@ -26,16 +26,15 @@ exports.sendVerification = async (
 
 	const clientConfig = client.config ? client.config : {};
 	const clientConfigStyling = clientConfig.styling ? clientConfig.styling : {};
-	const authTypeConfig =
-		clientConfig.authTypes && clientConfig.authTypes.Url
-			? clientConfig.authTypes.Url
-			: {};
+	const authTypeConfig = clientConfig.authTypes?.Url
+		? clientConfig.authTypes.Url
+		: {};
 	const emailTemplateString = authTypeConfig.emailTemplate
 		? authTypeConfig.emailTemplate
 		: false;
 	const emailSubject = authTypeConfig.emailSubject
 		? authTypeConfig.emailSubject
-		: "Inloggen bij " + client.name;
+		: `Inloggen bij ${client.name}`;
 	const emailHeaderImage = authTypeConfig.emailHeaderImage
 		? authTypeConfig.emailHeaderImage
 		: false;
@@ -50,11 +49,11 @@ exports.sendVerification = async (
 		emailLogo = process.env.LOGO;
 	}
 
-	if (clientConfigStyling && clientConfigStyling.logo) {
+	if (clientConfigStyling?.logo) {
 		emailLogo = clientConfigStyling.logo;
 	}
 
-	if (clientConfig && clientConfig.emailLogo) {
+	if (clientConfig?.emailLogo) {
 		emailLogo = clientConfig.emailLogo;
 	}
 
@@ -88,8 +87,7 @@ exports.sendSMS = async (user, client, redirectUrl) => {
 	const generatedToken = await tokenSMS.format(client, user);
 
 	const config = client.config || {};
-	const configAuthType =
-		(config.authTypes && config.authTypes["Phonenumber"]) || {};
+	const configAuthType = config.authTypes?.Phonenumber || {};
 
 	const kpnClientId = process.env.KPN_CLIENT_ID;
 	const kpnClientSecret = process.env.KPN_CLIENT_SECRET;
@@ -105,7 +103,7 @@ exports.sendSMS = async (user, client, redirectUrl) => {
 	);
 	const json = await response.json();
 
-	const accessToken = json && json.access_token;
+	const accessToken = json?.access_token;
 	if (!accessToken) throw new Error("SMS failed");
 
 	let text = configAuthType.smsCodeText || "Code: [[code]]";

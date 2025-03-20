@@ -18,7 +18,7 @@ function getVariableValue(varName: string, varMapping: { [p: string]: any }) {
 		splitVarName.forEach((vn) => {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-expect-error
-			if (varValue && varValue[vn]) {
+			if (varValue?.[vn]) {
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 				// @ts-expect-error any
 				varValue = varValue[vn] as string;
@@ -77,7 +77,7 @@ export const renderRawTemplate = (
 				const ifBlocks = Array.from(updatedProps.rawInput.matchAll(ifRegex));
 
 				// Loop through all if blocks
-				if (ifBlocks && ifBlocks.length) {
+				if (ifBlocks?.length) {
 					for (const match of ifBlocks) {
 						const condition = match[1].trim();
 						const block = match[2].trim().split("{% else %}");
@@ -120,7 +120,7 @@ export const renderRawTemplate = (
 				const regex = /\{\{([^}]*)\}\}/g;
 				const varsInString = Array.from(rendered.matchAll(regex));
 
-				if (varsInString && varsInString.length) {
+				if (varsInString?.length) {
 					for (const match of varsInString) {
 						let newValue = "";
 						const cleanMatches = match[1].trim().split("|");

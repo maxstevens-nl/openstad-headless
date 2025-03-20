@@ -85,7 +85,7 @@ exports.postAccount = [
 					.update(data)
 					.then(() => {
 						req.flash("success", { msg: "Opgeslagen" });
-						res.redirect("/account?clientId=" + req.client.clientId);
+						res.redirect(`/account?clientId=${req.client.clientId}`);
 					})
 					.catch((err) => {
 						next(err);
@@ -105,7 +105,7 @@ exports.postPassword = (req, res, next) => {
 						msg: "Wachtwoord aangepast, je kan nu inloggen!",
 					});
 					//     res.redirect(authLocalConfig.loginUrl + '?clientId=');
-					res.redirect("/account?clientId=" + req.client.clientId);
+					res.redirect(`/account?clientId=${req.client.clientId}`);
 				})
 				.catch((err) => {
 					next(err);

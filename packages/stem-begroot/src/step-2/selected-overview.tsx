@@ -95,7 +95,7 @@ export const BegrotenSelectedOverview = ({
 											resource.images.length > 0
 												? resource.images?.at(0)?.url
 												: defaultImage;
-										const hasImages = !!resourceImages
+										const hasImages = resourceImages
 											? ""
 											: "resource-has-no-images";
 
@@ -189,7 +189,7 @@ export const BegrotenSelectedOverview = ({
 							Array.isArray(resource.images) && resource.images.length > 0
 								? resource.images?.at(0)?.url
 								: defaultImage;
-						const hasImages = !!resourceImages ? "" : "resource-has-no-images";
+						const hasImages = resourceImages ? "" : "resource-has-no-images";
 
 						return (
 							<>

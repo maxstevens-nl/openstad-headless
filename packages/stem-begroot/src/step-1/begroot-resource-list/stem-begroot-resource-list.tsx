@@ -109,11 +109,10 @@ export const StemBegrootResourceList = ({
 						return resource.tags.some(
 							(tag: { name: string }) => tag.name === activeTagTab,
 						);
-					} else {
-						return resource.tags.some(
-							(tag: { type: string }) => tag.type === activeTagTab,
-						);
 					}
+					return resource.tags.some(
+						(tag: { type: string }) => tag.type === activeTagTab,
+					);
 				}
 				return true;
 			})

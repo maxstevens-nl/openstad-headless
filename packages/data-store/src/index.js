@@ -101,7 +101,7 @@ function DataStore(props = {}) {
 			revalidate: false,
 			rollbackOnError: true,
 		};
-		if (options.action != "fetch" && options.revalidate != true) {
+		if (options.action !== "fetch" && options.revalidate !== true) {
 			defaultOptions.populateCache = (newData, currentData) =>
 				mergeData(currentData, newData, options.action);
 		}
@@ -128,7 +128,7 @@ function DataStore(props = {}) {
 			(cacheKey) =>
 				Object.keys(windowGlobal.OpenStadSWR).indexOf(
 					JSON.stringify(cacheKey, null, 2),
-				) != -1,
+				) !== -1,
 			async (currentData) => currentData, // optimistic ui as fetcher
 			{
 				revalidate: true,

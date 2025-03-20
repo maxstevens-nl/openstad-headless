@@ -48,7 +48,7 @@ function getResourceId({
 			if (!resourceId && targetUrl.includes("[id]")) {
 				const paramNameMatch = targetUrl.match(/[?&]([^=]+)=\[id\]/);
 
-				if (paramNameMatch && paramNameMatch[1]) {
+				if (paramNameMatch?.[1]) {
 					const paramName = paramNameMatch[1];
 					const paramValue = urlParams.get(paramName);
 

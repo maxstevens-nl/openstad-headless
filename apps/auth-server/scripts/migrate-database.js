@@ -20,7 +20,7 @@ const umzug = new Umzug({
 
 (async () => {
 	const args = process.argv.slice(2);
-	if (args.find((arg) => arg == "down")) {
+	if (args.find((arg) => arg === "down")) {
 		let step = args.find((arg) => arg.match("step="));
 		if (step) step = Number.parseInt(step.replace(/^step=(\d+)$/, "$1"));
 		const migrations = await umzug.down({ step: step || 1 });

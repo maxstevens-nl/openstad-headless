@@ -9,9 +9,9 @@ export default function mergeData(currentData, newData, action) {
 				if (newData.parentId) {
 					// currently for comments
 					const parentIndex = currentData.findIndex(
-						(elem) => elem.id == newData.parentId,
+						(elem) => elem.id === newData.parentId,
 					);
-					if (parentIndex != -1) {
+					if (parentIndex !== -1) {
 						result = [...currentData];
 						result[parentIndex].replies = result[parentIndex].replies || [];
 						result[parentIndex].replies.push(newData);
@@ -30,13 +30,13 @@ export default function mergeData(currentData, newData, action) {
 				if (newData.parentId) {
 					// currently for comments
 					const parentIndex = currentData.findIndex(
-						(elem) => elem.id == newData.parentId,
+						(elem) => elem.id === newData.parentId,
 					);
-					if (parentIndex != -1) {
+					if (parentIndex !== -1) {
 						const index = currentData[parentIndex].replies.findIndex(
-							(elem) => elem.id == newData.id,
+							(elem) => elem.id === newData.id,
 						);
-						if (index != -1) {
+						if (index !== -1) {
 							result = [...currentData];
 							result[parentIndex].replies[index] = merge.recursive(
 								{},
@@ -46,8 +46,8 @@ export default function mergeData(currentData, newData, action) {
 						}
 					}
 				} else {
-					const index = currentData.findIndex((elem) => elem.id == newData.id);
-					if (index != -1) {
+					const index = currentData.findIndex((elem) => elem.id === newData.id);
+					if (index !== -1) {
 						result = [...currentData];
 						result[index] = merge.recursive({}, result[index], newData);
 					}
@@ -62,20 +62,20 @@ export default function mergeData(currentData, newData, action) {
 				if (newData.parentId) {
 					// currently for comments
 					const parentIndex = currentData.findIndex(
-						(elem) => elem.id == newData.parentId,
+						(elem) => elem.id === newData.parentId,
 					);
-					if (parentIndex != -1) {
+					if (parentIndex !== -1) {
 						const index = currentData[parentIndex].replies.findIndex(
-							(elem) => elem.id == newData.id,
+							(elem) => elem.id === newData.id,
 						);
-						if (index != -1) {
+						if (index !== -1) {
 							result = [...currentData];
 							result[parentIndex].replies.splice(index, 1);
 						}
 					}
 				} else {
-					const index = currentData.findIndex((elem) => elem.id == newData.id);
-					if (index != -1) {
+					const index = currentData.findIndex((elem) => elem.id === newData.id);
+					if (index !== -1) {
 						result = [...currentData];
 						result.splice(index, 1);
 					}
@@ -87,8 +87,8 @@ export default function mergeData(currentData, newData, action) {
 
 		case "submitLike":
 			if (Array.isArray(currentData)) {
-				const index = currentData.findIndex((elem) => elem.id == newData.id);
-				if (index != -1) {
+				const index = currentData.findIndex((elem) => elem.id === newData.id);
+				if (index !== -1) {
 					result = [...currentData];
 					result.splice(index, 1);
 				}

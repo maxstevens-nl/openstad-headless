@@ -21,14 +21,14 @@ function hasRole(user: any, minRoles: any, ownerId?: any) {
 	minRoles = minRoles || "admin"; // admin can do anything
 	if (!Array.isArray(minRoles)) minRoles = [minRoles];
 
-	const userRole: keyof typeof roles = user && user.role;
+	const userRole: keyof typeof roles = user?.role;
 
 	let valid = minRoles.find((minRole: any) => {
-		return roles[userRole] && roles[userRole]?.indexOf(minRole) != -1;
+		return roles[userRole] && roles[userRole]?.indexOf(minRole) !== -1;
 	});
 
 	if (minRoles.includes("owner") && ownerId) {
-		valid = valid || user.id == ownerId;
+		valid = valid || user.id === ownerId;
 	}
 
 	return valid;

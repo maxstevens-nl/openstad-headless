@@ -21,7 +21,6 @@ import "./document-map.css";
 import { getResourceId } from "@openstad-headless/lib/get-resource-id";
 import type { BaseProps, ProjectSettingProps } from "@openstad-headless/types";
 import { CRS, Icon, type LatLngBoundsLiteral } from "leaflet";
-import L from "leaflet";
 import {
 	ImageOverlay,
 	MapContainer,
@@ -99,11 +98,6 @@ export type DocumentMapProps = BaseProps &
 		closedText?: string;
 		relativePathPrepend?: string;
 		entireDocumentVisible?: "entirely" | "onlyTop";
-		itemsPerPage?: number;
-		displayPagination?: boolean;
-		onlyAllowClickOnImage?: boolean;
-		popupNotLoggedInText?: string;
-		popupNotLoggedInButton?: string;
 	};
 
 function DocumentMap({
@@ -137,11 +131,6 @@ function DocumentMap({
 	closedText = "Het insturen van reacties is gesloten, u kunt niet meer reageren",
 	relativePathPrepend = "",
 	entireDocumentVisible = "onlyTop",
-	itemsPerPage = 9999,
-	displayPagination = false,
-	onlyAllowClickOnImage = false,
-	popupNotLoggedInText = "Om een reactie te plaatsen, moet je ingelogd zijn.",
-	popupNotLoggedInButton = "Inloggen",
 	...props
 }: DocumentMapProps) {
 	const resourceId: string | undefined = String(
@@ -175,7 +164,7 @@ function DocumentMap({
 	const tagIdsArray = tagIds
 		.split(",")
 		.map((id) => Number.parseInt(id.trim(), 10))
-		.filter((id) => !isNaN(id));
+		.filter((id) => !Number.isNaN(id));
 
 	function determineTags(
 		includeOrExclude: string,
@@ -263,21 +252,20 @@ function DocumentMap({
 			typeof tag === "string" ? Number.parseInt(tag, 10) : tag,
 		);
 
-		const filtered =
-			allComments &&
-			allComments.filter((comment: any) => {
-				if (finalAllTagsToFilter.length === 0) {
-					return true;
-				} else if (typeof comment.tags === "undefined") {
-					return false;
-				}
+		const filtered = allComments?.filter((comment: any) => {
+			if (finalAllTagsToFilter.length === 0) {
+				return true;
+			}
+			if (typeof comment.tags === "undefined") {
+				return false;
+			}
 
-				return comment?.tags.some((tag: any) =>
-					finalAllTagsToFilter.includes(tag.id),
-				);
-			});
+			return comment?.tags.some((tag: any) =>
+				finalAllTagsToFilter.includes(tag.id),
+			);
+		});
 
-		const tagsNewString = !!finalAllTagsToFilter
+		const tagsNewString = finalAllTagsToFilter
 			? finalAllTagsToFilter.join(",")
 			: "";
 
@@ -367,20 +355,7 @@ function DocumentMap({
 	const MapEvents = () => {
 		const map = useMapEvents({
 			click: (e) => {
-				if (onlyAllowClickOnImage) {
-					const imageBounds = bounds;
-					const clickedLatLng = e.latlng;
-
-					if (imageBounds && imageBounds.length) {
-						// @ts-ignore
-						const leafletBounds = L.latLngBounds(imageBounds);
-						if (leafletBounds.contains(clickedLatLng)) {
-							setPopupPosition(e.latlng);
-						}
-					}
-				} else {
-					setPopupPosition(e.latlng);
-				}
+				setPopupPosition(e.latlng);
 			},
 			popupclose: () => {
 				setSelectedCommentIndex(-1);
@@ -442,7 +417,7 @@ function DocumentMap({
 					? defaultTags
 							.split(",")
 							.map((tag) => Number.parseInt(tag.trim(), 10))
-							.filter((tag) => !isNaN(tag))
+							.filter((tag) => !Number.isNaN(tag))
 					: [];
 
 				const allTags = Array.from(
@@ -456,10 +431,6 @@ function DocumentMap({
 					sentiment: "no sentiment",
 					tags: allTags,
 				});
-
-				if (goToLastPage && displayPagination) {
-					goToLastPage();
-				}
 
 				const addNewCommentToComments = [...filteredComments, newComment];
 				const newIndex = newComment?.id;
@@ -497,19 +468,14 @@ function DocumentMap({
 		setRandomId(generateRandomId());
 		if (window.location.hash.includes("#doc")) {
 			setBackUrl(
-				relativePathPrepend +
-					"/" +
-					window.location.hash.split("=")[1] +
-					(window.location.hash.split("=")[2] !== undefined
-						? "=" + window.location.hash.split("=")[2]
-						: ""),
+				`${relativePathPrepend}/${window.location.hash.split("=")[1]}${window.location.hash.split("=")[2] !== undefined ? `=${window.location.hash.split("=")[2]}` : ""}`,
 			);
 		}
 	}, []);
 
 	const args = {
 		canComment:
-			typeof props.comments?.canComment != "undefined"
+			typeof props.comments?.canComment !== "undefined"
 				? props.comments.canComment
 				: true,
 		requiredUserRole: props.comments?.requiredUserRole || "member",
@@ -544,33 +510,20 @@ function DocumentMap({
 		color: string;
 	}
 
-	const [overridePage, setoverridePage] = useState<number | undefined>(
-		undefined,
-	);
-
 	const scrollToComment = (index: number) => {
 		let attempts = 0;
 		const maxAttempts = 10;
 		const interval = 100;
 
 		const tryScrollToComment = () => {
-			const getAllComments = Array.from(
+			const filteredComments = Array.from(
 				document.getElementsByClassName("comment-item"),
 			);
-			getAllComments.forEach((comment, i) => {
+			filteredComments.forEach((comment, i) => {
 				if (i !== index) {
 					comment.classList.remove("selected");
 				}
 			});
-
-			if (displayPagination) {
-				const currentComment = filteredComments?.findIndex(
-					(comment: any) => Number.parseInt(comment.id) === index,
-				);
-				const commentPage = Math.floor(currentComment / itemsPerPage);
-
-				setoverridePage(commentPage);
-			}
 
 			const commentElement = document.getElementById(`comment-${index}`);
 			if (commentElement) {
@@ -660,36 +613,16 @@ function DocumentMap({
 
 	const getUrl = () => {
 		if (props.accessibilityUrl?.includes("[id]")) {
-			return (
-				props.accessibilityUrl?.split("[id]")[0] +
-				resourceId +
-				"#doc=" +
-				window.location.href.split("/").reverse()[0]
-			);
-		} else {
-			return (
-				props.accessibilityUrl +
-				"#doc=" +
-				window.location.href.split("/").reverse()[0]
-			);
+			return `${props.accessibilityUrl?.split("[id]")[0] + resourceId}#doc=${window.location.href.split("/").reverse()[0]}`;
 		}
+		return `${props.accessibilityUrl}#doc=${window.location.href.split("/").reverse()[0]}`;
 	};
 
 	const getDefinitiveUrl = (originalID: string) => {
 		if (props.definitiveUrl?.includes("[id]")) {
-			return (
-				props.definitiveUrl?.split("[id]")[0] +
-				originalID +
-				"#doc=" +
-				window.location.href.split("/").reverse()[0]
-			);
-		} else {
-			return (
-				props.definitiveUrl +
-				"#doc=" +
-				window.location.href.split("/").reverse()[0]
-			);
+			return `${props.definitiveUrl?.split("[id]")[0] + originalID}#doc=${window.location.href.split("/").reverse()[0]}`;
 		}
+		return `${props.definitiveUrl}#doc=${window.location.href.split("/").reverse()[0]}`;
 	};
 
 	const modalRef = useRef<HTMLDivElement | null>(null);
@@ -815,9 +748,6 @@ function DocumentMap({
 	const configVotingEnabled = props?.votes?.isActive || false;
 	const votingEnabled = configVotingEnabled && args.canComment;
 
-	// const [goToPage, setGoToPage] = useState<((page:number) => void) | null>(null);
-	const [goToLastPage, setGoToLastPage] = useState<(() => void) | null>(null);
-
 	return !bounds ? null : (
 		<div className={`documentMap--container ${largeDoc ? "--largeDoc" : ""}`}>
 			<div
@@ -866,7 +796,7 @@ function DocumentMap({
 										level={2}
 										appearance="utrecht-heading-4"
 										dangerouslySetInnerHTML={{ __html: resource.summary }}
-									></Heading>
+									/>
 								) : null}
 
 								{displayResourceDescription === "yes" &&
@@ -891,7 +821,7 @@ function DocumentMap({
 									level={2}
 									appearance="utrecht-heading-4"
 									dangerouslySetInnerHTML={{ __html: resource.summary }}
-								></Heading>
+								/>
 							) : null}
 
 							{displayResourceDescription === "yes" && resource.description ? (
@@ -916,37 +846,35 @@ function DocumentMap({
 						}
 					>
 						<MapEvents />
-						{filteredComments &&
-							filteredComments
-								.filter((comment: any) => !!comment.location)
-								.map((comment: any) => {
-									const firstTag = comment.tags
-										? comment.tags
-												.filter(
-													(tag: { seqnr: number }) =>
-														tag.seqnr !== undefined && tag.seqnr !== null,
-												)
-												.sort(
-													(a: { seqnr: number }, b: { seqnr: number }) =>
-														a.seqnr - b.seqnr,
-												)[0] || comment.tags[0]
-										: false;
+						{filteredComments
+							?.filter((comment: any) => !!comment.location)
+							.map((comment: any) => {
+								const firstTag = comment.tags
+									? comment.tags
+											.filter(
+												(tag: { seqnr: number }) =>
+													tag.seqnr !== undefined && tag.seqnr !== null,
+											)
+											.sort(
+												(a: { seqnr: number }, b: { seqnr: number }) =>
+													a.seqnr - b.seqnr,
+											)[0] || comment.tags[0]
+									: false;
 
-									const documentMapIconColor =
-										firstTag && firstTag.documentMapIconColor
-											? firstTag.documentMapIconColor
-											: "#555588";
+								const documentMapIconColor = firstTag?.documentMapIconColor
+									? firstTag.documentMapIconColor
+									: "#555588";
 
-									return (
-										<MarkerWithId
-											key={comment?.id}
-											id={`marker-${comment?.id}`}
-											index={comment?.id}
-											position={comment.location}
-											color={documentMapIconColor}
-										/>
-									);
-								})}
+								return (
+									<MarkerWithId
+										key={comment?.id}
+										id={`marker-${comment?.id}`}
+										index={comment?.id}
+										position={comment.location}
+										color={documentMapIconColor}
+									/>
+								);
+							})}
 						<ImageOverlay
 							url={resource.images ? resource.images[0].url : ""}
 							bounds={bounds as LatLngBoundsLiteral}
@@ -961,7 +889,9 @@ function DocumentMap({
 							>
 								{!hasRole(currentUser, args.requiredUserRole) ? (
 									<>
-										<Paragraph>{popupNotLoggedInText}</Paragraph>
+										<Paragraph>
+											Om een reactie te plaatsen, moet je ingelogd zijn.
+										</Paragraph>
 										<Spacer size={1} />
 										<Button
 											appearance="primary-action-button"
@@ -972,7 +902,7 @@ function DocumentMap({
 											}}
 											type="button"
 										>
-											{popupNotLoggedInButton}
+											Inloggen
 										</Button>
 									</>
 								) : (
@@ -1012,7 +942,7 @@ function DocumentMap({
 																{group.label}
 															</FormLabel>
 
-															{group && group.multiple ? (
+															{group?.multiple ? (
 																<MultiSelect
 																	label={"Selecteer een optie"}
 																	onItemSelected={(optionValue: string) => {
@@ -1090,7 +1020,7 @@ function DocumentMap({
 								appearance="primary-action-button"
 								onClick={() => setModalOpen(true)}
 							>
-								<i className="ri-information-line"></i>
+								<i className="ri-information-line" />
 								{infoPopupButtonText && (
 									<span className="trigger-text">{infoPopupButtonText}</span>
 								)}
@@ -1116,7 +1046,7 @@ function DocumentMap({
 										aria-label="Info venster sluiten"
 										onClick={() => setModalOpen(false)}
 									>
-										<i className="ri-close-fill"></i>
+										<i className="ri-close-fill" />
 										<span>Info venster sluiten</span>
 									</Button>
 									<Heading level={3}>Hoe werkt het?</Heading>
@@ -1197,7 +1127,7 @@ function DocumentMap({
 								level={2}
 								appearance="utrecht-heading-4"
 								dangerouslySetInnerHTML={{ __html: resource.summary }}
-							></Heading>
+							/>
 						) : null}
 
 						{displayResourceDescription === "yes" && resource.description ? (
@@ -1251,10 +1181,6 @@ function DocumentMap({
 							emptyListText={emptyListText}
 							loginText={loginText}
 							closedText={closedText}
-							itemsPerPage={itemsPerPage}
-							displayPagination={displayPagination}
-							onGoToLastPage={setGoToLastPage}
-							overridePage={overridePage}
 						/>
 					</div>
 				)}
@@ -1264,7 +1190,7 @@ function DocumentMap({
 				className={`back-to-top ${showButton ? "show" : ""}`}
 				onClick={scrollToTop}
 			>
-				<i className="ri-arrow-up-line"></i>
+				<i className="ri-arrow-up-line" />
 			</button>
 
 			<NotificationProvider />

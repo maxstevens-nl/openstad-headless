@@ -36,7 +36,7 @@ function capitalize(str: string): string {
 
 function truncate(str: string, length: number): string {
 	if (typeof str !== "string" || typeof length !== "number") return "";
-	return str.length > length ? str.slice(0, length) + "..." : str;
+	return str.length > length ? `${str.slice(0, length)}...` : str;
 }
 
 function lowercase(str: string): string {

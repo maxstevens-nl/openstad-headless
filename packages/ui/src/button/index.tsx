@@ -18,9 +18,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				appearance="primary-action-button"
 				className={`${props.className}`}
 			>
-				{props.icon && !props.iconBack ? <i className={props.icon}></i> : null}
+				{props.icon && !props.iconBack ? <i className={props.icon} /> : null}
 				{props.children}
-				{props.icon && props.iconBack ? <i className={props.icon}></i> : null}
+				{props.icon && props.iconBack ? <i className={props.icon} /> : null}
 			</NldsButton>
 		);
 	},

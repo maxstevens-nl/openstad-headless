@@ -15,8 +15,8 @@ exports.withAll = (req, res, next) => {
 	if (search) {
 		where = {
 			[db.Sequelize.Op.or]: [
-				{ email: { [db.Sequelize.Op.like]: "%" + search + "%" } },
-				{ name: { [db.Sequelize.Op.like]: "%" + search + "%" } },
+				{ email: { [db.Sequelize.Op.like]: `%${search}%` } },
+				{ name: { [db.Sequelize.Op.like]: `%${search}%` } },
 			],
 		};
 	}
@@ -126,7 +126,7 @@ exports.validateUser = async (req, res, next) => {
 	await checkSchema(userProfileValidation).run(req);
 	const result = validationResult(req);
 
-	if (result.errors && result.errors.length) {
+	if (result.errors?.length) {
 		req.flash("error", result.errors);
 		res.redirect(req.header("Referer") || "/account");
 	} else {
@@ -234,9 +234,9 @@ exports.saveRoles = (req, res, next) => {
 				let roleId = Number.parseInt(role, 10);
 				if (!(roleId && Number.isInteger(roleId))) {
 					const found = req.roles.find(
-						(availableRole) => availableRole.name == role,
+						(availableRole) => availableRole.name === role,
 					);
-					roleId = found && found.id;
+					roleId = found?.id;
 				}
 
 				if (roleId) {
@@ -245,14 +245,14 @@ exports.saveRoles = (req, res, next) => {
 					if (
 						!(
 							parsedClientId &&
-							clientId == parsedClientId &&
+							clientId === parsedClientId &&
 							Number.isInteger(parsedClientId)
 						)
 					) {
 						const found = req.clients.find(
-							(availableClient) => availableClient.clientId == clientId,
+							(availableClient) => availableClient.clientId === clientId,
 						);
-						parsedClientId = found && found.id;
+						parsedClientId = found?.id;
 					}
 					saveRoles.push(() => {
 						return createOrUpdateUserRole(parsedClientId, userId, roleId);
@@ -278,9 +278,8 @@ const createOrUpdateUserRole = (clientId, userId, roleId) => {
 			.then((userRole) => {
 				if (userRole) {
 					return userRole.update({ roleId: roleId });
-				} else {
-					return db.UserRole.create({ clientId, roleId, userId });
 				}
+				return db.UserRole.create({ clientId, roleId, userId });
 			})
 			.then(() => {
 				resolve();

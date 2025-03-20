@@ -34,10 +34,6 @@ export type CheckboxFieldProps = {
 	moreInfoButton?: string;
 	moreInfoContent?: string;
 	infoImage?: string;
-	maxChoices?: string;
-	maxChoicesMessage?: string;
-	randomId?: string;
-	fieldInvalid?: boolean;
 };
 
 const CheckboxField: FC<CheckboxFieldProps> = ({
@@ -52,10 +48,6 @@ const CheckboxField: FC<CheckboxFieldProps> = ({
 	moreInfoButton = "Meer informatie",
 	moreInfoContent = "",
 	infoImage = "",
-	maxChoices = "",
-	maxChoicesMessage = "",
-	randomId = "",
-	fieldInvalid = false,
 }) => {
 	const defaultSelectedChoices =
 		choices
@@ -67,10 +59,6 @@ const CheckboxField: FC<CheckboxFieldProps> = ({
 	const [otherOptionValues, setOtherOptionValues] = useState<{
 		[key: string]: string;
 	}>({});
-
-	const maxChoicesNum = Number.parseInt(maxChoices, 10) || 0;
-	const maxReached =
-		maxChoicesNum > 0 && selectedChoices.length >= maxChoicesNum;
 
 	useEffect(() => {
 		const initialOtherOptionValues: { [key: string]: string } = {};
@@ -139,9 +127,8 @@ const CheckboxField: FC<CheckboxFieldProps> = ({
 		choices = choices.map((choice) => {
 			if (typeof choice === "string") {
 				return { value: choice, label: choice };
-			} else {
-				return choice;
 			}
+			return choice;
 		}) as [
 			{
 				value: string;
@@ -154,11 +141,7 @@ const CheckboxField: FC<CheckboxFieldProps> = ({
 
 	return (
 		<div className="question">
-			<Fieldset
-				role="group"
-				aria-invalid={fieldInvalid}
-				aria-describedby={`${randomId}_error`}
-			>
+			<Fieldset role="group">
 				<FieldsetLegend>{title}</FieldsetLegend>
 
 				{description && (
@@ -206,24 +189,20 @@ const CheckboxField: FC<CheckboxFieldProps> = ({
 										className="utrecht-form-field__input"
 										id={`${fieldKey}_${index}`}
 										name={fieldKey}
-										value={choice && choice.value}
+										value={choice?.value}
 										required={fieldRequired}
 										checked={
-											choice && choice.value
+											choice?.value
 												? selectedChoices.includes(choice.value)
 												: false
 										}
 										onChange={(e) => handleChoiceChange(e, index)}
-										disabled={
-											disabled ||
-											(maxReached && !selectedChoices.includes(choice.value))
-										}
+										disabled={disabled}
 									/>
-									<span>{choice && choice.label}</span>
+									<span>{choice?.label}</span>
 								</FormLabel>
 							</Paragraph>
 						</FormField>
-
 						{choice.isOtherOption && selectedChoices.includes(choice.value) && (
 							<div className="marginTop10 marginBottom15">
 								<TextInput
@@ -235,17 +214,11 @@ const CheckboxField: FC<CheckboxFieldProps> = ({
 									fieldKey={`${fieldKey}_${index}_other`}
 									title=""
 									defaultValue={otherOptionValues[`${fieldKey}_${index}_other`]}
-									fieldInvalid={false}
-									randomId={`${fieldKey}_${index}`}
 								/>
 							</div>
 						)}
 					</>
 				))}
-
-				{maxReached && maxChoicesMessage && (
-					<em aria-live="polite">{maxChoicesMessage}</em>
-				)}
 			</Fieldset>
 		</div>
 	);

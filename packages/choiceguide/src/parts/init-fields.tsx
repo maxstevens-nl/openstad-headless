@@ -15,6 +15,7 @@ export const InitializeFormFields = (items, data, showForm = true) => {
 	if (typeof items === "object" && items.length > 0) {
 		for (const item of items) {
 			const itemType = item.type === "a-b-slider" ? "range" : item.type;
+			const defaultValue = item.type === "a-b-slider" ? "50" : "";
 
 			const fieldData: any = {
 				type: item.fieldType || itemType,
@@ -33,7 +34,7 @@ export const InitializeFormFields = (items, data, showForm = true) => {
 				variant: item.variant,
 				multiple: item.multiple,
 				options: item.options,
-				defaultValue: "",
+				defaultValue: defaultValue,
 				rows: 5,
 				showMoreInfo: item.showMoreInfo || false,
 				moreInfoButton: item.moreInfoButton || "",
@@ -58,7 +59,7 @@ export const InitializeFormFields = (items, data, showForm = true) => {
 					if (item.options && item.options.length > 0) {
 						const defaultValue: string[] = [];
 
-						fieldData["choices"] = item.options.map((option) => {
+						fieldData.choices = item.options.map((option) => {
 							if (option.titles[0].defaultValue) {
 								defaultValue.push(option.titles[0].key);
 							}
@@ -72,38 +73,17 @@ export const InitializeFormFields = (items, data, showForm = true) => {
 						});
 
 						if (defaultValue.length > 0) {
-							fieldData["defaultValue"] = defaultValue;
+							fieldData.defaultValue = defaultValue;
 						}
 					}
-
-					if (item.maxChoices) {
-						fieldData["maxChoices"] = item.maxChoices;
-					}
-					if (item.maxChoicesMessage) {
-						fieldData["maxChoicesMessage"] = item.maxChoicesMessage;
-					}
-
 					break;
 				case "imageUpload":
-					fieldData["allowedTypes"] = item.allowedTypes || ["image/*"];
+					fieldData.allowedTypes = item.allowedTypes || ["image/*"];
 					break;
 				case "text":
 					if (item.defaultValue) {
-						fieldData["defaultValue"] = item.defaultValue;
+						fieldData.defaultValue = item.defaultValue;
 					}
-					break;
-				case "a-b-slider":
-					fieldData["skipQuestion"] = item.skipQuestion || false;
-					fieldData["skipQuestionAllowExplanation"] =
-						item.skipQuestionAllowExplanation || false;
-					fieldData["skipQuestionExplanation"] =
-						item.skipQuestionExplanation || "";
-					fieldData["skipQuestionLabel"] = item.skipQuestionLabel || "";
-					fieldData["defaultValue"] = {
-						value: "50",
-						skipQuestion: false,
-						skipQuestionExplanation: "",
-					};
 					break;
 			}
 

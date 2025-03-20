@@ -63,7 +63,7 @@ function Counter({
 	const tagIdsArray = tagIds
 		.split(",")
 		.map((id) => Number.parseInt(id.trim(), 10))
-		.filter((id) => !isNaN(id));
+		.filter((id) => !Number.isNaN(id));
 
 	function determineTags(
 		includeOrExclude: string,
@@ -105,7 +105,6 @@ function Counter({
 	});
 
 	const filteredResources =
-		resources &&
 		resources?.records &&
 		filteredTagIdsArray &&
 		Array.isArray(filteredTagIdsArray) &&
@@ -122,14 +121,13 @@ function Counter({
 						return !filteredTagIdsArray.some((tag) =>
 							resource.tags.find((o: { id: number }) => o.id === tag),
 						);
-					} else {
-						return filteredTagIdsArray.some(
-							(tag) =>
-								resource.tags &&
-								Array.isArray(resource.tags) &&
-								resource.tags.find((o: { id: number }) => o.id === tag),
-						);
 					}
+					return filteredTagIdsArray.some(
+						(tag) =>
+							resource.tags &&
+							Array.isArray(resource.tags) &&
+							resource.tags.find((o: { id: number }) => o.id === tag),
+					);
 				})
 			: resources?.records;
 
@@ -211,9 +209,7 @@ function Counter({
 			{content()}
 		</ButtonLink>
 	) : (
-		<div className="osc counter-container">
-			<>{content()}</>
-		</div>
+		<div className="osc counter-container">{content()}</div>
 	);
 }
 

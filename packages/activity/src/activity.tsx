@@ -75,10 +75,10 @@ function Activity({
 		if (activityDataLoading === false && activityData === undefined) {
 			// Get all activities, and sort them by project id (other than this project id and current project id), data.activitiy is the array
 			const others = userActivityData.activity.filter(
-				(data: any) => data?.resource?.projectId != props.projectId,
+				(data: any) => data?.resource?.projectId !== props.projectId,
 			);
 			const current = userActivityData.activity.filter(
-				(data: any) => data?.resource?.projectId == props.projectId,
+				(data: any) => data?.resource?.projectId === props.projectId,
 			);
 
 			const formattedCurrent: ActivityData[] = [];
@@ -174,8 +174,7 @@ function Activity({
 									: "U heeft geen activiteit op deze website.",
 							))}
 
-					{activityData !== undefined &&
-						activityData.currentSite &&
+					{activityData?.currentSite &&
 						activityData.currentSite.map((item, key) => listItem(item, key))}
 				</ul>
 			</div>
@@ -193,8 +192,7 @@ function Activity({
 									? noActivityTextOther
 									: "U heeft geen activiteit op andere websites.",
 							))}
-					{activityData !== undefined &&
-						activityData.otherSites &&
+					{activityData?.otherSites &&
 						activityData.otherSites.map((item, key) => listItem(item, key))}
 				</ul>
 			</div>

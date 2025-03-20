@@ -35,7 +35,7 @@ const Stepper = (props: Props) => {
 									</div>
 									<Paragraph> {step}</Paragraph>
 								</div>
-								<div className="step-divider"></div>
+								<div className="step-divider" />
 							</>
 						)}
 
@@ -51,7 +51,7 @@ const Stepper = (props: Props) => {
 									</div>
 									<Paragraph> {step}</Paragraph>
 								</div>
-								<div className="step-divider"></div>
+								<div className="step-divider" />
 							</>
 						)}
 					</React.Fragment>

@@ -56,15 +56,15 @@ exports.withOne = async (req, res, next) => {
 			res.locals.clientStylesheets = clientConfig.clientStylesheets;
 
 			//if logo isset in config overwrite the .env logo
-			if (clientConfigStyling && clientConfigStyling.logo) {
+			if (clientConfigStyling?.logo) {
 				res.locals.logo = clientConfigStyling.logo;
 			}
 
-			if (clientConfigStyling && clientConfigStyling.favicon) {
+			if (clientConfigStyling?.favicon) {
 				res.locals.favicon = clientConfigStyling.favicon;
 			}
 
-			if (clientConfigStyling && clientConfigStyling.inlineCSS) {
+			if (clientConfigStyling?.inlineCSS) {
 				res.locals.inlineCSS = clientConfigStyling.inlineCSS;
 			}
 
@@ -77,9 +77,8 @@ exports.withOne = async (req, res, next) => {
 			}
 
 			return next();
-		} else {
-			return next("No Client found for clientID");
 		}
+		return next("No Client found for clientID");
 	} catch (err) {
 		return next(err);
 	}
@@ -243,17 +242,10 @@ exports.check2FA = (req, res, next) => {
 	}
 
 	// check two factor is validated otherwise send to 2factor screen
-	if (
-		twoFactorRoles &&
-		twoFactorRoles.includes(userRole) &&
-		req.session.twoFactorValid
-	) {
+	if (twoFactorRoles?.includes(userRole) && req.session.twoFactorValid) {
 		return next();
-	} else if (
-		twoFactorRoles &&
-		twoFactorRoles.includes(userRole) &&
-		!req.session.twoFactorValid
-	) {
+	}
+	if (twoFactorRoles?.includes(userRole) && !req.session.twoFactorValid) {
 		return res.redirect(
 			`/auth/two-factor?clientId=${req.client.clientId}&redirect_uri=${encodeURIComponent(req.query.redirect_uri)}`,
 		);

@@ -1,6 +1,6 @@
 export function elipsize(value: string, maxLength: number) {
 	if (value.length > maxLength) {
-		return value.substring(0, maxLength) + "...";
+		return `${value.substring(0, maxLength)}...`;
 	}
 	return value;
 }
@@ -15,8 +15,7 @@ function truncateNode(
 	if (node.nodeType === Node.TEXT_NODE) {
 		const text = node.nodeValue || "";
 		if (currentLength.value + text.length > maxLength) {
-			truncatedHTML +=
-				text.substring(0, maxLength - currentLength.value) + "...";
+			truncatedHTML += `${text.substring(0, maxLength - currentLength.value)}...`;
 			currentLength.value = maxLength;
 		} else {
 			truncatedHTML += text;

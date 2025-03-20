@@ -24,10 +24,7 @@ const Select = forwardRef<HTMLSelectElement, Props>(
 				ref={ref}
 				{...props}
 				className={`select ${props.className}`}
-				onChange={
-					props.onChange ||
-					((e) => onValueChange && onValueChange(e.target.value))
-				}
+				onChange={props.onChange || ((e) => onValueChange?.(e.target.value))}
 			>
 				{props.children}
 

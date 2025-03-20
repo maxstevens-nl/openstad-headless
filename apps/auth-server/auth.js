@@ -268,7 +268,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
 	db.User.findOne({ where: { id } })
 		.then((user) => {
-			if (!user) throw new Error("Error in deserializeUser for id=" + id);
+			if (!user) throw new Error(`Error in deserializeUser for id=${id}`);
 			done(null, user);
 		})
 		.catch((err) => done(err));

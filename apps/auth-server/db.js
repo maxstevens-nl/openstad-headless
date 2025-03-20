@@ -72,7 +72,7 @@ db.UserRole = require("./model/user-role")(db, sequelize, Sequelize);
 for (const modelName in sequelize.models) {
 	const model = sequelize.models[modelName];
 	if (model.associate) model.associate();
-	const scopes = (model.scopes && model.scopes()) || {};
+	const scopes = model.scopes?.() || {};
 	for (const scopeName in scopes) {
 		model.addScope(scopeName, scopes[scopeName], { override: true });
 	}
@@ -80,7 +80,7 @@ for (const modelName in sequelize.models) {
 		const result = {};
 		for (const key in this.dataValues) {
 			const target = this[key];
-			if (target && target.toJSON) {
+			if (target?.toJSON) {
 				result[key] = target.toJSON(params);
 			} else {
 				result[key] = target;

@@ -87,7 +87,7 @@ exports.create = (req, res, next) => {
 	db.Client.create(values)
 		.then((response) => {
 			req.flash("success", { msg: "Succesfully created " });
-			res.redirect("/admin/client/" + response.id || "/");
+			res.redirect(`/admin/client/${response.id}` || "/");
 		})
 		.catch((err) => {
 			next(err);
@@ -115,7 +115,7 @@ exports.update = (req, res, next) => {
 		})
 		.then((response) => {
 			req.flash("success", { msg: "Updated client!" });
-			res.redirect("/admin/client/" + response.get("id") || "/");
+			res.redirect(`/admin/client/${response.get("id")}` || "/");
 		})
 		.catch((err) => {
 			next(err);

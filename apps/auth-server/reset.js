@@ -1,7 +1,7 @@
 require("dotenv").config();
 
-const fs = require("fs").promises;
-const constants = require("fs").constants;
+const fs = require("node:fs").promises;
+const constants = require("node:fs").constants;
 const db = require("./db");
 
 async function doReset() {

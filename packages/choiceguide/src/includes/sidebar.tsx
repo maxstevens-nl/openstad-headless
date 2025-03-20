@@ -69,7 +69,7 @@ const ChoiceGuideSidebar: React.FC<ChoiceGuideSidebarProps> = (props) => {
 										const option: ChoiceOptions = choiceOption as ChoiceOptions;
 
 										let imageHTML = null;
-										const image = (option && option.image) || "";
+										const image = option?.image || "";
 										if (image) {
 											imageHTML = (
 												<img
@@ -91,7 +91,7 @@ const ChoiceGuideSidebar: React.FC<ChoiceGuideSidebarProps> = (props) => {
 									data-score-y={Math.round(
 										Number.parseFloat(score.y.toString()),
 									)}
-								></div>
+								/>
 							</div>
 						) : (
 							<ul className="osc-choices">

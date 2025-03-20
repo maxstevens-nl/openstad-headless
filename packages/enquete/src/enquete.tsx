@@ -94,23 +94,23 @@ function Enquete(props: EnqueteWidgetProps) {
 
 			switch (item.questionType) {
 				case "open":
-					fieldData["type"] = "text";
-					fieldData["variant"] = item.variant;
-					fieldData["minCharacters"] = item.minCharacters || "";
-					fieldData["maxCharacters"] = item.maxCharacters || "";
-					fieldData["rows"] = 5;
-					fieldData["placeholder"] = item.placeholder || "";
-					fieldData["defaultValue"] = item.defaultValue || "";
+					fieldData.type = "text";
+					fieldData.variant = item.variant;
+					fieldData.minCharacters = item.minCharacters || "";
+					fieldData.maxCharacters = item.maxCharacters || "";
+					fieldData.rows = 5;
+					fieldData.placeholder = item.placeholder || "";
+					fieldData.defaultValue = item.defaultValue || "";
 					break;
 				case "multiplechoice":
-				case "multiple":
-					fieldData["type"] =
+				case "multiple": {
+					fieldData.type =
 						item.questionType === "multiplechoice" ? "radiobox" : "checkbox";
 
 					const defaultValue: string[] = [];
 
 					if (item.options && item.options.length > 0) {
-						fieldData["choices"] = item.options.map((option) => {
+						fieldData.choices = item.options.map((option) => {
 							if (option.titles[0].defaultValue) {
 								defaultValue.push(option.titles[0].key);
 							}
@@ -125,22 +125,16 @@ function Enquete(props: EnqueteWidgetProps) {
 					}
 
 					if (defaultValue.length > 0) {
-						fieldData["defaultValue"] = defaultValue;
-					}
-
-					if (item.maxChoices) {
-						fieldData["maxChoices"] = item.maxChoices;
-					}
-					if (item.maxChoicesMessage) {
-						fieldData["maxChoicesMessage"] = item.maxChoicesMessage;
+						fieldData.defaultValue = defaultValue;
 					}
 
 					break;
+				}
 				case "images":
-					fieldData["type"] = "imageChoice";
+					fieldData.type = "imageChoice";
 
 					if (item.options && item.options.length > 0) {
-						fieldData["choices"] = item.options.map((option) => {
+						fieldData.choices = item.options.map((option) => {
 							return {
 								value: option.titles[0].key,
 								label: option.titles[0].key,
@@ -150,7 +144,7 @@ function Enquete(props: EnqueteWidgetProps) {
 							};
 						});
 					} else {
-						fieldData["choices"] = [
+						fieldData.choices = [
 							{
 								label: item?.text1 || "",
 								value: item?.key1 || "",
@@ -166,14 +160,14 @@ function Enquete(props: EnqueteWidgetProps) {
 
 					break;
 				case "imageUpload":
-					fieldData["type"] = "imageUpload";
-					fieldData["allowedTypes"] = ["image/*"];
-					fieldData["imageUrl"] = props?.imageUrl;
-					fieldData["multiple"] = item.multiple;
+					fieldData.type = "imageUpload";
+					fieldData.allowedTypes = ["image/*"];
+					fieldData.imageUrl = props?.imageUrl;
+					fieldData.multiple = item.multiple;
 					break;
-				case "scale":
-					fieldData["type"] = "tickmark-slider";
-					fieldData["showSmileys"] = item.showSmileys;
+				case "scale": {
+					fieldData.type = "tickmark-slider";
+					fieldData.showSmileys = item.showSmileys;
 
 					const labelOptions = [
 						<Icon icon="ri-emotion-unhappy-line" key={1} />,
@@ -183,7 +177,7 @@ function Enquete(props: EnqueteWidgetProps) {
 						<Icon icon="ri-emotion-laugh-line" key={5} />,
 					];
 
-					fieldData["fieldOptions"] = labelOptions.map((label, index) => {
+					fieldData.fieldOptions = labelOptions.map((label, index) => {
 						const currentValue = index + 1;
 						return {
 							value: currentValue,
@@ -191,14 +185,15 @@ function Enquete(props: EnqueteWidgetProps) {
 						};
 					});
 					break;
+				}
 				case "map":
-					fieldData["type"] = "map";
+					fieldData.type = "map";
 					break;
 				case "none":
-					fieldData["type"] = "none";
-					fieldData["image"] = item?.image || "";
-					fieldData["imageAlt"] = item?.imageAlt || "";
-					fieldData["imageDescription"] = item?.imageDescription || "";
+					fieldData.type = "none";
+					fieldData.image = item?.image || "";
+					fieldData.imageAlt = item?.imageAlt || "";
+					fieldData.imageDescription = item?.imageDescription || "";
 					break;
 			}
 

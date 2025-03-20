@@ -119,11 +119,10 @@ export const StemBegrootResourceDetailDialog = ({
 						return resource.tags.some(
 							(tag: { name: string }) => tag.name === activeTagTab,
 						);
-					} else {
-						return resource.tags.some(
-							(tag: { type: string }) => tag.type === activeTagTab,
-						);
 					}
+					return resource.tags.some(
+						(tag: { type: string }) => tag.type === activeTagTab,
+					);
 				}
 				return true;
 			})
@@ -251,7 +250,8 @@ export const StemBegrootResourceDetailDialog = ({
 											itemRenderer={(i) => {
 												if (i.url) {
 													return <Image src={i.url} />;
-												} else if (resource?.location) {
+												}
+												if (resource?.location) {
 													return (
 														<ResourceDetailMap
 															resourceId={resource?.id}
@@ -260,9 +260,8 @@ export const StemBegrootResourceDetailDialog = ({
 															map={{ areaId: areaId }}
 														/>
 													);
-												} else {
-													return <></>;
 												}
+												return <></>;
 											}}
 										/>
 										{/* <div>
@@ -364,8 +363,7 @@ export const StemBegrootResourceDetailDialog = ({
 												disabled={!canUseButton}
 												onClick={() => {
 													onPrimaryButtonClick;
-													onPrimaryButtonClick &&
-														onPrimaryButtonClick(resource);
+													onPrimaryButtonClick?.(resource);
 												}}
 											>
 												{primaryButtonText}
@@ -376,7 +374,7 @@ export const StemBegrootResourceDetailDialog = ({
 							</>
 						);
 					}}
-				></Carousel>
+				/>
 			}
 		/>
 	);

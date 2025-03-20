@@ -4,6 +4,6 @@ import { ShareLinks } from "./share-links.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
-		<ShareLinks title="Deel dit plan"></ShareLinks>
+		<ShareLinks title="Deel dit plan" />
 	</React.StrictMode>,
 );

@@ -13,11 +13,9 @@ type Props = {
 	selected?: number[];
 	onUpdateFilter?: (filter: any, label?: string) => void;
 	onlyIncludeIds?: number[];
-	quickFixTags?: TagDefinition[];
-	tagGroupProjectId?: any;
 };
 
-type TagDefinition = { id: number; name: string; projectId?: any };
+type TagDefinition = { id: number; name: string };
 
 const MultiSelectTagFilter = ({
 	dataStore,
@@ -25,7 +23,6 @@ const MultiSelectTagFilter = ({
 	onUpdateFilter,
 	selected = [],
 	onlyIncludeIds = [],
-	quickFixTags = [],
 	...props
 }: Props) => {
 	if (!dataStore || !dataStore.useTags) {
@@ -45,17 +42,9 @@ const MultiSelectTagFilter = ({
 				.toLowerCase()
 				.replace(/[^a-z0-9\s]/g, "")
 				.replace(/\s+/g, "-");
-		} else {
-			return randomId;
 		}
+		return randomId;
 	}
-
-	const filterTags =
-		quickFixTags.length > 0
-			? quickFixTags.filter(
-					(tag) => tag.projectId === Number.parseInt(props.tagGroupProjectId),
-				)
-			: tags;
 
 	return (
 		<div className="form-element">
@@ -66,9 +55,9 @@ const MultiSelectTagFilter = ({
 				id={getRandomId(props.placeholder)}
 				label={props.placeholder || ""}
 				onItemSelected={(value, label) => {
-					onUpdateFilter && onUpdateFilter(value, label);
+					onUpdateFilter?.(value, label);
 				}}
-				options={(filterTags || []).map((tag: TagDefinition) => ({
+				options={(tags || []).map((tag: TagDefinition) => ({
 					value: tag.id,
 					label: tag.name,
 					checked: selected.includes(tag.id),

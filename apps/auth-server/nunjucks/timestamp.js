@@ -7,7 +7,7 @@ function timestamp(date) {
 			throw Error("Onbekende datum");
 		}
 		// Timezone is set in `config/moment.js`.
-		var date = new Date(date);
+		const date = new Date(date);
 		return date.getTime();
 	} catch (error) {
 		return (error.message || "dateFilter error").toString();

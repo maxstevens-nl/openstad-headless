@@ -122,9 +122,7 @@ export const StemBegrootBudgetList = ({
 								Array.isArray(resource.images) && resource.images.length > 0
 									? resource.images?.at(0)?.url
 									: defaultImage;
-							const hasImages = !!resourceImages
-								? ""
-								: "resource-has-no-images";
+							const hasImages = resourceImages ? "" : "resource-has-no-images";
 
 							return (
 								<Image
@@ -180,7 +178,7 @@ export const StemBegrootBudgetList = ({
 									appearance="primary-action-button"
 									disabled={tag === activeTagTab}
 									onClick={() => {
-										if (!!setActiveTagTab) {
+										if (setActiveTagTab) {
 											setActiveTagTab(tag);
 										}
 									}}

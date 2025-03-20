@@ -27,10 +27,10 @@ exports.index = (req, res, next) => {
 
 	if (availableAuthTypes.length === 1) {
 		const availableAuthType = availableAuthTypes.shift();
-		let url = availableAuthType.loginUrl + "?clientId=" + req.client.clientId;
+		let url = `${availableAuthType.loginUrl}?clientId=${req.client.clientId}`;
 
 		if (req.query.redirect_uri) {
-			url = url + "&redirect_uri=" + encodeURIComponent(req.query.redirect_uri);
+			url = `${url}&redirect_uri=${encodeURIComponent(req.query.redirect_uri)}`;
 		}
 
 		res.redirect(url);

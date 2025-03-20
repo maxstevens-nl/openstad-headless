@@ -58,7 +58,7 @@ function MenuItem({ item, index, prefix = "", open, setOpenIndex }: Item) {
 						className="toggle-submenu"
 						onClick={() => setOpenIndex(index)}
 					>
-						<i className="ri-arrow-down-s-line"></i>
+						<i className="ri-arrow-down-s-line" />
 						<span className="sr-only">Toon onderliggende pagina's</span>
 					</button>
 					{open && (
@@ -69,17 +69,16 @@ function MenuItem({ item, index, prefix = "", open, setOpenIndex }: Item) {
 							tabIndex={-1}
 							ref={ref}
 						>
-							{item._children &&
-								item._children.map((child: any, childIndex: number) => (
-									<Link
-										className="level-2"
-										key={`${index}-${childIndex}`}
-										href={`${prefix}${child.slug}`}
-										aria-current={getCurrentPage(child.title)}
-									>
-										{child.title}
-									</Link>
-								))}
+							{item._children?.map((child: any, childIndex: number) => (
+								<Link
+									className="level-2"
+									key={`${index}-${childIndex}`}
+									href={`${prefix}${child.slug}`}
+									aria-current={getCurrentPage(child.title)}
+								>
+									{child.title}
+								</Link>
+							))}
 						</div>
 					)}
 				</>

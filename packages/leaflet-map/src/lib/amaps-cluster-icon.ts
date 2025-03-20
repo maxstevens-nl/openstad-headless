@@ -60,10 +60,7 @@ export default function amapsCreateClusterIcon(
 
 	// TODO: classnames
 	const count = cluster.getChildCount();
-	html +=
-		'<text x="18" y="21" text-anchor="middle" class="openstad-component-ideas-on-map-icon openstad-component-ideas-on-map-icon-text">' +
-		count +
-		"</text>";
+	html += `<text x="18" y="21" text-anchor="middle" class="openstad-component-ideas-on-map-icon openstad-component-ideas-on-map-icon-text">${count}</text>`;
 
 	html += "</svg>";
 

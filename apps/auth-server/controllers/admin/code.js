@@ -1,6 +1,6 @@
 const db = require("../../db");
 
-const fs = require("fs");
+const fs = require("node:fs");
 const csv = require("fast-csv");
 
 exports.all = (req, res, next) => {
@@ -22,13 +22,13 @@ exports.bulk = (req, res, next) => {
 };
 
 function csvToArray(text) {
-	let p = "",
-		row = [""],
-		ret = [row],
-		i = 0,
-		r = 0,
-		s = !0,
-		l;
+	let p = "";
+	let row = [""];
+	const ret = [row];
+	let i = 0;
+	let r = 0;
+	let s = !0;
+	let l;
 	for (l of text) {
 		if ('"' === l) {
 			if (s && l === p) row[i] += l;
@@ -111,7 +111,7 @@ exports.postBulk = (req, res, next) => {
 				msg: `Upload not completely succesfull, duplicates:${duplicates.length} & errors: ${errors.length}`,
 			});
 		} else {
-			req.flash("success", { msg: `All codes succesfully created!` });
+			req.flash("success", { msg: "All codes succesfully created!" });
 		}
 
 		res.redirect(req.header("Referer") || "/admin/code/bulk");

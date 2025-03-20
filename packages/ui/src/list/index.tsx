@@ -21,7 +21,7 @@ export const List = <T extends { [key: string]: any }>({
 }: Props<T>) => {
 	return (
 		<section id={props.id}>
-			{renderHeader && renderHeader()}
+			{renderHeader?.()}
 
 			{items.length === 0 ? <p>{emptyListText}</p> : null}
 			<div className={`osc-listview osc-listview-template-columns-${columns}`}>

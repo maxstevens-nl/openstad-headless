@@ -25,9 +25,7 @@ export type TextInputProps = {
 	placeholder?: string;
 	defaultValue?: string;
 	disabled?: boolean;
-	rows?: TextInputProps["variant"] extends "textarea"
-		? number
-		: undefined | number;
+	rows?: TextInputProps["variant"] extends "textarea" ? number : undefined;
 	type?: string;
 	onChange?: (e: {
 		name: string;
@@ -38,8 +36,6 @@ export type TextInputProps = {
 	moreInfoButton?: string;
 	moreInfoContent?: string;
 	infoImage?: string;
-	randomId?: string;
-	fieldInvalid?: boolean;
 };
 
 const TextInput: FC<TextInputProps> = ({
@@ -62,9 +58,10 @@ const TextInput: FC<TextInputProps> = ({
 	moreInfoButton = "Meer informatie",
 	moreInfoContent = "",
 	infoImage = "",
-	randomId = "",
-	fieldInvalid = false,
 }) => {
+	const randomID =
+		Math.random().toString(36).substring(2, 15) +
+		Math.random().toString(36).substring(2, 15);
 	const InputComponent = variant === "textarea" ? Textarea : Textbox;
 
 	class HtmlContent extends React.Component<{ html: any }> {
@@ -145,7 +142,7 @@ const TextInput: FC<TextInputProps> = ({
 		<FormField type="text">
 			{title && (
 				<Paragraph className="utrecht-form-field__label">
-					<FormLabel htmlFor={randomId}>{title}</FormLabel>
+					<FormLabel htmlFor={randomID}>{title}</FormLabel>
 				</Paragraph>
 			)}
 			{description && (
@@ -184,7 +181,7 @@ const TextInput: FC<TextInputProps> = ({
 				className={`utrecht-form-field__input ${fieldHasMaxOrMinCharacterRules ? "help-text-active" : ""}`}
 			>
 				<InputComponent
-					id={randomId}
+					id={randomID}
 					name={fieldKey}
 					required={fieldRequired}
 					type={getType(fieldKey)}
@@ -205,8 +202,6 @@ const TextInput: FC<TextInputProps> = ({
 					onFocus={() => setIsFocused(true)}
 					onBlur={() => setIsFocused(false)}
 					autoComplete={getAutocomplete(fieldKey)}
-					aria-invalid={fieldInvalid}
-					aria-describedby={`${randomId}_error`}
 				/>
 				{isFocused && helpText && (
 					<FormFieldDescription className="help-text">

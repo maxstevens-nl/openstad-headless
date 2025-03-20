@@ -41,7 +41,7 @@ exports.update = (req, res, next) => {
 		.update({ name })
 		.then((response) => {
 			req.flash("success", { msg: "Updated role!" });
-			res.redirect("/admin/role/" + response.get("id") || "/");
+			res.redirect(`/admin/role/${response.get("id")}` || "/");
 		})
 		.catch((err) => {
 			next(err);

@@ -7,7 +7,7 @@ exports.validateLogin = async (req, res, next) => {
 	await body("password").isLength({ min: 6 }).run(req);
 	const result = validationResult(req);
 
-	if (result.errors && result.errors.length) {
+	if (result.errors?.length) {
 		req.flash("error", result.errors);
 		res.redirect(req.header("Referer") || "/account");
 	} else {
@@ -17,10 +17,10 @@ exports.validateLogin = async (req, res, next) => {
 
 exports.check = (req, res, next) => {
 	if (!req.isAuthenticated || !req.isAuthenticated()) {
-		let url = "/login?clientId=" + req.client.clientId;
+		let url = `/login?clientId=${req.client.clientId}`;
 
 		if (req.query.redirect_uri) {
-			url = url + "&redirect_uri=" + encodeURIComponent(req.query.redirect_uri);
+			url = `${url}&redirect_uri=${encodeURIComponent(req.query.redirect_uri)}`;
 		}
 
 		if (req.session) {
@@ -28,16 +28,15 @@ exports.check = (req, res, next) => {
 		}
 
 		return res.redirect(url);
-	} else {
-		db.User.findOne({ where: { id: req.user.id } })
-			.then((user) => {
-				req.user = user;
-				next();
-			})
-			.catch((err) => {
-				next(err);
-			});
 	}
+	db.User.findOne({ where: { id: req.user.id } })
+		.then((user) => {
+			req.user = user;
+			next();
+		})
+		.catch((err) => {
+			next(err);
+		});
 };
 
 exports.passwordValidate = (req, res, next) => {

@@ -5,10 +5,10 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const config = require("./config");
 const express = require("express");
-const fs = require("fs");
-const https = require("https");
+const fs = require("node:fs");
+const https = require("node:https");
 const passport = require("passport");
-const path = require("path");
+const path = require("node:path");
 const nunjucks = require("nunjucks");
 const dateFilter = require("./nunjucks/dateFilter");
 const currencyFilter = require("./nunjucks/currency");
@@ -82,8 +82,8 @@ const initializeApp = async () => {
 			sessionCookieConfig = {
 				maxAge: config.session.maxAge,
 				//  domain: 'localhost',
-				secure: process.env.COOKIE_SECURE_OFF === "yes" ? false : true,
-				httpOnly: process.env.COOKIE_SECURE_OFF === "yes" ? false : true,
+				secure: process.env.COOKIE_SECURE_OFF !== "yes",
+				httpOnly: process.env.COOKIE_SECURE_OFF !== "yes",
 			};
 		}
 

@@ -20,7 +20,6 @@ const formatSMSCodeUrl = (slug) => {
 const types = [
 	{
 		key: "UniqueCode",
-		label: "Unieke code",
 		loginUrl: formatLoginUrl("code"),
 		title: "Controleer stemcode",
 		description:
@@ -116,7 +115,7 @@ exports.adminTypes = types
 	.map((type) => {
 		// for admin types we add /admin to the login url
 		return Object.assign({}, type, {
-			loginUrl: type.loginUrl + "/admin",
+			loginUrl: `${type.loginUrl}/admin`,
 		});
 	});
 

@@ -20,7 +20,7 @@ import { Step4 } from "./step-4";
 
 import "@utrecht/component-library-css";
 import "@utrecht/design-tokens/dist/root.css";
-import useTags from "@openstad-headless/admin-server/src/hooks/use-tag";
+import useTags from "admin-server/src/hooks/use-tag";
 import { Button, Heading } from "@utrecht/component-library-react";
 import NotificationProvider from "../../lib/NotificationProvider/notification-provider";
 import NotificationService from "../../lib/NotificationProvider/notification-service";
@@ -147,13 +147,13 @@ function StemBegroot({
 	const tagIdsToLimitResourcesTo = onlyIncludeTagIds
 		.trim()
 		.split(",")
-		.filter((t) => t && !isNaN(+t.trim()))
+		.filter((t) => t && !Number.isNaN(+t.trim()))
 		.map((t) => Number.parseInt(t));
 
 	const statusIdsToLimitResourcesTo = onlyIncludeStatusIds
 		.trim()
 		.split(",")
-		.filter((t) => t && !isNaN(+t.trim()))
+		.filter((t) => t && !Number.isNaN(+t.trim()))
 		.map((t) => Number.parseInt(t));
 
 	const [tagCounter, setTagCounter] = useState<Array<TagType>>([]);
@@ -261,9 +261,8 @@ function StemBegroot({
 							).map(Number);
 
 							const resourcesThatArePending: Array<any> =
-								resources?.records?.filter(
-									(r: any) =>
-										selectedResourceIds && selectedResourceIds.includes(r.id),
+								resources?.records?.filter((r: any) =>
+									selectedResourceIds?.includes(r.id),
 								) || [];
 
 							const currentCount =
@@ -436,7 +435,8 @@ function StemBegroot({
 
 			if (props.votes.voteType === "countPerTag") {
 				return activeTag[activeTagTab].current < activeTag[activeTagTab].max;
-			} else if (props.votes.voteType === "budgetingPerTag") {
+			}
+			if (props.votes.voteType === "budgetingPerTag") {
 				return (
 					activeTag[activeTagTab].current + resource.budget <=
 					activeTag[activeTagTab].max
@@ -552,16 +552,6 @@ function StemBegroot({
 		}
 	};
 
-	const scrollToTop = () => {
-		const divElement = document.getElementById(
-			"stem-begroot-resource-selections-list",
-		);
-
-		if (divElement) {
-			divElement.scrollIntoView({ block: "start", behavior: "auto" });
-		}
-	};
-
 	return (
 		<>
 			<StemBegrootResourceDetailDialog
@@ -665,7 +655,7 @@ function StemBegroot({
 							<div
 								className="vote-per-theme-intro"
 								dangerouslySetInnerHTML={{ __html: step0 }}
-							></div>
+							/>
 							<div className="themes-container">
 								{tagsToDisplay.map((tag: string) => (
 									<div className="theme" key={tag}>
@@ -1169,10 +1159,7 @@ function StemBegroot({
 								<Paginator
 									page={resources?.metadata?.page || 0}
 									totalPages={resources?.metadata?.pageCount || 1}
-									onPageChange={(page) => {
-										setPage(page);
-										scrollToTop();
-									}}
+									onPageChange={(page) => setPage(page)}
 								/>
 							</div>
 						)}

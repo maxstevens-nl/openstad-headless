@@ -32,9 +32,8 @@ function Button({ buttons, direction }: Item) {
 		return (
 			<ButtonGroup direction={direction}>{renderButtons(buttons)}</ButtonGroup>
 		);
-	} else {
-		return renderButtons(buttons);
 	}
+	return renderButtons(buttons);
 }
 
 Button.loadWidgetOnElement = function (

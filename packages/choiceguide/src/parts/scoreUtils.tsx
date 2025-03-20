@@ -79,19 +79,11 @@ export const calculateScoreForItem = (
 		Object.keys(answers).forEach((answerKey) => {
 			const answerByName = answers[answerKey];
 
-			if (
-				(answerByName === "" || typeof answerByName !== "string") &&
-				typeof answerByName !== "object"
-			)
-				return;
+			if (answerByName === "" || typeof answerByName !== "string") return;
 
 			let answerArray;
 
-			if (
-				typeof answerByName !== "object" &&
-				answerByName.startsWith("[") &&
-				answerByName.endsWith("]")
-			) {
+			if (answerByName.startsWith("[") && answerByName.endsWith("]")) {
 				answerArray = JSON.parse(answerByName);
 			} else {
 				answerArray = [answerByName];
@@ -106,7 +98,7 @@ export const calculateScoreForItem = (
 						Object.keys(dimensions).forEach((thirdDimension) => {
 							const number = Number(dimensions[thirdDimension]);
 
-							if (isNaN(number)) return;
+							if (Number.isNaN(number)) return;
 
 							const singleScore =
 								choicesType === "default"
@@ -119,29 +111,9 @@ export const calculateScoreForItem = (
 						Object.keys(optionWeights).forEach((fifthDimension) => {
 							const number = Number(optionWeights[fifthDimension]);
 
-							if (isNaN(number)) return;
+							if (Number.isNaN(number)) return;
 
-							let fieldValue;
-
-							if (
-								answerKey.startsWith("a-b-slider") &&
-								typeof userAnswer === "object"
-							) {
-								if (userAnswer?.skipQuestion) {
-									countScores["x"] -= number;
-									countScores["y"] -= number;
-									countScores["z"] -= number;
-									return;
-								}
-
-								try {
-									fieldValue = Number(userAnswer?.value);
-								} catch (e) {
-									fieldValue = 50;
-								}
-							} else {
-								fieldValue = Number(userAnswer);
-							}
+							const fieldValue = Number(userAnswer);
 
 							const reverseValue =
 								optionWeights.hasOwnProperty("ab") && optionWeights.ab === "A";
@@ -149,7 +121,7 @@ export const calculateScoreForItem = (
 								? 100 - fieldValue
 								: fieldValue;
 
-							const rangeCalc = isNaN(valueBasedOnAB)
+							const rangeCalc = Number.isNaN(valueBasedOnAB)
 								? ""
 								: (valueBasedOnAB / 100) * number;
 

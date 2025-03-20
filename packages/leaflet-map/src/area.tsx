@@ -52,24 +52,23 @@ export function isPointInArea(
 			}
 		}
 		return false;
-	} else {
-		return isPointInSinglePolygon(area as Array<LatLng>, point);
 	}
+	return isPointInSinglePolygon(area as Array<LatLng>, point);
 }
 
 function isPointInSinglePolygon(area: Array<LatLng>, point: LatLng) {
-	const x = point.lat,
-		y = point.lng;
+	const x = point.lat;
+	const y = point.lng;
 
 	let inside = false;
 	for (let i = 0, j = area.length - 1; i < area.length; j = i++) {
-		const xi = area[i].lat,
-			yi = area[i].lng;
-		const xj = area[j].lat,
-			yj = area[j].lng;
+		const xi = area[i].lat;
+		const yi = area[i].lng;
+		const xj = area[j].lat;
+		const yj = area[j].lng;
 
 		const intersect =
-			yi > y != yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
+			yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
 		if (intersect) inside = !inside;
 	}
 
@@ -161,18 +160,16 @@ export function Area({
 								}}
 							>
 								{item.title && (
-									<>
-										<Popup className={"leaflet-popup"}>
-											{item.title && (
-												<h3 className="utrecht-heading-3">{item.title}</h3>
-											)}
-											{item.url && (
-												<a className="pop-up-link" href={item.url}>
-													Lees verder
-												</a>
-											)}
-										</Popup>
-									</>
+									<Popup className={"leaflet-popup"}>
+										{item.title && (
+											<h3 className="utrecht-heading-3">{item.title}</h3>
+										)}
+										{item.url && (
+											<a className="pop-up-link" href={item.url}>
+												Lees verder
+											</a>
+										)}
+									</Popup>
 								)}
 							</Polygon>
 						</>

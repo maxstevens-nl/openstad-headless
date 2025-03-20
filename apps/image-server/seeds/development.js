@@ -1,4 +1,4 @@
-const fs = require("fs").promises;
+const fs = require("node:fs").promises;
 
 module.exports = async function seed(db) {
 	// copy example images - TODO: s3

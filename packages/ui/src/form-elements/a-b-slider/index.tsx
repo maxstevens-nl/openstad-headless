@@ -1,17 +1,13 @@
-import React, { type FC, useEffect, useState } from "react";
+import React, { type FC, useState } from "react";
 import "./a-b-slider.css";
-import type { FormValue } from "@openstad-headless/form/src/form";
 import {
 	Accordion,
 	AccordionProvider,
 	AccordionSection,
-	Checkbox,
-	FormLabel,
 	Paragraph,
 	Strong,
 } from "@utrecht/component-library-react";
 import { Spacer } from "../../spacer";
-import TextInput from "../text";
 
 export type RangeSliderProps = {
 	title: string;
@@ -33,24 +29,12 @@ export type RangeSliderProps = {
 	type?: string;
 	onChange?: (e: {
 		name: string;
-		value: string | Record<number, never> | valueObject | [];
+		value: string | Record<number, never> | [];
 	}) => void;
 	showMoreInfo?: boolean;
 	moreInfoButton?: string;
 	moreInfoContent?: string;
 	infoImage?: string;
-	randomId?: string;
-	fieldInvalid?: boolean;
-	skipQuestion?: boolean;
-	skipQuestionAllowExplanation?: boolean;
-	skipQuestionExplanation?: string;
-	skipQuestionLabel?: string;
-};
-
-type valueObject = {
-	value: string;
-	skipQuestion: boolean;
-	skipQuestionExplanation: string | undefined;
 };
 
 const RangeSlider: FC<RangeSliderProps> = ({
@@ -73,21 +57,9 @@ const RangeSlider: FC<RangeSliderProps> = ({
 	moreInfoButton = "Meer informatie",
 	moreInfoContent = "",
 	infoImage = "",
-	randomId = "",
-	fieldInvalid = false,
-	skipQuestion = false,
-	skipQuestionAllowExplanation = false,
-	skipQuestionExplanation = "",
-	skipQuestionLabel = "Sla vraag over",
 }) => {
+	const randomId = Math.random().toString(36).substring(7);
 	const [rangeValue, setRangeValue] = useState(undefined);
-	const [skipSelected, setSkipSelected] = useState(false);
-	const [fieldDisabled, setFieldDisabled] = useState(false);
-	const [value, setValue] = useState<valueObject>({
-		value: "50",
-		skipQuestion: false,
-		skipQuestionExplanation: "",
-	});
 
 	class HtmlContent extends React.Component<{ html: any }> {
 		render() {
@@ -97,43 +69,9 @@ const RangeSlider: FC<RangeSliderProps> = ({
 	}
 
 	const getSliderClass = (rangeValue?: number) => {
-		if (rangeValue === undefined) return `slider-default`;
-		if (rangeValue <= 50) return `slider-left`;
-		return `slider-right`;
-	};
-
-	const changeValue = (
-		key: "value" | "skipQuestion" | "skipQuestionExplanation",
-		newValue: any,
-	) => {
-		const currValue: valueObject = { ...value };
-
-		if (key === "value") {
-			currValue.value = newValue as string;
-		} else if (key === "skipQuestion") {
-			currValue.skipQuestion = newValue as boolean;
-		} else if (key === "skipQuestionExplanation") {
-			currValue.skipQuestionExplanation = newValue as string | undefined;
-		}
-
-		if (onChange) {
-			onChange({
-				name: fieldKey,
-				value: currValue,
-			});
-		}
-
-		setValue(currValue);
-	};
-
-	useEffect(() => {
-		setFieldDisabled(skipSelected);
-		changeValue("skipQuestion", skipSelected);
-	}, [skipSelected]);
-
-	const handleInputChange = (event: { name: string; value: FormValue }) => {
-		const { value } = event;
-		changeValue("skipQuestionExplanation", value || "");
+		if (rangeValue === undefined) return "slider-default";
+		if (rangeValue <= 50) return "slider-left";
+		return "slider-right";
 	};
 
 	return (
@@ -147,9 +85,7 @@ const RangeSlider: FC<RangeSliderProps> = ({
 				</Paragraph>
 			)}
 			{description && (
-				<Paragraph
-					dangerouslySetInnerHTML={{ __html: description }}
-				></Paragraph>
+				<Paragraph dangerouslySetInnerHTML={{ __html: description }} />
 			)}
 			{showMoreInfo && (
 				<>
@@ -224,12 +160,15 @@ const RangeSlider: FC<RangeSliderProps> = ({
 					id={randomId}
 					onChange={(e) => {
 						setRangeValue(Number.parseInt(e.target.value) as any);
-						changeValue("value", e.target.value);
+						if (onChange) {
+							onChange({
+								name: fieldKey,
+								value: e.target.value,
+							});
+						}
 					}}
 					aria-label={`Selecteer een waarde tussen 1 en 100 voor ${titleA} en ${titleB}`}
-					disabled={disabled || fieldDisabled}
-					aria-invalid={fieldInvalid}
-					aria-describedby={`${randomId}_error`}
+					disabled={disabled}
 				/>
 				<div
 					className={`slider_line-container ${getSliderClass(rangeValue)}`}
@@ -256,47 +195,6 @@ const RangeSlider: FC<RangeSliderProps> = ({
 					<span className="label">{labelB}</span>
 				</Paragraph>
 			</div>
-
-			{skipQuestion && skipQuestionAllowExplanation && (
-				<div className="skip-question-container">
-					<Spacer size={2} />
-					<FormLabel
-						htmlFor={`${randomId}_skip`}
-						type="checkbox"
-						className="--label-grid"
-					>
-						<Checkbox
-							className="utrecht-form-field__input"
-							id={`${randomId}_skip`}
-							name={`${randomId}_skip`}
-							value={skipQuestionLabel}
-							required={false}
-							checked={skipSelected}
-							disabled={disabled}
-							onChange={() => {
-								setSkipSelected(!skipSelected);
-							}}
-						/>
-						<span>{skipQuestionLabel}</span>
-					</FormLabel>
-
-					{skipSelected && (
-						<div className="marginTop10 marginBottom15">
-							<Spacer size={2} />
-							<TextInput
-								type="text"
-								onChange={handleInputChange}
-								fieldKey={`${randomId}_skip_explanation`}
-								title={skipQuestionExplanation}
-								fieldInvalid={false}
-								disabled={disabled}
-								variant="textarea"
-								rows={4}
-							/>
-						</div>
-					)}
-				</div>
-			)}
 		</div>
 	);
 };

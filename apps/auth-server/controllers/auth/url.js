@@ -27,36 +27,26 @@ exports.login = [
 	setNoCachHeadersMw,
 	(req, res) => {
 		const config = req.client.config ? req.client.config : {};
-		const configAuthType =
-			config.authTypes && config.authTypes[authType]
-				? config.authTypes[authType]
-				: {};
+		const configAuthType = config.authTypes?.[authType]
+			? config.authTypes[authType]
+			: {};
 		const priviligedRoute =
-			(req.query &&
-				req.query.priviligedRoute &&
-				req.query.priviligedRoute === "admin") ||
+			(req.query?.priviligedRoute && req.query.priviligedRoute === "admin") ||
 			false;
 
 		res.render("auth/url/login", {
 			clientId: req.query.clientId,
 			client: req.client,
 			redirectUrl: encodeURIComponent(req.query.redirect_uri),
-			title:
-				configAuthType && configAuthType.title ? configAuthType.title : false,
-			description:
-				configAuthType && configAuthType.description
-					? configAuthType.description
-					: false,
-			label:
-				configAuthType && configAuthType.label ? configAuthType.label : false,
-			helpText:
-				configAuthType && configAuthType.helpText
-					? configAuthType.helpText
-					: false,
-			buttonText:
-				configAuthType && configAuthType.buttonText
-					? configAuthType.buttonText
-					: false,
+			title: configAuthType?.title ? configAuthType.title : false,
+			description: configAuthType?.description
+				? configAuthType.description
+				: false,
+			label: configAuthType?.label ? configAuthType.label : false,
+			helpText: configAuthType?.helpText ? configAuthType.helpText : false,
+			buttonText: configAuthType?.buttonText
+				? configAuthType.buttonText
+				: false,
 			isPriviligedRoute: priviligedRoute,
 		});
 	},
@@ -64,33 +54,29 @@ exports.login = [
 
 exports.confirmation = (req, res) => {
 	const config = req.client.config ? req.client.config : {};
-	const configAuthType =
-		config.authTypes && config.authTypes[authType]
-			? config.authTypes[authType]
-			: {};
+	const configAuthType = config.authTypes?.[authType]
+		? config.authTypes[authType]
+		: {};
 
 	res.render("auth/url/confirmation", {
 		clientId: req.query.clientId,
 		client: req.client,
 		loginUrl: "/login",
 		redirectUrl: encodeURIComponent(req.query.redirect_uri),
-		title:
-			configAuthType && configAuthType.confirmedTitle
-				? configAuthType.confirmedTitle
-				: false,
-		description:
-			configAuthType && configAuthType.confirmedDescription
-				? configAuthType.confirmedDescription
-				: false,
+		title: configAuthType?.confirmedTitle
+			? configAuthType.confirmedTitle
+			: false,
+		description: configAuthType?.confirmedDescription
+			? configAuthType.confirmedDescription
+			: false,
 	});
 };
 
 exports.authenticate = (req, res) => {
 	const config = req.client.config ? req.client.config : {};
-	const configAuthType =
-		config.authTypes && config.authTypes[authType]
-			? config.authTypes[authType]
-			: {};
+	const configAuthType = config.authTypes?.[authType]
+		? config.authTypes[authType]
+		: {};
 
 	res.render("auth/url/authenticate", {
 		clientId: req.query.clientId,
@@ -133,18 +119,12 @@ const handleSending = async (req, res, next) => {
 		);
 
 		req.flash("success", {
-			msg: "De e-mail is verstuurd naar: " + req.user.email,
+			msg: `De e-mail is verstuurd naar: ${req.user.email}`,
 		});
 
 		res.redirect(
-			"/auth/url/confirmation?clientId=" +
-				req.client.clientId +
-				"&redirect_uri=" +
-				req.redirectUrl ||
-				"/login?clientId=" +
-					req.client.clientId +
-					"&redirect_uri=" +
-					req.redirectUrl,
+			`/auth/url/confirmation?clientId=${req.client.clientId}&redirect_uri=${req.redirectUrl}` ||
+				`/login?clientId=${req.client.clientId}&redirect_uri=${req.redirectUrl}`,
 		);
 	} catch (err) {
 		console.log("e-mail error", err);
@@ -152,11 +132,7 @@ const handleSending = async (req, res, next) => {
 			msg: "Het is niet gelukt om de e-mail te versturen!",
 		});
 
-		let redirectUrl =
-			"/auth/url/login?clientId=" +
-			req.client.clientId +
-			"&redirect_uri=" +
-			req.redirectUrl;
+		let redirectUrl = `/auth/url/login?clientId=${req.client.clientId}&redirect_uri=${req.redirectUrl}`;
 
 		if (isPriviligedRoute) {
 			redirectUrl += "&priviligedRoute=admin";
@@ -182,10 +158,9 @@ const getUser = async (email) => {
 exports.postLogin = async (req, res, next) => {
 	try {
 		const clientConfig = req.client.config ? req.client.config : {};
-		req.redirectUrl =
-			clientConfig && clientConfig.emailRedirectUrl
-				? clientConfig.emailRedirectUrl
-				: encodeURIComponent(req.query.redirect_uri);
+		req.redirectUrl = clientConfig?.emailRedirectUrl
+			? clientConfig.emailRedirectUrl
+			: encodeURIComponent(req.query.redirect_uri);
 
 		let user = await getUser(req.body.email);
 

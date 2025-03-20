@@ -11,7 +11,7 @@ export default defineConfig(({ command }) => {
 			css: prefix(),
 		};
 		// During build, use the classic runtime and build as an IIFE so we can deliver it to the browser
-	} else {
+	}
 		return {
 			plugins: [react({ jsxRuntime: "classic" })],
 			css: prefix(),
@@ -32,5 +32,4 @@ export default defineConfig(({ command }) => {
 				},
 			},
 		};
-	}
 });

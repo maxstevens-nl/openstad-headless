@@ -78,42 +78,19 @@
 	width: 100%;
 }
 
-/* @media only screen and (max-width: 1400px) {
-  .resourceOverviewWithMap-container {
-    grid-template-columns: 3fr 2fr; 
-  }
-
-}
-} */
-
-/* Define containers */
-.map-wrapper {
-	container-type: inline-size;
-	container-name: resourceOverviewWithMapContainer;
-}
-
-.resourceOverviewWithMap-container .detail-container {
-	container-type: inline-size;
-	container-name: detailContainer;
-}
-
-.resourceOverviewWithMap-container .map-container--buttons {
-	container-type: inline-size;
-	container-name: MapContainerButtons;
-}
-
-@container resourceOverviewWithMapContainer (max-width: 1400px) {
+@media only screen and (max-width: 1400px) {
 	.resourceOverviewWithMap-container {
 		grid-template-columns: 3fr 2fr;
 	}
 }
 
-@container resourceOverviewWithMapContainer (max-width: 1000px) {
+@media only screen and (max-width: 1000px) {
 	.resourceOverviewWithMap-container {
 		grid-template-columns: 1fr;
 		height: auto;
 		grid-template-rows: 250px auto;
 	}
+
 	.resourceOverviewWithMap-container .map-container {
 		grid-row: 1;
 	}
@@ -133,24 +110,11 @@
 	}
 }
 
-@container resourceOverviewWithMapContainer (max-width: 768px) {
+@media only screen and (max-width: 768px) {
 	.resourceOverviewWithMap-container .resource-card--link {
 		display: block;
 	}
 	.osc .image-container > img {
 		aspect-ratio: 16 / 5;
-	}
-}
-
-@container detailContainer (max-width: 600px) {
-	.resourceOverviewWithMap-container .resource-card--link {
-		display: flex;
-		flex-direction: column;
-	}
-	.resourceOverviewWithMap-container
-		.osc-resource-overview-content
-		#stem-begroot-filter
-		.osc-resources-filter.osc-flex-columned {
-		grid-template-columns: 1fr;
 	}
 }

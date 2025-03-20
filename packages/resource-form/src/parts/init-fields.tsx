@@ -25,7 +25,7 @@ export const InitializeFormFields = (items, data) => {
 					type: item.tags,
 				});
 
-				item.options = !!tags
+				item.options = tags
 					? tags
 							.filter((tag: any) => tag.type === item.tags)
 							.map((tag: any, index: number) => ({
@@ -58,7 +58,7 @@ export const InitializeFormFields = (items, data) => {
 			};
 
 			if (item.defaultValue) {
-				fieldData["defaultValue"] = item.defaultValue;
+				fieldData.defaultValue = item.defaultValue;
 			}
 
 			switch (item.type) {
@@ -68,7 +68,7 @@ export const InitializeFormFields = (items, data) => {
 					if (item.options && item.options.length > 0) {
 						const defaultValue: string[] = [];
 
-						fieldData["choices"] = item.options.map((option) => {
+						fieldData.choices = item.options.map((option) => {
 							if (option.titles[0].defaultValue) {
 								defaultValue.push(option.titles[0].key);
 							}
@@ -81,22 +81,16 @@ export const InitializeFormFields = (items, data) => {
 						});
 
 						if (defaultValue.length > 0) {
-							fieldData["defaultValue"] = defaultValue;
+							fieldData.defaultValue = defaultValue;
 						}
-					}
-					if (item.maxChoices) {
-						fieldData["maxChoices"] = item.maxChoices;
-					}
-					if (item.maxChoicesMessage) {
-						fieldData["maxChoicesMessage"] = item.maxChoicesMessage;
 					}
 					break;
 				case "imageUpload":
-					fieldData["allowedTypes"] = item.allowedTypes || ["image/*"];
+					fieldData.allowedTypes = item.allowedTypes || ["image/*"];
 					break;
 				case "tags":
 					if (item.options && item.options.length > 0) {
-						fieldData["choices"] = item.options.map((option) => {
+						fieldData.choices = item.options.map((option) => {
 							return {
 								value: option.titles[0].key.toString(),
 								label: option.titles[0].text,
@@ -105,7 +99,7 @@ export const InitializeFormFields = (items, data) => {
 					}
 					break;
 				case "budget":
-					fieldData["format"] = true;
+					fieldData.format = true;
 					break;
 			}
 

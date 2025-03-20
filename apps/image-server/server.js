@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const imgSteam = require("image-steam");
 const multer = require("multer");
-const crypto = require("crypto");
+const crypto = require("node:crypto");
 
 const secret = process.env.IMAGE_VERIFICATION_TOKEN;
 
@@ -43,7 +43,7 @@ const imageSteamConfig = {
 	storage: {
 		defaults: {
 			driver: "fs",
-			path: process.env.IMAGES_DIR || "images/",
+			path: "./images",
 			cacheTTS: process.env.CACHE_TTS || 86400 * 14 /* 24 * 14 hrs */,
 			cacheOptimizedTTS:
 				process.env.CACHE_OPTIMIZED_TTS || 86400 * 14 /*  24 * 14 hrs */,

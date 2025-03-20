@@ -3,12 +3,11 @@ const rateLimit = require("express-rate-limit");
 const failCallback = (req, res, next, options) => {
 	req.flash("error", { msg: options.message });
 	const clientConfig = req.client.config ? req.client.config : {};
-	const redirectUrl =
-		clientConfig && clientConfig.emailRedirectUrl
-			? clientConfig.emailRedirectUrl
-			: encodeURIComponent(req.query.redirect_uri);
+	const redirectUrl = clientConfig?.emailRedirectUrl
+		? clientConfig.emailRedirectUrl
+		: encodeURIComponent(req.query.redirect_uri);
 	res.redirect(
-		"/login?clientId=" + req.client.clientId + "&redirect_uri=" + redirectUrl,
+		`/login?clientId=${req.client.clientId}&redirect_uri=${redirectUrl}`,
 	); // brute force protection triggered, send them back to the login page
 };
 
@@ -26,7 +25,7 @@ const userLimiter = rateLimit({
 exports.user = [
 	(req, res, next) => {
 		req.brute = userLimiter;
-		req.bruteKey = (req.session && req.session.id) || req.ip;
+		req.bruteKey = req.session?.id || req.ip;
 		return next();
 	},
 	userLimiter,
@@ -46,7 +45,7 @@ const userVeryRestrictedLimiter = rateLimit({
 exports.userVeryRestricted = [
 	(req, res, next) => {
 		req.brute = userVeryRestrictedLimiter;
-		req.bruteKey = (req.session && req.session.id) || req.ip;
+		req.bruteKey = req.session?.id || req.ip;
 		return next();
 	},
 	userVeryRestrictedLimiter,
@@ -66,7 +65,7 @@ const globalLimiter = rateLimit({
 exports.global = [
 	(req, res, next) => {
 		req.brute = globalLimiter;
-		req.bruteKey = (req.session && req.session.id) || req.ip;
+		req.bruteKey = req.session?.id || req.ip;
 		return next();
 	},
 	globalLimiter,

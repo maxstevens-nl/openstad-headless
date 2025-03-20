@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("node:fs");
 const apiDb = require("mysql2/promise");
 const execute = require("./execute");
 
@@ -38,7 +38,7 @@ module.exports = async function setupApi(actions) {
 		// check database
 		let doCreateDBTables = false;
 		const rows = await connection.query("SHOW TABLES;");
-		if (!(rows && rows.length)) {
+		if (!rows?.length) {
 			doCreateDBTables = true;
 		}
 

@@ -8,9 +8,8 @@ export default function parseLocation(
 	// Controleer of het punt een array is
 	if (Array.isArray(point)) {
 		return point.map((p) => parseSingleLocation(p));
-	} else {
-		return parseSingleLocation(point);
 	}
+	return parseSingleLocation(point);
 }
 
 function parseSingleLocation(point: LocationType | MarkerProps): LatLng {

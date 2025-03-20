@@ -1,8 +1,8 @@
 const config = require("config");
-const URL = require("url").URL;
+const URL = require("node:url").URL;
 
 module.exports = (req, res, next) => {
-	let url = req.headers && req.headers.origin;
+	let url = req.headers?.origin;
 
 	let domain = "";
 	try {
@@ -10,17 +10,15 @@ module.exports = (req, res, next) => {
 	} catch (err) {}
 
 	const allowedDomains =
-		(req.client && req.client.allowedDomains) ||
-		process.env.ALLOWED_ADMIN_DOMAINS;
+		req.client?.allowedDomains || process.env.ALLOWED_ADMIN_DOMAINS;
 
 	if (!allowedDomains || allowedDomains.indexOf(domain) === -1) {
-		url = config.url || req.protocol + "://" + req.hostname;
+		url = config.url || `${req.protocol}://${req.hostname}`;
 	}
 
 	if (
-		config.dev &&
-		config.dev["Header-Access-Control-Allow-Origin"] &&
-		process.env.NODE_ENV == "development"
+		config.dev?.["Header-Access-Control-Allow-Origin"] &&
+		process.env.NODE_ENV === "development"
 	) {
 		res.header(
 			"Access-Control-Allow-Origin",
@@ -39,7 +37,7 @@ module.exports = (req, res, next) => {
 	);
 	res.header("Access-Control-Allow-Credentials", "true");
 
-	if (process.env.NODE_ENV != "development") {
+	if (process.env.NODE_ENV !== "development") {
 		res.header("Content-type", "application/json; charset=utf-8");
 		res.header(
 			"Strict-Transport-Security",

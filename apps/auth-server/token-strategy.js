@@ -1,7 +1,7 @@
-var passport = require("passport-strategy");
+const passport = require("passport-strategy");
 
-var TokenStrategy = function (options, verify) {
-	if (typeof options == "function") {
+const TokenStrategy = function (options, verify) {
+	if (typeof options === "function") {
 		verify = options;
 		options = {};
 	}
@@ -18,7 +18,7 @@ var TokenStrategy = function (options, verify) {
 };
 
 TokenStrategy.prototype.authenticate = function (req, options) {
-	var self = this;
+	const self = this;
 
 	function verified(err, user, info) {
 		//    if (err) { return self.redirect(self.failRedirect); }

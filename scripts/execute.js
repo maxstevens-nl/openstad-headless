@@ -1,4 +1,4 @@
-const { spawn } = require("child_process");
+const { spawn } = require("node:child_process");
 
 module.exports = function execute(command, args, options) {
 	return new Promise((resolve, reject) => {

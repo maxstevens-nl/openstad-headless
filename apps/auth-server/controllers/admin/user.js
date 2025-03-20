@@ -66,7 +66,7 @@ exports.create = (req, res, next) => {
 	})
 		.then((response) => {
 			req.flash("success", { msg: "Succesfully created " });
-			res.redirect("/admin/user/" + response.id);
+			res.redirect(`/admin/user/${response.id}`);
 		})
 		.catch((err) => {
 			next(err);
@@ -124,11 +124,11 @@ exports.update = (req, res, next) => {
 		})
 		.then(() => {
 			req.flash("success", { msg: "Updated user!" });
-			res.redirect("/admin/user/" + req.userObject.id);
+			res.redirect(`/admin/user/${req.userObject.id}`);
 		})
 		.catch((err) => {
 			req.flash("error", { msg: "Error!" });
-			res.redirect("/admin/user/" + req.userObject.id);
+			res.redirect(`/admin/user/${req.userObject.id}`);
 		});
 };
 
@@ -138,9 +138,8 @@ const createOrUpdateUserRole = (clientId, userId, roleId) => {
 			.then((userRole) => {
 				if (userRole) {
 					return userRole.update({ roleId });
-				} else {
-					return db.UserRole.create({ clientId, roleId, userId });
 				}
+				return db.UserRole.create({ clientId, roleId, userId });
 			})
 			.then(() => {
 				resolve();

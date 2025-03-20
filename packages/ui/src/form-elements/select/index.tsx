@@ -29,8 +29,6 @@ export type SelectFieldProps = {
 	moreInfoButton?: string;
 	moreInfoContent?: string;
 	infoImage?: string;
-	randomId?: string;
-	fieldInvalid?: boolean;
 };
 
 const SelectField: FC<SelectFieldProps> = ({
@@ -46,15 +44,12 @@ const SelectField: FC<SelectFieldProps> = ({
 	moreInfoButton = "Meer informatie",
 	moreInfoContent = "",
 	infoImage = "",
-	randomId = "",
-	fieldInvalid = false,
 }) => {
 	choices = choices.map((choice) => {
 		if (typeof choice === "string") {
 			return { value: choice, label: choice };
-		} else {
-			return choice;
 		}
+		return choice;
 	}) as [{ value: string; label: string }];
 
 	class HtmlContent extends React.Component<{ html: any }> {
@@ -113,13 +108,11 @@ const SelectField: FC<SelectFieldProps> = ({
 							: null
 					}
 					disabled={disabled}
-					aria-invalid={fieldInvalid}
-					aria-describedby={`${randomId}_error`}
 				>
 					<SelectOption value="">{defaultOption}</SelectOption>
 					{choices?.map((value, index) => (
-						<SelectOption value={value && value.value} key={index}>
-							{value && value.label}
+						<SelectOption value={value?.value} key={index}>
+							{value?.label}
 						</SelectOption>
 					))}
 				</Select>

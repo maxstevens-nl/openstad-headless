@@ -56,42 +56,37 @@ const rdToWgs84 = (x: number, y: number) => {
 	const a24 = -0.000009;
 	const b15 = 0.0000291;
 
-	const dx = (x - x0) * Math.pow(10, -5);
-	const dy = (y - y0) * Math.pow(10, -5);
+	const dx = (x - x0) * 10 ** -5;
+	const dy = (y - y0) * 10 ** -5;
 
 	let df =
 		a01 * dy +
-		a20 * Math.pow(dx, 2) +
-		a02 * Math.pow(dy, 2) +
-		a21 * Math.pow(dx, 2) * dy +
-		a03 * Math.pow(dy, 3);
+		a20 * dx ** 2 +
+		a02 * dy ** 2 +
+		a21 * dx ** 2 * dy +
+		a03 * dy ** 3;
 	df +=
-		a40 * Math.pow(dx, 4) +
-		a22 * Math.pow(dx, 2) * Math.pow(dy, 2) +
-		a04 * Math.pow(dy, 4) +
-		a41 * Math.pow(dx, 4) * dy;
+		a40 * dx ** 4 +
+		a22 * dx ** 2 * dy ** 2 +
+		a04 * dy ** 4 +
+		a41 * dx ** 4 * dy;
 	df +=
-		a23 * Math.pow(dx, 2) * Math.pow(dy, 3) +
-		a42 * Math.pow(dx, 4) * Math.pow(dy, 2) +
-		a24 * Math.pow(dx, 2) * Math.pow(dy, 4);
+		a23 * dx ** 2 * dy ** 3 + a42 * dx ** 4 * dy ** 2 + a24 * dx ** 2 * dy ** 4;
 
 	const f = f0 + df / 3600;
 
 	let dl =
 		b10 * dx +
 		b11 * dx * dy +
-		b30 * Math.pow(dx, 3) +
-		b12 * dx * Math.pow(dy, 2) +
-		b31 * Math.pow(dx, 3) * dy;
+		b30 * dx ** 3 +
+		b12 * dx * dy ** 2 +
+		b31 * dx ** 3 * dy;
 	dl +=
-		b13 * dx * Math.pow(dy, 3) +
-		b50 * Math.pow(dx, 5) +
-		b32 * Math.pow(dx, 3) * Math.pow(dy, 2) +
-		b14 * dx * Math.pow(dy, 4);
-	dl +=
-		b51 * Math.pow(dx, 5) * dy +
-		b33 * Math.pow(dx, 3) * Math.pow(dy, 3) +
-		b15 * dx * Math.pow(dy, 5);
+		b13 * dx * dy ** 3 +
+		b50 * dx ** 5 +
+		b32 * dx ** 3 * dy ** 2 +
+		b14 * dx * dy ** 4;
+	dl += b51 * dx ** 5 * dy + b33 * dx ** 3 * dy ** 3 + b15 * dx * dy ** 5;
 
 	const l = l0 + dl / 3600;
 
@@ -201,7 +196,7 @@ const BaseMap = ({
 				});
 			}
 
-			if (allPolygons.length == 0) {
+			if (allPolygons.length === 0) {
 				mapRef.panTo(
 					new LatLng(definedCenterPoint.lat, definedCenterPoint.lng),
 				);
@@ -209,8 +204,8 @@ const BaseMap = ({
 			}
 
 			if (
-				allPolygons.length == 1 &&
-				allPolygons[0].length == 1 &&
+				allPolygons.length === 1 &&
+				allPolygons[0].length === 1 &&
 				allPolygons[0][0].lat &&
 				allPolygons[0][0].lng
 			) {
@@ -315,8 +310,8 @@ const BaseMap = ({
 				if (geoJsonFeatures && Array.isArray(geoJsonFeatures)) {
 					geoJsonFeatures.forEach((feature) => {
 						const coordinates = feature.geometry?.coordinates;
-						let lat = coordinates && coordinates[1];
-						let long = coordinates && coordinates[0];
+						let lat = coordinates?.[1];
+						let long = coordinates?.[0];
 						const { Objectnaam, Locatieaanduiding } = feature.properties;
 
 						if (isRdCoordinates(long, lat)) {
@@ -403,7 +398,7 @@ const BaseMap = ({
 			// ToDo
 			markerData.isVisible = true;
 
-			if (clustering && clustering.isActive && !markerData.doNotCluster) {
+			if (clustering?.isActive && !markerData.doNotCluster) {
 				markerData.isClustered = false;
 			}
 
@@ -463,7 +458,7 @@ const BaseMap = ({
 
 					<TileLayer {...tileLayerProps} />
 
-					{area && area.length ? (
+					{area?.length ? (
 						<Area
 							area={area}
 							areas={customPolygon}
@@ -499,9 +494,7 @@ const BaseMap = ({
 
 					<MapEventsListener
 						area={area}
-						onClick={(e, map) =>
-							onClick && onClick({ ...e, isInArea: e.isInArea }, map)
-						}
+						onClick={(e, map) => onClick?.({ ...e, isInArea: e.isInArea }, map)}
 						onMarkerClick={onMarkerClick}
 					/>
 				</MapContainer>
@@ -539,8 +532,7 @@ function MapEventsListener({
 			}
 
 			const areaLatLngs = area.map(parseLocation) as LatLng[];
-			const isInArea =
-				!(area && area.length) || isPointInArea(areaLatLngs, e.latlng);
+			const isInArea = !area?.length || isPointInArea(areaLatLngs, e.latlng);
 
 			const customEvent = new CustomEvent("osc-map-click", {
 				detail: { ...e, isInArea },

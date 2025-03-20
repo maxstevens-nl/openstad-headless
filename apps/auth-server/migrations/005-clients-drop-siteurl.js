@@ -1,4 +1,4 @@
-var db = require("../db").sequelize;
+const db = require("../db").sequelize;
 
 module.exports = {
 	up: () => {

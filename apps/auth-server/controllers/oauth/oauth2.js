@@ -1,7 +1,7 @@
 const login = require("connect-ensure-login");
 const oauth2orize = require("oauth2orize");
 const passport = require("passport");
-const URL = require("url").URL;
+const URL = require("node:url").URL;
 const db = require("../../db");
 const config = require("../../config");
 const memoryStorage = require("../../memoryStorage");
@@ -13,7 +13,7 @@ const prefillAllowedDomains = (allowedDomains) => {
 		if (process.env.BASE_DOMAIN) {
 			let baseDomain = process.env.BASE_DOMAIN;
 			if (baseDomain.indexOf("http") !== 0) {
-				baseDomain = "https://" + baseDomain;
+				baseDomain = `https://${baseDomain}`;
 			}
 			const baseUrl = new URL(baseDomain);
 			allowedDomains.push(baseUrl.host);
@@ -22,7 +22,7 @@ const prefillAllowedDomains = (allowedDomains) => {
 		if (process.env.APP_URL) {
 			let appUrl = process.env.APP_URL;
 			if (appUrl.indexOf("http") !== 0) {
-				appUrl = "https://" + appUrl;
+				appUrl = `https://${appUrl}`;
 			}
 			const url = new URL(appUrl);
 			allowedDomains.push(url.host);
@@ -41,7 +41,7 @@ const prefillAllowedDomains = (allowedDomains) => {
 		if (process.env.ADMIN_URL) {
 			let adminUrl = process.env.ADMIN_URL;
 			if (adminUrl.indexOf("http") !== 0) {
-				adminUrl = "https://" + adminUrl;
+				adminUrl = `https://${adminUrl}`;
 			}
 			const url = new URL(adminUrl);
 			allowedDomains.push(url.host);
@@ -261,10 +261,9 @@ exports.authorization = [
 				if (allowedDomains && allowedDomains.indexOf(redirectUrlHost) !== -1) {
 					console.log("===> redirectURI allowedDomains", redirectURI);
 					return done(null, client, redirectURI);
-				} else {
-					console.log("===> Redirect host doesn't match the client host");
-					throw new Error("Redirect host doesn't match the client host");
 				}
+				console.log("===> Redirect host doesn't match the client host");
+				throw new Error("Redirect host doesn't match the client host");
 			})
 			.catch((err) => done(err));
 	}),

@@ -1,4 +1,4 @@
-const process = require("process");
+const process = require("node:process");
 const bcrypt = require("bcrypt");
 const config = require("./config");
 const memoryStorage = require("./memoryStorage");

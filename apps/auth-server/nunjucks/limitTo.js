@@ -37,18 +37,16 @@ function limitTo(input, limit) {
 	}
 	if (typeof input === "string") {
 		if (limit >= 0 && limit < input.length) {
-			return input.substring(0, limit) + "...";
-		} else {
-			return input; // input.substr(limit);
+			return `${input.substring(0, limit)}...`;
 		}
+		return input; // input.substr(limit);
 	}
 	if (Array.isArray(input)) {
 		limit = Math.min(limit, input.length);
 		if (limit >= 0) {
 			return input.splice(0, limit);
-		} else {
-			return input.splice(input.length + limit, input.length);
 		}
+		return input.splice(input.length + limit, input.length);
 	}
 	return input;
 }

@@ -1,11 +1,11 @@
-var sanitize = require("sanitize-html");
+const sanitize = require("sanitize-html");
 
-var remoteURL = /^(?:\/\/)|(?:\w+?:\/{0,2})/;
-var noTags = {
+const remoteURL = /^(?:\/\/)|(?:\w+?:\/{0,2})/;
+const noTags = {
 	allowedTags: [],
 	allowedAttributes: [],
 };
-var allSafeTags = {
+const allSafeTags = {
 	allowedTags: [
 		// Content sectioning
 		"h1",

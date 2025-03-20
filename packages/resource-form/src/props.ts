@@ -68,8 +68,6 @@ export type Item = {
 	options?: Array<Option>;
 	placeholder?: string;
 	defaultValue?: string;
-	maxChoices?: string;
-	maxChoicesMessage?: string;
 };
 
 export type Option = {

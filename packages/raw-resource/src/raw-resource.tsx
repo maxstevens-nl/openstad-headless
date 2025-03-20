@@ -59,7 +59,7 @@ function RawResource(props: RawResourceWidgetProps) {
 						dangerouslySetInnerHTML={{
 							__html: render,
 						}}
-					></div>
+					/>
 				)}
 			</section>
 		</div>

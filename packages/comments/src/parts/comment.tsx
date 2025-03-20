@@ -50,7 +50,6 @@ function Comment({
 	const { data: currentUser } = datastore.useCurrentUser({ ...args });
 	const [isReplyFormActive, setIsReplyFormActive] = useState<boolean>(false);
 	const [editMode, setEditMode] = useState<boolean>(false);
-	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	function toggleReplyForm() {
 		// todo: scrollto
@@ -64,7 +63,7 @@ function Comment({
 	function canReply() {
 		if (!widgetContext || !widgetContext.canComment) return false;
 		if (!widgetContext.canReply) return false; // widget setting
-		return args.comment.can && args.comment.can.reply;
+		return args.comment.can?.reply;
 	}
 
 	function canLike() {
@@ -76,13 +75,13 @@ function Comment({
 	function canEdit() {
 		if (!widgetContext || !widgetContext.canComment) return false;
 		if (hasRole(currentUser, "moderator")) return true;
-		return args.comment.can && args.comment.can.edit;
+		return args.comment.can?.edit;
 	}
 
 	function canDelete() {
 		if (!widgetContext || !widgetContext.canComment) return false;
 		if (hasRole(currentUser, "moderator")) return true;
-		return args.comment.can && args.comment.can.delete;
+		return args.comment.can?.delete;
 	}
 
 	if (!widgetContext) {
@@ -130,7 +129,7 @@ function Comment({
 					clearInterval(intervalId);
 				} else if (oldVotes !== newVotes && attempts < maxAttempts) {
 					attempts++;
-					if (widgetContext && widgetContext.setRefreshComments) {
+					if (widgetContext?.setRefreshComments) {
 						widgetContext.setRefreshComments((prev: boolean) => !prev);
 					}
 				} else if (attempts < maxAttempts) {
@@ -154,52 +153,26 @@ function Comment({
 				<Heading
 					level={4}
 					appearance="utrecht-heading-6"
-					className={`reaction-name`}
+					className={"reaction-name"}
 				>
-					{args.comment.user && args.comment.user.displayName}{" "}
+					{args.comment.user?.displayName}{" "}
 					{args.comment.user && args.comment.user.role === "admin" ? (
 						<span className="--isAdmin">{adminLabel}</span>
 					) : null}
 				</Heading>
 				{canEdit() || canDelete() ? (
-					<div className="edit-delete-button-group">
-						<Button
-							appearance="subtle-button"
-							onClick={() => setIsOpen(!isOpen)}
-						>
-							<div>
-								<i className={isOpen ? "ri-close-fill" : "ri-more-fill"}></i>
-								<span className="sr-only">Bewerken</span>
-							</div>
-						</Button>
-
-						{isOpen && (
-							<div className="DropdownMenuContent">
-								<ButtonGroup direction="column">
-									<Button
-										appearance="secondary-action-button"
-										className="DropdownMenuItem"
-										onClick={() => {
-											setIsOpen(false);
-											toggleEditForm();
-										}}
-									>
-										Bewerken
-									</Button>
-									<Button
-										appearance="secondary-action-button"
-										className="DropdownMenuItem"
-										onClick={() => {
-											if (args.comment && confirm("Weet u het zeker?"))
-												args.comment.delete(args.comment.id);
-										}}
-									>
-										Verwijderen
-									</Button>
-								</ButtonGroup>
-							</div>
-						)}
-					</div>
+					<DropDownMenu
+						items={[
+							{ label: "Bewerken", onClick: () => toggleEditForm() },
+							{
+								label: "Verwijderen",
+								onClick: () => {
+									if (args.comment && confirm("Weet u het zeker?"))
+										args.comment.delete(args.comment.id);
+								},
+							},
+						]}
+					/>
 				) : null}
 			</section>
 
@@ -241,7 +214,7 @@ function Comment({
 							(canLike() ? (
 								<Button
 									appearance="secondary-action-button"
-									className={args.comment.hasUserVoted ? `active` : ""}
+									className={args.comment.hasUserVoted ? "active" : ""}
 									onClick={handleLike}
 								>
 									<i
@@ -250,12 +223,12 @@ function Comment({
 												? "ri-thumb-up-fill"
 												: "ri-thumb-up-line"
 										}
-									></i>
+									/>
 									Mee eens (<span>{args.comment.yes || 0}</span>)
 								</Button>
 							) : (
 								<Button disabled>
-									<i className="ri-thumb-up-line"></i>
+									<i className="ri-thumb-up-line" />
 									Mee eens (<span>{args.comment.yes || 0}</span>)
 								</Button>
 							))}
@@ -272,54 +245,51 @@ function Comment({
 			)}
 
 			{args.comment.parentId && (
-				<>
-					<section className="comment-item-footer">
-						<Paragraph className="comment-reaction-strong-text">
-							{args.comment.createDateHumanized}
-						</Paragraph>
-						<ButtonGroup>
-							{widgetContext.canLike &&
-								(canLike() ? (
-									<Button
-										appearance="secondary-action-button"
-										className={args.comment.hasUserVoted ? `active` : ""}
-										onClick={handleLike}
-									>
-										<i
-											className={
-												args.comment.hasUserVoted
-													? "ri-thumb-up-fill"
-													: "ri-thumb-up-line"
-											}
-										></i>
-										Mee eens (<span>{args.comment.yes || 0}</span>)
-									</Button>
-								) : (
-									<Button disabled>
-										<i className="ri-thumb-up-line"></i>
-										Mee eens (<span>{args.comment.yes || 0}</span>)
-									</Button>
-								))}
-						</ButtonGroup>
-					</section>
-				</>
+				<section className="comment-item-footer">
+					<Paragraph className="comment-reaction-strong-text">
+						{args.comment.createDateHumanized}
+					</Paragraph>
+					<ButtonGroup>
+						{widgetContext.canLike &&
+							(canLike() ? (
+								<Button
+									appearance="secondary-action-button"
+									className={args.comment.hasUserVoted ? "active" : ""}
+									onClick={handleLike}
+								>
+									<i
+										className={
+											args.comment.hasUserVoted
+												? "ri-thumb-up-fill"
+												: "ri-thumb-up-line"
+										}
+									/>
+									Mee eens (<span>{args.comment.yes || 0}</span>)
+								</Button>
+							) : (
+								<Button disabled>
+									<i className="ri-thumb-up-line" />
+									Mee eens (<span>{args.comment.yes || 0}</span>)
+								</Button>
+							))}
+					</ButtonGroup>
+				</section>
 			)}
 
 			<Spacer size={1} />
 
-			{args.comment.replies &&
-				args.comment.replies.map((reply, index) => {
-					return (
-						<div className="reaction-container" key={index}>
-							<Comment
-								{...args}
-								comment={reply}
-								disableSubmit={disableSubmit}
-								showDateSeperately={false}
-							/>
-						</div>
-					);
-				})}
+			{args.comment.replies?.map((reply, index) => {
+				return (
+					<div className="reaction-container" key={index}>
+						<Comment
+							{...args}
+							comment={reply}
+							disableSubmit={disableSubmit}
+							showDateSeperately={false}
+						/>
+					</div>
+				);
+			})}
 
 			{isReplyFormActive ? (
 				<div className="reaction-container">

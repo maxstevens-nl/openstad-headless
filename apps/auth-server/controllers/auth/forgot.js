@@ -17,10 +17,9 @@ const authResetConfig = require("../../config/auth").get("Reset");
 
 exports.forgot = (req, res) => {
 	const config = req.client.config ? req.client.config : {};
-	const configAuthType =
-		config.authTypes && config.authTypes["forgot"]
-			? config.authTypes["forgot"]
-			: {};
+	const configAuthType = config.authTypes?.forgot
+		? config.authTypes.forgot
+		: {};
 
 	res.render("auth/forgot/forgot", {
 		title: configAuthType.title ? configAuthType.title : authForgotConfig.title,
@@ -42,10 +41,9 @@ exports.forgot = (req, res) => {
 
 exports.reset = (req, res) => {
 	const config = req.client.config ? req.client.config : {};
-	const configAuthType =
-		config.authTypes && config.authTypes["reset"]
-			? config.authTypes["reset"]
-			: authResetConfig;
+	const configAuthType = config.authTypes?.reset
+		? config.authTypes.reset
+		: authResetConfig;
 
 	res.render("auth/forgot/reset", {
 		title: configAuthType.title,
@@ -85,8 +83,7 @@ exports.postReset = (req, res, next) => {
 						msg: "Wachtwoord aangepast, je kan nu inloggen!",
 					});
 					res.redirect(
-						authLocalConfig.loginUrl +
-							`?clientId=${req.client.clientId}&redirect_uri=${encodeURIComponent(req.query.redirect_uri)}`,
+						`${authLocalConfig.loginUrl}?clientId=${req.client.clientId}&redirect_uri=${encodeURIComponent(req.query.redirect_uri)}`,
 					);
 				})
 				.catch((err) => {
@@ -109,10 +106,7 @@ exports.postForgot = (req, res, next) => {
 					msg: "Het is niet gelukt om de e-mail te versturen!",
 				});
 				res.redirect(
-					"/auth/local/forgot" +
-						"?clientId=" +
-						req.client.clientId +
-						`&redirect_uri=${encodeURIComponent(req.query.redirect_uri)}`,
+					`/auth/local/forgot?clientId=${req.client.clientId}&redirect_uri=${encodeURIComponent(req.query.redirect_uri)}`,
 				);
 			}
 
@@ -133,18 +127,14 @@ exports.postForgot = (req, res, next) => {
 		.then(() => {
 			req.flash("success", { msg: "We hebben een e-mail naar je verstuurd" });
 			res.redirect(
-				"/auth/local/forgot?clientId=" +
-					req.client.clientId +
-					`&redirect_uri=${encodeURIComponent(req.query.redirect_uri)}`,
+				`/auth/local/forgot?clientId=${req.client.clientId}&redirect_uri=${encodeURIComponent(req.query.redirect_uri)}`,
 			);
 		})
 		.catch((err) => {
 			console.log("ererer", err);
 			req.flash("error", { msg: "E-mail adres is niet bekend bij ons." });
 			res.redirect(
-				"/auth/local/forgot?clientId=" +
-					req.client.clientId +
-					`&redirect_uri=${encodeURIComponent(req.query.redirect_uri)}`,
+				`/auth/local/forgot?clientId=${req.client.clientId}&redirect_uri=${encodeURIComponent(req.query.redirect_uri)}`,
 			);
 		});
 
@@ -153,10 +143,9 @@ exports.postForgot = (req, res, next) => {
 	 */
 	const sendEmail = (resetUrl, user, client) => {
 		const clientConfig = client.config ? client.config : {};
-		const configReset =
-			clientConfig.authTypes && clientConfig.authTypes["reset"]
-				? clientConfig.authTypes["reset"]
-				: authResetConfig;
+		const configReset = clientConfig.authTypes?.reset
+			? clientConfig.authTypes.reset
+			: authResetConfig;
 
 		const clientConfigStyling = clientConfig.styling
 			? clientConfig.styling
@@ -172,7 +161,7 @@ exports.postForgot = (req, res, next) => {
 			emailLogo = process.env.LOGO;
 		}
 
-		if (clientConfigStyling && clientConfigStyling.logo) {
+		if (clientConfigStyling?.logo) {
 			emailLogo = clientConfigStyling.logo;
 		}
 
@@ -183,7 +172,7 @@ exports.postForgot = (req, res, next) => {
 			fromName: clientConfig.fromName,
 			subject: configReset.subjectLine
 				? configReset.subjectLine
-				: "Wachtwoord herstellen voor " + client.name,
+				: `Wachtwoord herstellen voor ${client.name}`,
 			template: "emails/password-reset.html",
 			variables: {
 				resetUrl: resetUrl,

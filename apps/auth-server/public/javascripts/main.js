@@ -7,7 +7,7 @@ $(() => {
 $.validator.addMethod(
 	"postcodeNL",
 	(value, element, val) => {
-		var rege = /^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-z]{2}$/i;
+		const rege = /^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-z]{2}$/i;
 		return rege.test(value);
 	},
 	"Postcode niet correct",
@@ -38,7 +38,7 @@ function initFormsValidation() {
 				},
 			},
 			submitHandler: (form) => {
-				var $submitButtons = $(form).find(
+				const $submitButtons = $(form).find(
 					'input[type="submit"], button[type="submit"]',
 				);
 				$submitButtons.attr("disabled", true);
@@ -50,7 +50,7 @@ function initFormsValidation() {
 
 function initRemoveErrorLabelOnType() {
 	$(".side-error input").on("keydown", function () {
-		var $sideError = $(this).closest(".side-error");
+		const $sideError = $(this).closest(".side-error");
 		$sideError.find(".error-label").remove();
 		$sideError.removeClass("side-error");
 	});

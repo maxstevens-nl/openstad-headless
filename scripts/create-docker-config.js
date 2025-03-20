@@ -1,7 +1,7 @@
 require("dotenv").config();
-if (typeof process.env.FORCE_HTTP == "undefined")
+if (typeof process.env.FORCE_HTTP === "undefined")
 	process.env.FORCE_HTTP = "yes";
-const fs = require("fs").promises;
+const fs = require("node:fs").promises;
 
 (async () => {
 	// re-use mysql password

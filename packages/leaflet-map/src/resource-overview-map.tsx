@@ -89,7 +89,7 @@ const ResourceOverviewMap = ({
 
 			if (marker.lat && marker.lng && categorizeByField && categories) {
 				const tag = resource.tags?.find(
-					(t: any) => t.type == categorizeByField,
+					(t: any) => t.type === categorizeByField,
 				); // TODO: types/Tag does not exist yet
 				if (tag) {
 					marker.data = { [categorizeByField]: tag.name };
@@ -106,8 +106,7 @@ const ResourceOverviewMap = ({
 							(a: { seqnr: number }, b: { seqnr: number }) => a.seqnr - b.seqnr,
 						)[0] || resource.statuses[0]
 				: false;
-			let MapIconImage =
-				firstStatus && firstStatus.mapIcon ? firstStatus.mapIcon : "";
+			let MapIconImage = firstStatus?.mapIcon ? firstStatus.mapIcon : "";
 
 			const firstTag = resource.tags
 				? resource.tags
@@ -119,12 +118,10 @@ const ResourceOverviewMap = ({
 							(a: { seqnr: number }, b: { seqnr: number }) => a.seqnr - b.seqnr,
 						)[0] || resource.tags[0]
 				: false;
-			MapIconImage =
-				firstTag && firstTag.mapIcon ? firstTag.mapIcon : MapIconImage;
-			const MapIconColor =
-				firstTag && firstTag.documentMapIconColor
-					? firstTag.documentMapIconColor
-					: "";
+			MapIconImage = firstTag?.mapIcon ? firstTag.mapIcon : MapIconImage;
+			const MapIconColor = firstTag?.documentMapIconColor
+				? firstTag.documentMapIconColor
+				: "";
 
 			// Set the resource name
 			marker.icon = {
@@ -189,7 +186,7 @@ const ResourceOverviewMap = ({
 	const areaId = props?.map?.areaId || false;
 	const polygon =
 		areaId && Array.isArray(areas) && areas.length > 0
-			? (areas.find((area) => area.id.toString() === areaId) || {}).polygon
+			? areas.find((area) => area.id.toString() === areaId)?.polygon
 			: [];
 
 	const { data: datalayers } = datastore.useDatalayer({
@@ -268,7 +265,7 @@ const ResourceOverviewMap = ({
 	const [center, setCenter] = useState<LocationType | undefined>(undefined);
 
 	useEffect(() => {
-		if (!!polygon) {
+		if (polygon) {
 			setCenter(calculateCenter(polygon));
 		}
 	}, [polygon, areas]);
@@ -317,14 +314,6 @@ const ResourceOverviewMap = ({
 		(layer) => activeLayers[layer.id],
 	);
 
-	if (!!props?.map && typeof props?.map === "object") {
-		props.map = {
-			...props.map,
-			tilesVariant: props?.tilesVariant || props?.map?.tilesVariant || "nlmaps",
-			customUrl: props?.customUrl || props?.map?.customUrl || "",
-		};
-	}
-
 	return (polygon && center) || !areaId ? (
 		<div className="map-container--buttons">
 			<Button
@@ -347,7 +336,7 @@ const ResourceOverviewMap = ({
 									/>
 								)}
 								<div className="legend-info">
-									{layer.icon && layer.icon[0] && layer.icon[0].url && (
+									{layer.icon?.[0]?.url && (
 										<img
 											src={layer.icon[0].url}
 											alt="Layer icon"

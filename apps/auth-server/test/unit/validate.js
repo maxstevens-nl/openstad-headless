@@ -1,4 +1,4 @@
-require("process").env.OAUTHRECIPES_SURPRESS_TRACE = true;
+require("node:process").env.OAUTHRECIPES_SURPRESS_TRACE = true;
 
 const utils = require("../../utils");
 const validate = require("../../validate");

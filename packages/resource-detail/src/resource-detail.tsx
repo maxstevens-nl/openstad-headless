@@ -183,12 +183,12 @@ function ResourceDetail({
 		try {
 			const hash = window.location.hash;
 
-			if (hash && hash.includes("#doc=")) {
+			if (hash?.includes("#doc=")) {
 				const docParams = hash.split("#doc=")[1];
 
 				const cleanDocParams = docParams.split("#")[0];
 
-				if (cleanDocParams && cleanDocParams.includes("?")) {
+				if (cleanDocParams?.includes("?")) {
 					const queryParams = cleanDocParams.split("?")[1];
 
 					if (queryParams) {
@@ -197,7 +197,7 @@ function ResourceDetail({
 						for (const param of params) {
 							const [key, value] = param.split("=");
 
-							if (value && !isNaN(Number(value))) {
+							if (value && !Number.isNaN(Number(value))) {
 								return value;
 							}
 						}
@@ -213,12 +213,7 @@ function ResourceDetail({
 
 	const getPageHash = () => {
 		if (window.location.hash.includes("#doc")) {
-			let url =
-				"/" +
-				window.location.hash.split("=")[1] +
-				(window.location.hash.split("=")[2] !== undefined
-					? "=" + window.location.hash.split("=")[2]
-					: "");
+			let url = `/${window.location.hash.split("=")[1]}${window.location.hash.split("=")[2] !== undefined ? `=${window.location.hash.split("=")[2]}` : ""}`;
 
 			if (backUrlIdRelativePath) {
 				const backUrlId = getIdFromHash();
@@ -253,12 +248,10 @@ function ResourceDetail({
 				)[0] || resource.statuses[0]
 		: false;
 
-	const colorClass =
-		firstStatus && firstStatus.color ? `color-${firstStatus.color}` : "";
-	const backgroundColorClass =
-		firstStatus && firstStatus.backgroundColor
-			? `bgColor-${firstStatus.backgroundColor}`
-			: "";
+	const colorClass = firstStatus?.color ? `color-${firstStatus.color}` : "";
+	const backgroundColorClass = firstStatus?.backgroundColor
+		? `bgColor-${firstStatus.backgroundColor}`
+		: "";
 
 	const statusClasses = `${colorClass} ${backgroundColorClass}`.trim();
 
@@ -320,7 +313,7 @@ function ResourceDetail({
 		if (props.pageTitle === true && resource.title !== undefined) {
 			const current =
 				document.title.includes(" - ") && document.title.split(" - ")[0].length
-					? " - " + document.title.split(" - ")[0]
+					? ` - ${document.title.split(" - ")[0]}`
 					: "";
 			document.title = resource.title + current;
 		}
@@ -357,7 +350,7 @@ function ResourceDetail({
 									level={1}
 									appearance="utrecht-heading-2"
 									dangerouslySetInnerHTML={{ __html: resource.title }}
-								></Heading>
+								/>
 							)}
 
 							{displayModBreak && resource.modBreak && (
@@ -427,12 +420,12 @@ function ResourceDetail({
 										level={2}
 										appearance="utrecht-heading-4"
 										dangerouslySetInnerHTML={{ __html: resource.summary }}
-									></Heading>
+									/>
 								)}
 								{displayDescription && (
 									<Paragraph
 										dangerouslySetInnerHTML={{ __html: resource.description }}
-									></Paragraph>
+									/>
 								)}
 							</div>
 							{displayLocation && resource.location && (
@@ -488,7 +481,7 @@ function ResourceDetail({
 									<Spacer size={0.5} />
 									<div className="resource-detail-pil-list-content">
 										{resource.statuses?.map((s: { name: string }) => (
-											<Pill light rounded text={s.name}></Pill>
+											<Pill light rounded text={s.name} />
 										))}
 									</div>
 
@@ -586,8 +579,6 @@ function ResourceDetail({
 						placeholder={props.commentsWidget?.placeholder}
 						loginText={props.commentsWidget?.loginText}
 						closedText={props.commentsWidget?.closedText}
-						itemsPerPage={props.commentsWidget?.itemsPerPage}
-						displayPagination={props.commentsWidget?.displayPagination}
 						sentiment={useSentiments[0]}
 					/>
 
@@ -603,8 +594,6 @@ function ResourceDetail({
 							placeholder={props.commentsWidget_multiple?.placeholder}
 							loginText={props.commentsWidget_multiple?.loginText}
 							closedText={props.commentsWidget_multiple?.closedText}
-							itemsPerPage={props.commentsWidget?.itemsPerPage}
-							displayPagination={props.commentsWidget?.displayPagination}
 							sentiment={useSentiments[1]}
 						/>
 					)}

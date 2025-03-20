@@ -1,4 +1,4 @@
-import path from "path";
+import path from "node:path";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { prefix } from "../lib/prefix";
@@ -9,28 +9,27 @@ export default defineConfig(({ command }) => {
 			plugins: [react()],
 			css: prefix(),
 		};
-	} else {
-		return {
-			plugins: [react({ jsxRuntime: "classic" })],
-			css: prefix(),
-			build: {
-				lib: {
-					formats: ["iife"],
-					entry: path.resolve(__dirname, "src/choiceguide-results.tsx"), // Correct path to your entry file
-					name: "OpenstadHeadlessChoiceGuideResults",
-					fileName: "choiceguide-results",
-				},
-				rollupOptions: {
-					external: ["react", "react-dom"],
-					output: {
-						globals: {
-							react: "React",
-							"react-dom": "ReactDOM",
-						},
+	}
+	return {
+		plugins: [react({ jsxRuntime: "classic" })],
+		css: prefix(),
+		build: {
+			lib: {
+				formats: ["iife"],
+				entry: path.resolve(__dirname, "src/choiceguide-results.tsx"), // Correct path to your entry file
+				name: "OpenstadHeadlessChoiceGuideResults",
+				fileName: "choiceguide-results",
+			},
+			rollupOptions: {
+				external: ["react", "react-dom"],
+				output: {
+					globals: {
+						react: "React",
+						"react-dom": "ReactDOM",
 					},
 				},
-				outDir: "dist", // Ensures output is in the dist directory
 			},
-		};
-	}
+			outDir: "dist", // Ensures output is in the dist directory
+		},
+	};
 });

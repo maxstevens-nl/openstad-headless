@@ -1,5 +1,5 @@
 const nunjucks = require("nunjucks");
-const path = require("path");
+const path = require("node:path");
 const nodemailer = require("nodemailer");
 const Promise = require("bluebird");
 const dateFilter = require("../nunjucks/dateFilter");
@@ -17,8 +17,8 @@ const formatTransporter = ({ host, port, secure, auth }) => ({
 		: process.env.MAIL_SERVER_SECURE &&
 			process.env.MAIL_SERVER_SECURE !== "false",
 	auth: {
-		user: auth && auth.user ? auth.user : process.env.MAIL_SERVER_USER_NAME,
-		pass: auth && auth.pass ? auth.pass : process.env.MAIL_SERVER_PASSWORD,
+		user: auth?.user ? auth.user : process.env.MAIL_SERVER_USER_NAME,
+		pass: auth?.pass ? auth.pass : process.env.MAIL_SERVER_PASSWORD,
 	},
 });
 
@@ -78,7 +78,7 @@ exports.send = ({
 	/**
 	 * Format the to name
 	 */
-	const to = !!toName ? `${toName}<${toEmail}>` : toEmail;
+	const to = toName ? `${toName}<${toEmail}>` : toEmail;
 
 	/**
 	 * If from name & e-mail not specified fallback to default in .env
@@ -114,12 +114,11 @@ exports.send = ({
 			if (error) {
 				console.log("email error", error);
 				return reject(error);
-			} else {
-				console.log("Message sent: %s", info.messageId);
-				// Preview only available when sending through an Ethereal account
-				//  console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-				resolve();
 			}
+			console.log("Message sent: %s", info.messageId);
+			// Preview only available when sending through an Ethereal account
+			//  console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+			resolve();
 		});
 	});
 };

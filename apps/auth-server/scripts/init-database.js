@@ -47,7 +47,7 @@ const { Umzug, SequelizeStorage } = require("umzug");
 			try {
 				await require(`../seeds/${datafile}`)(db);
 			} catch (err) {
-				if (err && err.message && err.message.match(/Cannot find module/)) {
+				if (err?.message?.match(/Cannot find module/)) {
 					console.log(`  no ${datafile} data seeds found`);
 				} else {
 					console.log(err.message);
@@ -58,7 +58,7 @@ const { Umzug, SequelizeStorage } = require("umzug");
 			try {
 				await require(`../seeds/${datafile}`)(db);
 			} catch (err) {
-				if (err && err.message && err.message.match(/Cannot find module/)) {
+				if (err?.message?.match(/Cannot find module/)) {
 					console.log("  no local data seeds found");
 				} else {
 					console.log(err.message);

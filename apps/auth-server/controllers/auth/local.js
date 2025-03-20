@@ -5,7 +5,7 @@ const hat = require("hat");
 const login = require("connect-ensure-login");
 const db = require("../../db");
 const authLocalConfig = require("../../config/auth").get("Local");
-const URL = require("url").URL;
+const URL = require("node:url").URL;
 const authType = "Local";
 
 /**
@@ -30,15 +30,12 @@ exports.index = (req, res) => {
  */
 exports.login = (req, res) => {
 	const config = req.client.config ? req.client.config : {};
-	const configAuthType =
-		config.authTypes && config.authTypes[authType]
-			? config.authTypes[authType]
-			: {};
+	const configAuthType = config.authTypes?.[authType]
+		? config.authTypes[authType]
+		: {};
 
 	res.render("auth/local/login", {
-		loginUrl:
-			authLocalConfig.loginUrl +
-			`?clientId=${req.client.clientId}&redirect_uri=${encodeURIComponent(req.query.redirect_uri)}`,
+		loginUrl: `${authLocalConfig.loginUrl}?clientId=${req.client.clientId}&redirect_uri=${encodeURIComponent(req.query.redirect_uri)}`,
 		clientId: req.client.clientId,
 		client: req.client,
 		redirectUrl: encodeURIComponent(req.query.redirect_uri),
@@ -88,7 +85,7 @@ exports.postRegister = (req, res, next) => {
 			.create({ name, email, password })
 			.then(() => {
 				res.redirect(
-					authLocalConfig.loginUrl + "?clientId=" + req.client.clientId,
+					`${authLocalConfig.loginUrl}?clientId=${req.client.clientId}`,
 				);
 			})
 			.catch((err) => {
@@ -116,7 +113,10 @@ exports.postLogin = (req, res, next) => {
 				? encodeURIComponent(req.query.redirect_uri)
 				: req.client.redirectUrl;
 			let loginUrl = authLocalConfig.loginUrl;
-			if (req.params.priviligedRoute && req.params.priviligedRoute == "admin") {
+			if (
+				req.params.priviligedRoute &&
+				req.params.priviligedRoute === "admin"
+			) {
 				loginUrl += "/admin";
 			}
 			return res.redirect(
@@ -149,7 +149,7 @@ exports.postLogin = (req, res, next) => {
  * @returns {undefined}
  */
 exports.logout = async (req, res) => {
-	const userId = req.user && req.user.id;
+	const userId = req.user?.id;
 	if (userId) {
 		await db.AccessToken.destroy({ where: { userId } });
 	}
@@ -175,8 +175,7 @@ exports.logout = async (req, res) => {
 	}
 
 	if (!redirectURL) {
-		redirectURL =
-			config && config.logoutUrl ? config.logoutUrl : req.client.redirectUrl;
+		redirectURL = config?.logoutUrl ? config.logoutUrl : req.client.redirectUrl;
 	}
 
 	res.redirect(redirectURL);

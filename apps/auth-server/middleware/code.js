@@ -14,7 +14,7 @@ exports.withAll = (req, res, next) => {
 	}
 
 	if (search) {
-		where.code = { [db.Sequelize.Op.like]: "%" + search + "%" };
+		where.code = { [db.Sequelize.Op.like]: `%${search}%` };
 	}
 
 	db.UniqueCode.findAll({ where, limit, offset, order: [["id", "DESC"]] })

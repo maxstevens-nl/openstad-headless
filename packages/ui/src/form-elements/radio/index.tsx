@@ -35,8 +35,6 @@ export type RadioboxFieldProps = {
 	moreInfoButton?: string;
 	moreInfoContent?: string;
 	infoImage?: string;
-	randomId?: string;
-	fieldInvalid?: boolean;
 };
 
 const RadioboxField: FC<RadioboxFieldProps> = ({
@@ -51,8 +49,6 @@ const RadioboxField: FC<RadioboxFieldProps> = ({
 	moreInfoButton = "Meer informatie",
 	moreInfoContent = "",
 	infoImage = "",
-	randomId = "",
-	fieldInvalid = false,
 }) => {
 	const [selectedOption, setSelectedOption] = useState<string>("");
 	const [otherOptionValues, setOtherOptionValues] = useState<{
@@ -115,9 +111,8 @@ const RadioboxField: FC<RadioboxFieldProps> = ({
 		choices = choices.map((choice) => {
 			if (typeof choice === "string") {
 				return { value: choice, label: choice };
-			} else {
-				return choice;
 			}
+			return choice;
 		}) as [
 			{
 				value: string;
@@ -130,11 +125,7 @@ const RadioboxField: FC<RadioboxFieldProps> = ({
 
 	return (
 		<div className="question">
-			<Fieldset
-				role="radiogroup"
-				aria-invalid={fieldInvalid}
-				aria-describedby={`${randomId}_error`}
-			>
+			<Fieldset role="radiogroup">
 				<FieldsetLegend>{title}</FieldsetLegend>
 
 				{description && (
@@ -185,9 +176,9 @@ const RadioboxField: FC<RadioboxFieldProps> = ({
 										required={fieldRequired}
 										onChange={() => handleRadioChange(choice.value, index)}
 										disabled={disabled}
-										value={choice && choice.value}
+										value={choice?.value}
 									/>
-									<span>{choice && choice.label}</span>
+									<span>{choice?.label}</span>
 								</FormLabel>
 							</Paragraph>
 						</FormField>
@@ -201,8 +192,6 @@ const RadioboxField: FC<RadioboxFieldProps> = ({
 									}
 									fieldKey={`${fieldKey}_${index}_other`}
 									title=""
-									fieldInvalid={false}
-									randomId={`${fieldKey}_${index}`}
 								/>
 							</div>
 						)}

@@ -9,7 +9,7 @@ module.exports = (req) => {
 		return false;
 	}
 
-	let clientId = req.body && req.body.clientId;
+	let clientId = req.body?.clientId;
 
 	if (!clientId && req.query && req.query.clientId) {
 		clientId = req.query.clientId;

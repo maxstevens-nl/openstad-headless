@@ -79,8 +79,6 @@ export type DocumentUploadProps = {
 	moreInfoButton?: string;
 	moreInfoContent?: string;
 	infoImage?: string;
-	randomId?: string;
-	fieldInvalid?: boolean;
 };
 
 const DocumentUploadField: FC<DocumentUploadProps> = ({
@@ -104,11 +102,12 @@ const DocumentUploadField: FC<DocumentUploadProps> = ({
 	moreInfoButton = "Meer informatie",
 	moreInfoContent = "",
 	infoImage = "",
-	randomId = "",
-	fieldInvalid = false,
 	...props
 }) => {
 	const datastore = new DataStore({ props });
+	const randomID =
+		Math.random().toString(36).substring(2, 15) +
+		Math.random().toString(36).substring(2, 15);
 
 	const [documents, setDocuments] = useState<FilePondFile[]>([]);
 	const [uploadedDocuments, setUploadedDocuments] = useState<
@@ -130,7 +129,7 @@ const DocumentUploadField: FC<DocumentUploadProps> = ({
 		if (documents.length > 0 && uploadedDocuments.length > 0) {
 			for (let i = 0; i < documents.length; i++) {
 				const file = documents[i].file;
-				if (file && file.name) {
+				if (file?.name) {
 					const fileInUploadedDocuments = uploadedDocuments.find(
 						(o) => o.name === file.name,
 					);
@@ -191,7 +190,7 @@ const DocumentUploadField: FC<DocumentUploadProps> = ({
 	return (
 		<FormField type="text">
 			<Paragraph className="utrecht-form-field__label">
-				<FormLabel htmlFor={randomId}>{title}</FormLabel>
+				<FormLabel htmlFor={randomID}>{title}</FormLabel>
 			</Paragraph>
 			{description && (
 				<FormFieldDescription
@@ -226,10 +225,10 @@ const DocumentUploadField: FC<DocumentUploadProps> = ({
 					allowMultiple={multiple}
 					server={{
 						process: {
-							url: props?.imageUrl + "/documents",
+							url: `${props?.imageUrl}/documents`,
 							method: "POST",
 							headers: {
-								Authorization: "Bearer " + datastore.api?.currentUserJWT,
+								Authorization: `Bearer ${datastore.api?.currentUserJWT}`,
 							},
 							onload: (response: any) => {
 								const currentDocuments = [...uploadedDocuments];
@@ -240,10 +239,10 @@ const DocumentUploadField: FC<DocumentUploadProps> = ({
 								return JSON.stringify(currentDocuments); // Dit heeft echt geen nut, maar het lost wel de TS problemen op
 							},
 						},
-						fetch: props?.imageUrl + "/documents",
+						fetch: `${props?.imageUrl}/documents`,
 						revert: null,
 					}}
-					id={randomId}
+					id={randomID}
 					required={fieldRequired}
 					disabled={disabled}
 					acceptedFileTypes={
@@ -269,8 +268,6 @@ const DocumentUploadField: FC<DocumentUploadProps> = ({
 							return false;
 						});
 					}}
-					aria-invalid={fieldInvalid}
-					aria-describedby={`${randomId}_error`}
 					{...filePondSettings}
 				/>
 				<NotificationProvider />

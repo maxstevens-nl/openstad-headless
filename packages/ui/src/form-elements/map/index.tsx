@@ -77,7 +77,7 @@ const MapField: FC<MapProps> = ({
 	const areaId = props?.map?.areaId || false;
 	const polygon =
 		areaId && Array.isArray(areas) && areas.length > 0
-			? (areas.find((area) => area.id.toString() === areaId) || {}).polygon
+			? areas.find((area) => area.id.toString() === areaId)?.polygon
 			: [];
 
 	function calculateCenter(polygon: Point[]) {
@@ -152,7 +152,7 @@ const MapField: FC<MapProps> = ({
 				</figure>
 			)}
 
-			<div className="form-field-map-container" id={`map`}>
+			<div className="form-field-map-container" id={"map"}>
 				{((areaId && polygon.length) || !areaId) && (
 					<EditorMap
 						{...props}

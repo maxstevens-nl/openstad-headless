@@ -18,68 +18,50 @@ function ShareLinks({ title }: Item) {
 			<div className="link-container">
 				<LinkSocial
 					external
-					href={
-						"http://www.facebook.com/share.php?u=" +
-						encodeURIComponent(location.href)
-					}
+					href={`http://www.facebook.com/share.php?u=${encodeURIComponent(location.href)}`}
 					target="_blank"
 					title={"Facebook"}
 				>
-					<i className="icon --facebook"></i>
+					<i className="icon --facebook" />
 					<span className="sr-only">Facebook</span>
 				</LinkSocial>
 
 				<LinkSocial
 					external
-					href={
-						"https://twitter.com/intent/tweet?text=" +
-						encodeURIComponent(location.href)
-					}
+					href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(location.href)}`}
 					target="_blank"
 					title={"X"}
 				>
-					<i className="icon --twitter"></i>
+					<i className="icon --twitter" />
 					<span className="sr-only">X</span>
 				</LinkSocial>
 
 				<LinkSocial
 					external
-					href={
-						"mailto:?subject=" +
-						document.title +
-						"&body=" +
-						encodeURIComponent(location.href)
-					}
+					href={`mailto:?subject=${document.title}&body=${encodeURIComponent(location.href)}`}
 					title={"Mail"}
 				>
-					<i className="icon --mail"></i>
+					<i className="icon --mail" />
 					<span className="sr-only">Mail</span>
 				</LinkSocial>
 
 				<LinkSocial
 					external
-					href={
-						"https://api.whatsapp.com/send?phone=&text=" +
-						encodeURIComponent(location.href) +
-						"&source=&data="
-					}
+					href={`https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(location.href)}&source=&data=`}
 					target="_blank"
 					title={"Whatsapp"}
 				>
-					<i className="icon --whatsapp"></i>
+					<i className="icon --whatsapp" />
 					<span className="sr-only">Whatsapp</span>
 				</LinkSocial>
 
 				<LinkSocial
 					external
-					href={
-						"https://www.linkedin.com/sharing/share-offsite/?url=" +
-						encodeURIComponent(location.href)
-					}
+					href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(location.href)}`}
 					target="_blank"
 					title={"LinkedIn"}
 				>
-					<i className="icon --linkedin"></i>
+					<i className="icon --linkedin" />
 					<span className="sr-only">LinkedIn</span>
 				</LinkSocial>
 
@@ -99,7 +81,7 @@ function ShareLinks({ title }: Item) {
 					}}
 					className="copy-link"
 				>
-					<i className="icon --url"></i>
+					<i className="icon --url" />
 					<span className="sr-only">Kopieer link</span>
 				</LinkSocial>
 			</div>

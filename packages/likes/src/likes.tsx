@@ -89,8 +89,8 @@ function Likes({
 
 	useEffect(() => {
 		const pending = session.get("osc-resource-vote-pending");
-		if (pending && pending[resource.id]) {
-			if (currentUser && currentUser.role) {
+		if (pending?.[resource.id]) {
+			if (currentUser?.role) {
 				doVote(null, pending[resource.id]);
 				session.remove("osc-resource-vote-pending");
 			}
@@ -112,7 +112,7 @@ function Likes({
 
 		if (!hasRole(currentUser, props.votes.requiredUserRole)) {
 			let loginUrl = props.login?.url || "";
-			if (props.votes.requiredUserRole == "anonymous") {
+			if (props.votes.requiredUserRole === "anonymous") {
 				loginUrl = props.login?.anonymous?.url || "";
 			}
 			if (!loginUrl) {
@@ -141,7 +141,7 @@ function Likes({
 					<Heading4 className="like-widget-title">{title}</Heading4>
 				) : null}
 
-				<div className={`like-option-container`}>
+				<div className={"like-option-container"}>
 					{supportedLikeTypes.map((likeVariant, index) => (
 						<Button
 							appearance="primary-action-button"
@@ -155,7 +155,7 @@ function Likes({
 							disabled={disabled}
 						>
 							<section className="like-kind">
-								<i className={likeVariant.icon}></i>
+								<i className={likeVariant.icon} />
 								{variant === "small" ? null : likeVariant.label}
 							</section>
 

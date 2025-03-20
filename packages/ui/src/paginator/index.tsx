@@ -24,7 +24,7 @@ const Paginator = ({
 				disabled={page === 0}
 				text="Vorige pagina"
 				iconOnly={true}
-			></IconButton>
+			/>
 
 			{pages.map((pageNr) => (
 				<IconButton
@@ -43,7 +43,7 @@ const Paginator = ({
 				disabled={page >= totalPages - 1}
 				text="Volgende pagina"
 				iconOnly={true}
-			></IconButton>
+			/>
 		</div>
 	);
 };

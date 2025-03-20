@@ -13,7 +13,7 @@
 module.exports = (input, sign) => {
 	const digitsRegex = /(\d{3})(?=\d)/g;
 
-	if (input == null || !isFinite(input)) {
+	if (input == null || !Number.isFinite(input)) {
 		//throw new Error('input needs to be a number');
 		return 0;
 	}
@@ -26,7 +26,7 @@ module.exports = (input, sign) => {
 	const h =
 		mod > 0 ? strVal.slice(0, mod) + (strVal.length > 3 ? "." : "") : "";
 	const v = Math.abs(Number.parseInt((input * 100) % 100, 10));
-	const float = "," + (v < 10 ? "0" + v : v);
+	const float = `,${v < 10 ? `0${v}` : v}`;
 
 	return (
 		(input < 0 ? "-" : "") +

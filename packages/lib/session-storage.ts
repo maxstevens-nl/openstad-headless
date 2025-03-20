@@ -38,8 +38,8 @@ export default class SessionStorage {
 	}
 
 	set(name: string, value: any) {
-		if (typeof name != "string") return;
-		if (typeof value == "undefined") value = "";
+		if (typeof name !== "string") return;
+		if (typeof value === "undefined") value = "";
 
 		const { data, target } = this.getData();
 		target[name] = value;
@@ -48,7 +48,7 @@ export default class SessionStorage {
 	}
 
 	remove(name: string) {
-		if (typeof name != "string") return;
+		if (typeof name !== "string") return;
 
 		const { data, target } = this.getData();
 

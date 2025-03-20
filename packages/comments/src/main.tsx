@@ -20,9 +20,9 @@ const config: CommentsWidgetProps = {
 	placeholder: import.meta.env.VITE_PLACEHOLDER,
 	formIntro: import.meta.env.VITE_FORM_INTRO,
 	comments: {
-		canComment: import.meta.env.VITE_COMMENTS_CAN_COMMENT != "false",
-		canLike: import.meta.env.VITE_COMMENTS_CAN_LIKE != "false",
-		canReply: import.meta.env.VITE_COMMENTS_CAN_REPLY != "false",
+		canComment: import.meta.env.VITE_COMMENTS_CAN_COMMENT !== "false",
+		canLike: import.meta.env.VITE_COMMENTS_CAN_LIKE !== "false",
+		canReply: import.meta.env.VITE_COMMENTS_CAN_REPLY !== "false",
 		closedText: import.meta.env.VITE_COMMENTS_CLOSED_TEXT,
 		requiredUserRole:
 			import.meta.env.VITE_COMMENTS_REQUIRED_USER_ROLE || "member",

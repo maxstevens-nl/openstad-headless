@@ -21,7 +21,7 @@ export default {
 		const json = await this.fetch(url, { headers });
 
 		let openStadUser = json;
-		if (openStadUser && openStadUser.id)
+		if (openStadUser?.id)
 			openStadUser = { ...openStadUser, jwt: self.currentUserJWT };
 
 		return openStadUser;

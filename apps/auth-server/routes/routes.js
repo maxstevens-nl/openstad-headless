@@ -50,7 +50,7 @@ const csurf = require("csurf");
  * don't allow for redirect back to an unauthorized domain, but in case that fails this is a backup
  */
 const csrfProtection = async (req, res, next) => {
-	if (req.body && req.body.externalCSRF) {
+	if (req.body?.externalCSRF) {
 		let csrfToken;
 
 		try {
@@ -82,18 +82,16 @@ const csrfProtection = async (req, res, next) => {
 				return next(e);
 			}
 			return next();
-		} else {
-			return next(new Error("Invalid CSRF token", 403));
 		}
-	} else {
-		return csurf({
-			cookie: {
-				httpOnly: true,
-				secure: process.env.COOKIE_SECURE_OFF === "yes" ? false : true,
-				sameSite: process.env.CSRF_SAME_SITE_OFF === "yes" ? false : true,
-			},
-		})(req, res, next);
+		return next(new Error("Invalid CSRF token", 403));
 	}
+	return csurf({
+		cookie: {
+			httpOnly: true,
+			secure: process.env.COOKIE_SECURE_OFF !== "yes",
+			sameSite: process.env.CSRF_SAME_SITE_OFF !== "yes",
+		},
+	})(req, res, next);
 };
 
 const addCsrfGlobal = (req, res, next) => {
@@ -127,18 +125,7 @@ module.exports = (app) => {
 	 */
 	app.use((req, res, next) => {
 		const current_datetime = new Date();
-		const formatted_date =
-			current_datetime.getFullYear() +
-			"-" +
-			(current_datetime.getMonth() + 1) +
-			"-" +
-			current_datetime.getDate() +
-			" " +
-			current_datetime.getHours() +
-			":" +
-			current_datetime.getMinutes() +
-			":" +
-			current_datetime.getSeconds();
+		const formatted_date = `${current_datetime.getFullYear()}-${current_datetime.getMonth() + 1}-${current_datetime.getDate()} ${current_datetime.getHours()}:${current_datetime.getMinutes()}:${current_datetime.getSeconds()}`;
 		const method = req.method;
 		const url = req.url;
 		const status = res.statusCode;
@@ -274,7 +261,7 @@ module.exports = (app) => {
 			const queryString =
 				queryIndex >= 0 ? req.originalUrl.slice(queryIndex) : "";
 
-			res.redirect("/login/admin" + queryString);
+			res.redirect(`/login/admin${queryString}`);
 		},
 	);
 
@@ -446,7 +433,7 @@ module.exports = (app) => {
 		clientMw.check2FA,
 		clientMw.checkPhonenumberAuth(),
 		clientMw.checkUniqueCodeAuth((req, res) => {
-			return res.redirect("/login?clientId=" + req.query.client_id);
+			return res.redirect(`/login?clientId=${req.query.client_id}`);
 		}),
 		oauth2Controller.authorization,
 	);
@@ -494,7 +481,7 @@ module.exports = (app) => {
 	app.use(async (err, req, res, next) => {
 		console.log("===> err", err);
 		// een deserialize error betekent een data fout; daar hoef je een gebruiker niet mee te belasten
-		if (err && err.message && err.message.match(/^Error in deserializeUser/)) {
+		if (err?.message?.match(/^Error in deserializeUser/)) {
 			console.log(err); // do log for debugging
 			await req.session.destroy();
 			let querystring = "?";
@@ -508,7 +495,7 @@ module.exports = (app) => {
 			if (req.query.token) querystring += `&token=${req.query.token}`;
 			if (req.query.access_token)
 				querystring += `&access_token=${req.query.access_token}`;
-			return res.redirect("/logout" + querystring);
+			return res.redirect(`/logout${querystring}`);
 		}
 		res.status(500).render("errors/500");
 	});

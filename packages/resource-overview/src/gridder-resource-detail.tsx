@@ -97,7 +97,7 @@ export const GridderResourceDetail = ({
 		Array.isArray(resource.images) && resource.images.length > 0
 			? resource.images?.at(0)?.url
 			: defaultImage;
-	const hasImages = !!resourceImages ? "" : "resource-has-no-images";
+	const hasImages = resourceImages ? "" : "resource-has-no-images";
 
 	const renderImage = (image: string, clickableImage: boolean) => {
 		const imageComponent = <Image src={image} className="--aspectRatio-16-9" />;
@@ -153,16 +153,14 @@ export const GridderResourceDetail = ({
 				<section className="osc-gridder-resource-detail-texts-and-actions-container">
 					<div>
 						<div>
-							<Heading1
-								dangerouslySetInnerHTML={{ __html: resource.title }}
-							></Heading1>
+							<Heading1 dangerouslySetInnerHTML={{ __html: resource.title }} />
 							<Paragraph
 								className="strong"
 								dangerouslySetInnerHTML={{ __html: resource.summary }}
-							></Paragraph>
+							/>
 							<Paragraph
 								dangerouslySetInnerHTML={{ __html: resource.description }}
-							></Paragraph>
+							/>
 						</div>
 					</div>
 
@@ -223,7 +221,7 @@ export const GridderResourceDetail = ({
 								appearance="primary-action-button"
 								onClick={() => {
 									if (confirm("Deze actie verwijderd de resource"))
-										onRemoveClick && onRemoveClick(resource);
+										onRemoveClick?.(resource);
 								}}
 							>
 								Verwijder

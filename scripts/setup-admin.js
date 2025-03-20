@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("node:fs");
 const execute = require("./execute");
 
 module.exports = async function setupAdminServer(actions) {

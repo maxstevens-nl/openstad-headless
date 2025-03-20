@@ -19,11 +19,14 @@ interface Item {
 function Heading({ mode, title, customClass }: Item) {
 	if (mode === "h1") {
 		return <Heading1 className={customClass}>{title}</Heading1>;
-	} else if (mode === "h2") {
+	}
+	if (mode === "h2") {
 		return <Heading2 className={customClass}>{title}</Heading2>;
-	} else if (mode === "h3") {
+	}
+	if (mode === "h3") {
 		return <Heading3 className={customClass}>{title}</Heading3>;
-	} else if (mode === "h4") {
+	}
+	if (mode === "h4") {
 		return <Heading4 className={customClass}>{title}</Heading4>;
 	}
 }

@@ -10,7 +10,7 @@ import { Spacer } from "@openstad-headless/ui/src";
 import { Image } from "@openstad-headless/ui/src";
 import { Dialog } from "@openstad-headless/ui/src";
 import { Filters } from "@openstad-headless/ui/src/stem-begroot-and-resource-overview/filter";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { elipsizeHTML } from "../../lib/ui-helpers";
 import { GridderResourceDetail } from "./gridder-resource-detail";
 
@@ -22,7 +22,6 @@ import type {
 } from "@openstad-headless/leaflet-map/src/types/resource-overview-map-widget-props";
 import { renderRawTemplate } from "@openstad-headless/raw-resource/includes/template-render";
 import { Button, Heading4, Paragraph } from "@utrecht/component-library-react";
-import { useRaf } from "rooks";
 
 export type ResourceOverviewWidgetProps = BaseProps &
 	ProjectSettingProps & {
@@ -73,12 +72,7 @@ export type ResourceOverviewWidgetProps = BaseProps &
 		itemLink?: string;
 		sorting: Array<{ value: string; label: string }>;
 		displayTagFilters?: boolean;
-		tagGroups?: Array<{
-			type: string;
-			label?: string;
-			multiple: boolean;
-			projectId?: any;
-		}>;
+		tagGroups?: Array<{ type: string; label?: string; multiple: boolean }>;
 		displayTagGroupName?: boolean;
 		displayBanner?: boolean;
 		displayMap?: boolean;
@@ -100,14 +94,6 @@ export type ResourceOverviewWidgetProps = BaseProps &
 		clickableImage?: boolean;
 		displayBudget?: boolean;
 		displayTags?: boolean;
-		selectedProjects?: {
-			id: string;
-			name: string;
-			detailPageLink?: string;
-			label?: string;
-		}[];
-		multiProjectResources?: any[];
-		quickFixTags?: Array<{ id: number; name: string }>;
 	};
 
 //Temp: Header can only be made when the map works so for now a banner
@@ -156,7 +142,7 @@ const defaultItemRenderer = (
 					dangerouslySetInnerHTML={{
 						__html: render,
 					}}
-				></div>
+				/>
 			);
 		} catch (e) {
 			console.error("De template kon niet worden geparsed: ", e);
@@ -185,20 +171,7 @@ const defaultItemRenderer = (
 
 	const getUrl = () => {
 		const location = document.location;
-
-		let urlToUse = props?.itemLink;
-
-		if (!!props.selectedProjects && props.selectedProjects.length > 0) {
-			const project = props.selectedProjects.find(
-				(project) => project.id === resource.projectId,
-			);
-
-			if (project) {
-				urlToUse = project.detailPageLink;
-			}
-		}
-
-		let newUrl = urlToUse?.replace("[id]", resource.id);
+		let newUrl = props?.itemLink?.replace("[id]", resource.id);
 		if (!newUrl?.startsWith("http")) {
 			if (!newUrl?.startsWith("/")) {
 				newUrl = `${location.pathname}${
@@ -232,29 +205,17 @@ const defaultItemRenderer = (
 				)[0] || resource.statuses[0]
 		: false;
 
-	const colorClass =
-		firstStatus && firstStatus.color ? `color-${firstStatus.color}` : "";
-	const backgroundColorClass =
-		firstStatus && firstStatus.backgroundColor
-			? `bgColor-${firstStatus.backgroundColor}`
-			: "";
+	const colorClass = firstStatus?.color ? `color-${firstStatus.color}` : "";
+	const backgroundColorClass = firstStatus?.backgroundColor
+		? `bgColor-${firstStatus.backgroundColor}`
+		: "";
 
 	const statusClasses = `${colorClass} ${backgroundColorClass}`.trim();
-
-	const multiProjectLabel =
-		props.selectedProjects && props.selectedProjects.length > 1
-			? props.selectedProjects.find(
-					(project) => project.id === resource.projectId,
-				)?.label
-			: "";
 
 	return (
 		<>
 			{props.displayType === "cardrow" ? (
-				<div
-					className={`resource-card--link ${hasImages}`}
-					data-projectid={resource.projectId || ""}
-				>
+				<div className={`resource-card--link ${hasImages}`}>
 					<Carousel
 						items={resourceImages}
 						buttonText={{
@@ -268,20 +229,11 @@ const defaultItemRenderer = (
 									props.displayStatusLabel && (
 										<div className={`${hasImages} ${statusClasses}`}>
 											<Paragraph className="osc-resource-overview-content-item-status">
-												{!!multiProjectLabel ? (
+												{resource.statuses?.map((statusTag: any) => (
 													<span className="status-label">
-														{multiProjectLabel}
+														{statusTag.label}
 													</span>
-												) : (
-													resource.statuses?.map((statusTag: any) => (
-														<span
-															className="status-label"
-															key={statusTag.label}
-														>
-															{statusTag.label}
-														</span>
-													))
-												)}
+												))}
 											</Paragraph>
 										</div>
 									)
@@ -360,10 +312,7 @@ const defaultItemRenderer = (
 					</div>
 				</div>
 			) : (
-				<div
-					className={`resource-card--link ${hasImages}`}
-					data-projectid={resource.projectId || ""}
-				>
+				<div className={`resource-card--link ${hasImages}`}>
 					<Carousel
 						items={resourceImages}
 						buttonText={{
@@ -377,17 +326,11 @@ const defaultItemRenderer = (
 									props.displayStatusLabel && (
 										<div className={`${hasImages} ${statusClasses}`}>
 											<Paragraph className="osc-resource-overview-content-item-status">
-												{!!multiProjectLabel ? (
+												{resource.statuses?.map((statusTag: any) => (
 													<span className="status-label">
-														{multiProjectLabel}
+														{statusTag.label}
 													</span>
-												) : (
-													resource.statuses?.map((statusTag: any) => (
-														<span className="status-label">
-															{statusTag.label}
-														</span>
-													))
-												)}
+												))}
 											</Paragraph>
 										</div>
 									)
@@ -402,14 +345,14 @@ const defaultItemRenderer = (
 							<Heading4>
 								<button
 									className="resource-card--link_trigger"
-									onClick={() => onItemClick && onItemClick()}
+									onClick={() => onItemClick?.()}
 									dangerouslySetInnerHTML={{
 										__html: elipsizeHTML(
 											resource.title,
 											props.titleMaxLength || 20,
 										),
 									}}
-								></button>
+								/>
 							</Heading4>
 						) : null}
 
@@ -489,9 +432,6 @@ function ResourceOverview({
 	documentsDesc = "",
 	displayVariant = "",
 	onFilteredResourcesChange,
-	multiProjectResources = [],
-	selectedProjects = [],
-	quickFixTags = [],
 	...props
 }: ResourceOverviewWidgetProps) {
 	const datastore = new DataStore({
@@ -503,13 +443,13 @@ function ResourceOverview({
 	const tagIdsToLimitResourcesTo = onlyIncludeTagIds
 		.trim()
 		.split(",")
-		.filter((t) => t && !isNaN(+t.trim()))
+		.filter((t) => t && !Number.isNaN(+t.trim()))
 		.map((t) => Number.parseInt(t));
 
 	const statusIdsToLimitResourcesTo = onlyIncludeStatusIds
 		.trim()
 		.split(",")
-		.filter((t) => t && !isNaN(+t.trim()))
+		.filter((t) => t && !Number.isNaN(+t.trim()))
 		.map((t) => Number.parseInt(t));
 
 	const [open, setOpen] = React.useState(false);
@@ -527,8 +467,8 @@ function ResourceOverview({
 		props.defaultSorting || undefined,
 	);
 
-	const [resources, setResources] = useState<Array<any>>([]);
-	const [filteredResources, setFilteredResources] = useState<Array<any>>([]);
+	const [resources, setResources] = useState([]);
+	const [filteredResources, setFilteredResources] = useState([]);
 
 	const { data: resourcesWithPagination } = datastore.useResources({
 		pageSize: 999999,
@@ -541,17 +481,10 @@ function ResourceOverview({
 	const [resourceDetailIndex, setResourceDetailIndex] = useState<number>(0);
 
 	useEffect(() => {
-		if (selectedProjects.length === 0 && resourcesWithPagination) {
+		if (resourcesWithPagination) {
 			setResources(resourcesWithPagination.records || []);
-		} else {
-			setResources(multiProjectResources);
 		}
-	}, [
-		multiProjectResources,
-		selectedProjects,
-		resourcesWithPagination,
-		pageSize,
-	]);
+	}, [resourcesWithPagination, pageSize]);
 
 	const { data: allTags } = datastore.useTags({
 		projectId: props.projectId,
@@ -615,20 +548,6 @@ function ResourceOverview({
 							new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
 						);
 					}
-					if (multiProjectResources.length > 0) {
-						if (sort === "title") {
-							return a.title.localeCompare(b.title);
-						}
-						if (sort === "votes_desc") {
-							return b.yes - a.yes;
-						}
-						if (sort === "votes_asc" || sort === "ranking") {
-							return a.yes - b.yes;
-						}
-						if (sort === "random") {
-							return Math.random() - 0.5;
-						}
-					}
 					return 0;
 				});
 
@@ -657,23 +576,11 @@ function ResourceOverview({
 	const onResourceClick = useCallback(
 		(resource: any, index: number) => {
 			if (displayType === "cardrow") {
-				let urlToUse = props.itemLink;
-
-				if (selectedProjects.length > 0) {
-					const project = selectedProjects.find(
-						(project) => project.id === resource.projectId,
-					);
-
-					if (project) {
-						urlToUse = project.detailPageLink;
-					}
-				}
-
-				if (!urlToUse) {
+				if (!props.itemLink) {
 					console.error("Link to child resource is not set");
 				} else {
 					const location = document.location;
-					let newUrl = urlToUse.replace("[id]", resource.id);
+					let newUrl = props.itemLink.replace("[id]", resource.id);
 					if (!newUrl.startsWith("http")) {
 						if (!newUrl.startsWith("/")) {
 							newUrl = `${location.pathname}${
@@ -703,21 +610,6 @@ function ResourceOverview({
 			return " ";
 		}
 		return ` --${variant}`;
-	};
-
-	const randomIdRef = useRef(
-		Math.random().toString(36).replace("0.", "container_"),
-	);
-	const randomId = randomIdRef.current;
-
-	const scrollToTop = (randomId: string) => {
-		setTimeout(() => {
-			const divElement = document.getElementById(randomId);
-
-			if (divElement) {
-				divElement.scrollIntoView({ block: "start", behavior: "auto" });
-			}
-		}, 200);
 	};
 
 	return (
@@ -763,7 +655,7 @@ function ResourceOverview({
 								{...props}
 							/>
 						)}
-					></Carousel>
+					/>
 				}
 			/>
 
@@ -823,30 +715,21 @@ function ResourceOverview({
 								}
 								setSearch(f.search.text);
 							}}
-							quickFixTags={quickFixTags || []}
 						/>
 					) : null}
 
-					<section
-						className="osc-resource-overview-resource-collection"
-						id={randomId}
-					>
-						{filteredResources &&
-							filteredResources
-								?.slice(page * pageSize, (page + 1) * pageSize)
-								?.map((resource: any, index: number) => {
-									return (
-										<React.Fragment key={`resource-item-${resource.id}`}>
-											{renderItem(
-												resource,
-												{ ...props, displayType, selectedProjects },
-												() => {
-													onResourceClick(resource, index);
-												},
-											)}
-										</React.Fragment>
-									);
-								})}
+					<section className="osc-resource-overview-resource-collection">
+						{filteredResources
+							?.slice(page * pageSize, (page + 1) * pageSize)
+							?.map((resource: any, index: number) => {
+								return (
+									<React.Fragment key={`resource-item-${resource.id}`}>
+										{renderItem(resource, { ...props, displayType }, () => {
+											onResourceClick(resource, index);
+										})}
+									</React.Fragment>
+								);
+							})}
 					</section>
 				</section>
 				{props.displayPagination && (
@@ -856,10 +739,7 @@ function ResourceOverview({
 							<Paginator
 								page={page || 0}
 								totalPages={totalPages || 1}
-								onPageChange={(newPage) => {
-									setPage(newPage);
-									scrollToTop(randomId);
-								}}
+								onPageChange={(newPage) => setPage(newPage)}
 							/>
 						</div>
 					</>

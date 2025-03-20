@@ -40,13 +40,13 @@ module.exports = async function seed(db) {
 		process.env.API_DOMAIN || removeProtocol(process.env.API_URL) || "";
 	allowedDomains.push(apiDomain);
 	const apiDomainWithoutPortnumber = apiDomain.replace(/:\d+/, "");
-	if (apiDomain != apiDomainWithoutPortnumber)
+	if (apiDomain !== apiDomainWithoutPortnumber)
 		allowedDomains.push(apiDomainWithoutPortnumber);
 	const adminDomain =
 		process.env.ADMIN_DOMAIN || removeProtocol(process.env.ADMIN_URL) || "";
 	allowedDomains.push(adminDomain);
 	const adminDomainWithoutPortnumber = adminDomain.replace(/:\d+/, "");
-	if (adminDomain != adminDomainWithoutPortnumber)
+	if (adminDomain !== adminDomainWithoutPortnumber)
 		allowedDomains.push(adminDomainWithoutPortnumber);
 
 	process.env.AUTH_FIRST_LOGIN_CODE =

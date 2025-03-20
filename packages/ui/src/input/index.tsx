@@ -23,7 +23,7 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
 	const inputID = Math.random().toString(36).substring(7);
 
 	return (
-		<FormField invalid={props.errors ? true : false} type="search">
+		<FormField invalid={!!props.errors} type="search">
 			{props.label ? (
 				<Paragraph>
 					<FormLabel htmlFor={inputID}>{props.label}</FormLabel>
@@ -32,7 +32,7 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
 			<Textbox
 				ref={ref}
 				id={inputID}
-				invalid={props.errors ? true : false}
+				invalid={!!props.errors}
 				name="search"
 				{...props}
 				type={"text"}

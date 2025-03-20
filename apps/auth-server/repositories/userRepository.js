@@ -5,6 +5,6 @@ exports.getUserByClientAndRoles = (email, clientId, roles) =>
 		return user
 			.getRoleForClient(clientId)
 			.then((userrole) =>
-				roles.find((role) => role.name == userrole.name) ? user : undefined,
+				roles.find((role) => role.name === userrole.name) ? user : undefined,
 			);
 	});

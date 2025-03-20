@@ -28,18 +28,12 @@ type Props = {
 	displaySearch: boolean;
 	itemsPerPage?: number;
 	displayTagFilters: boolean;
-	tagGroups?: Array<{
-		type: string;
-		label?: string;
-		multiple: boolean;
-		projectId?: any;
-	}>;
+	tagGroups?: Array<{ type: string; label?: string; multiple: boolean }>;
 	tagsLimitation?: Array<number>;
 	searchPlaceholder: string;
 	resetText: string;
 	applyText: string;
 	showActiveTags?: boolean;
-	quickFixTags?: Array<{ id: number; name: string }>;
 };
 
 export function Filters({
@@ -185,10 +179,10 @@ export function Filters({
 	}, [tagState]);
 
 	const handleSubmit = (e?: any, updatedFilter?: Filter, updatedTags?: any) => {
-		if (e && e.preventDefault) e.preventDefault();
+		if (e?.preventDefault) e.preventDefault();
 		const filterToSubmit = updatedFilter || filter;
 		updateFilter(filterToSubmit);
-		onUpdateFilter && onUpdateFilter(filterToSubmit);
+		onUpdateFilter?.(filterToSubmit);
 
 		if (updatedTags) {
 			setActiveTags(updatedTags);
@@ -240,28 +234,23 @@ export function Filters({
 												updatedLabel,
 											);
 										}}
-										tagGroupProjectId={tagGroup.projectId || ""}
-										quickFixTags={props.quickFixTags || []}
-									/>
-								);
-							} else {
-								return (
-									<SelectTagFilter
-										key={`tag-select-${tagGroup}`}
-										{...props}
-										dataStore={dataStore}
-										tagType={tagGroup.type}
-										placeholder={tagGroup.label}
-										title={`Selecteer een item`}
-										onlyIncludeIds={tagsLimitation}
-										onUpdateFilter={(updatedTag) =>
-											updateTagListSingle(tagGroup.type, updatedTag)
-										}
-										tagGroupProjectId={tagGroup.projectId || ""}
-										quickFixTags={props.quickFixTags || []}
 									/>
 								);
 							}
+							return (
+								<SelectTagFilter
+									key={`tag-select-${tagGroup}`}
+									{...props}
+									dataStore={dataStore}
+									tagType={tagGroup.type}
+									placeholder={tagGroup.label}
+									title={"Selecteer een item"}
+									onlyIncludeIds={tagsLimitation}
+									onUpdateFilter={(updatedTag) =>
+										updateTagListSingle(tagGroup.type, updatedTag)
+									}
+								/>
+							);
 						})}
 					</>
 				) : null}
@@ -303,7 +292,7 @@ export function Filters({
 							setNewActiveTagsDraft([]);
 							setActiveTags([]);
 							updateFilter(defaultFilter);
-							onUpdateFilter && onUpdateFilter(defaultFilter);
+							onUpdateFilter?.(defaultFilter);
 						}}
 					>
 						{props.resetText}

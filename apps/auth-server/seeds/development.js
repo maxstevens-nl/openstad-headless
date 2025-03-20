@@ -1,4 +1,4 @@
-const fs = require("fs").promises;
+const fs = require("node:fs").promises;
 
 const removeProtocol = (url) => {
 	return url
@@ -13,7 +13,7 @@ module.exports = async function seed(db) {
 		process.env.API_DOMAIN || removeProtocol(process.env.API_URL) || "";
 	allowedDomains.push(apiDomain);
 	const apiDomainWithoutPortnumber = apiDomain.replace(/:\d+/, "");
-	if (apiDomain != apiDomainWithoutPortnumber)
+	if (apiDomain !== apiDomainWithoutPortnumber)
 		allowedDomains.push(apiDomainWithoutPortnumber);
 
 	process.env.AUTH_FIRST_LOGIN_CODE =

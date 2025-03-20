@@ -13,7 +13,7 @@ export default function useCurrentUser(props) {
 
 	async function getCurrentUser() {
 		// console.log('GETCURRENTUSER', self.currentUser);
-		if (self.currentUser && self.currentUser.id) {
+		if (self.currentUser?.id) {
 			// just once TODO: ik denk dat het jkan met useSWRmutaion,: als ik het goedlees update die alleen met de hand
 			return self.currentUser;
 		}
@@ -24,7 +24,7 @@ export default function useCurrentUser(props) {
 			initialUser = globalOpenStadUser || props.openStadUser || {};
 		} catch (err) {}
 
-		if (initialUser.id && initialUser.projectId == self.projectId) {
+		if (initialUser.id && initialUser.projectId === self.projectId) {
 			return initialUser;
 		}
 
@@ -50,7 +50,7 @@ export default function useCurrentUser(props) {
 		const sessionCmsUser = session.get("cmsUser") || {};
 		if (sessionCmsUser && cmsUser) {
 			// compare with current cmsUser
-			if (sessionCmsUser.access_token != cmsUser.access_token) {
+			if (sessionCmsUser.access_token !== cmsUser.access_token) {
 				// delete exising session cache
 				session.remove("cmsUser");
 				session.remove("openStadUser");
@@ -86,9 +86,8 @@ export default function useCurrentUser(props) {
 
 			session.set("openStadUser", { ...openStadUser, jwt });
 			return openStadUser;
-		} else {
-			return {};
 		}
+		return {};
 	}
 
 	// add functionality

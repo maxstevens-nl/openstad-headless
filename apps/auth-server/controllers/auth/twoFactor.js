@@ -24,7 +24,7 @@ const formatRedirectUrl = (url, req) => {
 
 exports.index = (req, res, next) => {
 	const config = req.client.config ? req.client.config : {};
-	const configTwoFactor = config && config.twoFactor ? config.twoFactor : {};
+	const configTwoFactor = config?.twoFactor ? config.twoFactor : {};
 
 	// in case user hasn't configured 2FA yet, redirect them to the configuration screen
 	if (!req.user.twoFactorConfigured) {
@@ -77,7 +77,7 @@ exports.post = async (req, res, next) => {
 		req.flash("error", {
 			msg: "Two factor validatie is niet gelukt, probeer het nogmaals.",
 		});
-		res.redirect(req.header("Referer") || formatRedirectUrl(`/login`, req));
+		res.redirect(req.header("Referer") || formatRedirectUrl("/login", req));
 	}
 };
 
@@ -92,70 +92,69 @@ exports.post = async (req, res, next) => {
 exports.configure = async (req, res, next) => {
 	if (req.user.twoFactorConfigured) {
 		return next(new Error("Not allowed to configure two factor token again."));
-	} else {
-		const config = req.client.config ? req.client.config : {};
-		const configTwoFactor =
-			config && config.configureTwoFactor ? config.configureTwoFactor : {};
+	}
+	const config = req.client.config ? req.client.config : {};
+	const configTwoFactor = config?.configureTwoFactor
+		? config.configureTwoFactor
+		: {};
 
-		let twoFactorSecret = req.user.twoFactorToken;
+	let twoFactorSecret = req.user.twoFactorToken;
 
-		const issuer = process.env.ENVIRONMENT_NAME
-			? process.env.ENVIRONMENT_NAME
-			: "Openstad";
-		// take email, since this is always present, make sure @ char doesn't cause issues in some cases
-		const accountName = req.user.email ? req.user.email : req.user.name;
+	const issuer = process.env.ENVIRONMENT_NAME
+		? process.env.ENVIRONMENT_NAME
+		: "Openstad";
+	// take email, since this is always present, make sure @ char doesn't cause issues in some cases
+	const accountName = req.user.email ? req.user.email : req.user.name;
 
-		if (!twoFactorSecret) {
-			/**
-			 * Get Two factor object:
-			 * @type {{secret: string, uri: string, qr: string}}
-			 */
-			const twoFactor = twofactor.generateSecret({
-				name: issuer,
-				account: accountName,
-			});
+	if (!twoFactorSecret) {
+		/**
+		 * Get Two factor object:
+		 * @type {{secret: string, uri: string, qr: string}}
+		 */
+		const twoFactor = twofactor.generateSecret({
+			name: issuer,
+			account: accountName,
+		});
 
-			try {
-				await req.user.update({ twoFactorToken: twoFactor.secret });
-			} catch (e) {
-				next(e);
-			}
-
-			twoFactorSecret = twoFactor.secret;
+		try {
+			await req.user.update({ twoFactorToken: twoFactor.secret });
+		} catch (e) {
+			next(e);
 		}
 
-		const otpAuthUrl = `otpauth://totp/${encodeURIComponent(issuer)}:%20${encodeURIComponent(accountName)}?secret=${twoFactorSecret}&issuer=${encodeURIComponent(issuer)}`;
-
-		const qrCode = await QRCode.toDataURL(otpAuthUrl);
-
-		res.render("auth/two-factor/configure", {
-			postUrl: twoFactorBaseUrl + "/configure",
-			twoFactorQrSrc: qrCode,
-			twoFactorSecret: twoFactorSecret,
-			clientId: req.client.clientId,
-			info: configTwoFactor.info,
-			description: configTwoFactor.description,
-			title: configTwoFactor.title,
-			buttonText: configTwoFactor.buttonText,
-			redirectUrl: encodeURIComponent(req.query.redirect_uri),
-		});
+		twoFactorSecret = twoFactor.secret;
 	}
+
+	const otpAuthUrl = `otpauth://totp/${encodeURIComponent(issuer)}:%20${encodeURIComponent(accountName)}?secret=${twoFactorSecret}&issuer=${encodeURIComponent(issuer)}`;
+
+	const qrCode = await QRCode.toDataURL(otpAuthUrl);
+
+	res.render("auth/two-factor/configure", {
+		postUrl: `${twoFactorBaseUrl}/configure`,
+		twoFactorQrSrc: qrCode,
+		twoFactorSecret: twoFactorSecret,
+		clientId: req.client.clientId,
+		info: configTwoFactor.info,
+		description: configTwoFactor.description,
+		title: configTwoFactor.title,
+		buttonText: configTwoFactor.buttonText,
+		redirectUrl: encodeURIComponent(req.query.redirect_uri),
+	});
 };
 
 exports.configurePost = async (req, res, next) => {
 	if (req.user.twoFactorConfigured) {
 		return next(new Error("Not allowed to configure two factor token again."));
-	} else {
-		const redirectToTwoFactor = formatRedirectUrl(twoFactorBaseUrl, req);
-
-		req.user
-			.update({ twoFactorConfigured: true })
-			.then(() => {
-				req.flash("success", { msg: "Two factor authentication configured!" });
-				res.redirect(redirectToTwoFactor);
-			})
-			.catch((err) => {
-				next(err);
-			});
 	}
+	const redirectToTwoFactor = formatRedirectUrl(twoFactorBaseUrl, req);
+
+	req.user
+		.update({ twoFactorConfigured: true })
+		.then(() => {
+			req.flash("success", { msg: "Two factor authentication configured!" });
+			res.redirect(redirectToTwoFactor);
+		})
+		.catch((err) => {
+			next(err);
+		});
 };

@@ -1,4 +1,4 @@
-require("process").env.OAUTHRECIPES_SURPRESS_TRACE = true;
+require("node:process").env.OAUTHRECIPES_SURPRESS_TRACE = true;
 
 const authService = require("../../services/authService");
 const userRepository = require("../../repositories/userRepository");

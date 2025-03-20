@@ -53,7 +53,7 @@ function Agenda(props: AgendaWidgetProps) {
 								key={item.trigger}
 								className={`osc-agenda-item ${item.active ? "--active-item" : ""}`}
 							>
-								<div className="osc-date-circle"></div>
+								<div className="osc-date-circle" />
 								<div className="osc-agenda-content">
 									<Heading4>{item.title}</Heading4>
 									<Paragraph>{item.description}</Paragraph>

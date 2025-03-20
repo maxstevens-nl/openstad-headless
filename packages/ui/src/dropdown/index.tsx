@@ -25,7 +25,7 @@ export const DropDownMenu = ({
 				) : (
 					<Button appearance="subtle-button" onClick={() => setIsOpen(!isOpen)}>
 						<div>
-							<i className={isOpen ? "ri-close-fill" : "ri-more-fill"}></i>
+							<i className={isOpen ? "ri-close-fill" : "ri-more-fill"} />
 							<span className="sr-only">Bewerken</span>
 						</div>
 					</Button>
