@@ -346,8 +346,8 @@ importers:
         specifier: ^3.3.7
         version: 3.3.12
       copy:
-        specifier: 0.0.1
-        version: 0.0.1
+        specifier: 0.3.2
+        version: 0.3.2
       cors:
         specifier: ^2.8.5
         version: 2.8.5
@@ -1533,8 +1533,8 @@ importers:
         specifier: ^1.0.0-alpha.631
         version: 1.1.0
       copy:
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.3.0
+        version: 0.3.2
       postcss:
         specifier: ^8.4.38
         version: 8.5.4
@@ -1594,8 +1594,8 @@ importers:
         specifier: ^1.0.0-alpha.631
         version: 1.1.0
       copy:
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.3.0
+        version: 0.3.2
       nunjucks:
         specifier: ^3.2.4
         version: 3.2.4(chokidar@3.6.0)
@@ -1933,8 +1933,8 @@ importers:
         specifier: ^1.0.0-alpha.631
         version: 1.1.0
       copy:
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.3.0
+        version: 0.3.2
       nunjucks:
         specifier: ^3.2.4
         version: 3.2.4(chokidar@3.6.0)
@@ -5952,9 +5952,6 @@ packages:
 
   copy-anything@2.0.6:
     resolution: {integrity: sha512-1j20GZTsvKNkc4BY3NpMOM8tt///wY3FpIzozTOFO2ffuZcV61nojHXVKIy3WM+7ADCy5FVhdZYHYDdgTU0yJw==}
-
-  copy@0.0.1:
-    resolution: {integrity: sha512-mCGJVqkwH6DuAfNnK1mr19XJ5LOSE31pCwRNZvFBT0CLjF76luOTKL1uQJhPa1EKPAQxxYuBRAGZPLkOpUGLpg==}
 
   copy@0.3.2:
     resolution: {integrity: sha512-drDFuUZctIuvSuvL9dOF/v5GxrwB1Q8eMIRlYONC0lSMEq+L2xabXP3jme8cQFdDO8cgP8JsuYhQg7JtTwezmg==}
@@ -15702,8 +15699,6 @@ snapshots:
   copy-anything@2.0.6:
     dependencies:
       is-what: 3.14.1
-
-  copy@0.0.1: {}
 
   copy@0.3.2:
     dependencies:
