@@ -98,7 +98,12 @@ router
 			return res.redirect(url);
 		}
 		if (req.query.redirectUri) {
-			return next(createError(403, "redirectUri not found in allowlist."));
+			return next(
+				createError(
+					403,
+					`redirectUri not found in allowlist: {uri: ${req.query.redirectUri}}`,
+				),
+			);
 		}
 		return next();
 	})

@@ -335,6 +335,14 @@ export default function ProjectSettings() {
 														<FormControl>
 															<Input placeholder="Url" {...field} />
 														</FormControl>
+														<a
+															href={`http://${field.value}`}
+															target="_blank"
+															rel="noopener noreferrer"
+															className="text-sm text-blue-500 hover:underline"
+														>
+															https://{field.value}
+														</a>
 														<FormMessage />
 													</FormItem>
 												)}

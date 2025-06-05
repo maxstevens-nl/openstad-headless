@@ -2,12 +2,7 @@
 	"name": "auth-server",
 	"version": "1.0.0",
 	"description": "SSO authentication for openstad apps",
-	"keywords": [
-		"authentication",
-		"oauth2",
-		"security",
-		"passport"
-	],
+	"keywords": ["authentication", "oauth2", "security", "passport"],
 	"license": "MIT",
 	"author": "Tosh Koevoets",
 	"main": "app.js",

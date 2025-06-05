@@ -1,4 +1,5 @@
 module.exports = {
+	pnpm: true,
 	modules: {
 		"@apostrophecms/seo": {},
 		"@apostrophecms/rich-text-widget": {
