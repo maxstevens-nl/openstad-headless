@@ -19,7 +19,7 @@
 	},
 	"dependencies": {
 		"@azure/identity": "^4.6.0",
-		"@kubernetes/client-node": "^0.18.1",
+		"@kubernetes/client-node": "^0.22.0",
 		"@openstad-headless/account": "workspace:*",
 		"@openstad-headless/activity": "workspace:*",
 		"@openstad-headless/agenda": "workspace:*",
