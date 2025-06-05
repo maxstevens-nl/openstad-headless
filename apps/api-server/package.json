@@ -6,16 +6,13 @@
 	"license": "ISC",
 	"scripts": {
 		"start": "node server.js",
-
 		"predev": "./scripts/predev.sh",
 		"dev": "node --watch server.js",
-
 		"test": "npm run test:unit",
 		"test:unit": "jest --no-cache --config jest.config.js",
 		"test:unit:watch": "jest --watch --no-cache",
 		"test:e2e": "jest --no-cache --config jest-e2e.config.js --forceExit",
 		"test:e2e:debug": "jest --no-cache --config jest-e2e.config.js --verbose --forceExit",
-
 		"init-database": "node ./scripts/init-database.js",
 		"migrate-database": "node ./scripts/migrate-database.js",
 		"build-packages": "node ./scripts/build-packages.js"
@@ -56,6 +53,7 @@
 		"copy": "0.0.1",
 		"cors": "^2.8.5",
 		"cron": "^2.0.0",
+		"debug": "^4.4.1",
 		"dotenv": "^14.0.0",
 		"express": "^4.17.3",
 		"folder-hash": "^4.1.1",
@@ -67,11 +65,14 @@
 		"isomorphic-fetch": "^3.0.0",
 		"json-logic-js": "^2.0.2",
 		"jsonwebtoken": "^9.0.0",
+		"lodash": "^4.17.21",
 		"mariadb": "^2.5.6",
 		"marked": "^4.0.14",
 		"merge": "^2.1.1",
 		"method-override": "^3.0.0",
 		"mjml": "^4.15.3",
+		"moment": "^2.30.1",
+		"moment-timezone": "^0.5.48",
 		"morgan": "^1.10.0",
 		"mysql2": "^3.9.7",
 		"node-fetch": "^2.6.7",
@@ -84,6 +85,7 @@
 		"redis": "^4.6.13",
 		"sanitize-html": "^2.7.0",
 		"sequelize": "^6.28.0",
+		"statuses": "^2.0.1",
 		"umzug": "^3.2.1",
 		"ws": "^7.5.7"
 	},

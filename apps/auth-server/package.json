@@ -7,17 +7,14 @@
 	"main": "app.js",
 	"scripts": {
 		"start": "node app.js",
-
 		"test": "npm run test:unit && npm run test:e2e",
 		"test-cert": "env TEST_CERTS=1 npm run test:unit",
 		"test:unit": "jest unit",
 		"test:e2e": "jest integration",
 		"test:watch": "npm run test -- --watch",
-
 		"predev": "./scripts/predev.sh",
 		"dev": "nodemon app.js",
 		"build": "npm run build:css",
-
 		"watch": "npm-run-all --parallel watch:workspace:*",
 		"watch:css": "nodemon -e less -w public/css -x npm run build:css",
 		"build:css": "lessc public/css/main.less > public/css/main.css",
@@ -69,6 +66,7 @@
 		"passport-http-bearer": "^1.0.x",
 		"passport-local": "^1.0.x",
 		"passport-oauth2-client-password": "^0.1.x",
+		"passport-strategy": "^1.0.0",
 		"postcss": "^8.4.38",
 		"qrcode": "^1.5.3",
 		"sanitize-html": "^2.7.0",
@@ -84,5 +82,10 @@
 		"sqlite3": "^5.0.4",
 		"supertest": "^4.0.2"
 	},
-	"keywords": ["authentication", "oauth2", "security", "passport"]
+	"keywords": [
+		"authentication",
+		"oauth2",
+		"security",
+		"passport"
+	]
 }
