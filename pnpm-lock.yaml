@@ -700,8 +700,8 @@ importers:
         specifier: 0.0.3
         version: 0.0.3
       image-steam:
-        specifier: https://github.com/asilvas/node-image-steam#336cf2fd39463a24965707e6d92c3dce01d3ba40
-        version: https://codeload.github.com/asilvas/node-image-steam/tar.gz/336cf2fd39463a24965707e6d92c3dce01d3ba40
+        specifier: https://github.com/asilvas/node-image-steam#8e8ddbfa544f5ec9ccfbd37e28666fd61a5cc63b
+        version: https://codeload.github.com/asilvas/node-image-steam/tar.gz/8e8ddbfa544f5ec9ccfbd37e28666fd61a5cc63b
       multer:
         specifier: ^1.4.5-lts.1
         version: 1.4.5-lts.2
@@ -6946,9 +6946,9 @@ packages:
     engines: {node: '>=0.10.0'}
     hasBin: true
 
-  image-steam@https://codeload.github.com/asilvas/node-image-steam/tar.gz/336cf2fd39463a24965707e6d92c3dce01d3ba40:
-    resolution: {tarball: https://codeload.github.com/asilvas/node-image-steam/tar.gz/336cf2fd39463a24965707e6d92c3dce01d3ba40}
-    version: 0.64.3
+  image-steam@https://codeload.github.com/asilvas/node-image-steam/tar.gz/8e8ddbfa544f5ec9ccfbd37e28666fd61a5cc63b:
+    resolution: {tarball: https://codeload.github.com/asilvas/node-image-steam/tar.gz/8e8ddbfa544f5ec9ccfbd37e28666fd61a5cc63b}
+    version: 0.64.6
     engines: {node: '>=14.3.0'}
     hasBin: true
 
@@ -16517,7 +16517,7 @@ snapshots:
   image-size@0.5.5:
     optional: true
 
-  image-steam@https://codeload.github.com/asilvas/node-image-steam/tar.gz/336cf2fd39463a24965707e6d92c3dce01d3ba40:
+  image-steam@https://codeload.github.com/asilvas/node-image-steam/tar.gz/8e8ddbfa544f5ec9ccfbd37e28666fd61a5cc63b:
     dependencies:
       agentkeepalive: 4.6.0
       async: 3.2.6
