@@ -30,7 +30,7 @@
 		"@openstad-headless/choiceguide-results": "workspace:*",
 		"@openstad-headless/comments": "workspace:*",
 		"@openstad-headless/counter": "workspace:*",
-		"@openstad-headless/datastore": "workspace:*",
+		"@openstad-headless/data-store": "workspace:*",
 		"@openstad-headless/date-countdown-bar": "workspace:*",
 		"@openstad-headless/distribution-module": "workspace:*",
 		"@openstad-headless/document-map": "workspace:*",
