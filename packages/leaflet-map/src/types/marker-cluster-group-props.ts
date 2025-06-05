@@ -1,8 +1,8 @@
 import "leaflet.markercluster";
 
 import type { MarkerCluster } from "leaflet";
-import type { CategorizeType } from "./categorize";
-import type { MarkerProps } from "./marker-props";
+import type { CategorizeType } from "./categorize.js";
+import type { MarkerProps } from "./marker-props.js";
 
 export type MarkerClusterGroupProps = {
 	isActive?: boolean;

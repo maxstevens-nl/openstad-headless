@@ -244,7 +244,7 @@ exports.authorization = [
 		db.Client.findOne({ where: { clientId: clientId } })
 			.then((client) => {
 				if (client) {
-					client.scope = scope; 
+					client.scope = scope;
 				}
 
 				/**
@@ -262,7 +262,7 @@ exports.authorization = [
 					console.log("===> redirectURI allowedDomains", redirectURI);
 					return done(null, client, redirectURI);
 				}
-				console.log("===> Redirect host doesn't match the client host");
+				console.log("===> Redirect host doesn't match the client host", allowedDomains, redirectUrlHost);
 				throw new Error("Redirect host doesn't match the client host");
 			})
 			.catch((err) => done(err));

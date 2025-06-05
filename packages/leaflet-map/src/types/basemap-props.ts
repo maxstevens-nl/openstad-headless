@@ -1,9 +1,9 @@
 import type { LeafletMouseEvent } from "leaflet";
-import type { CategorizeType } from "./categorize";
-import type { LocationType } from "./location";
-import type { MarkerClusterGroupProps } from "./marker-cluster-group-props";
-import type { MarkerIconType } from "./marker-icon";
-import type { MarkerProps } from "./marker-props";
+import type { CategorizeType } from "./categorize.js";
+import type { LocationType } from "./location.js";
+import type { MarkerClusterGroupProps } from "./marker-cluster-group-props.js";
+import type { MarkerIconType } from "./marker-icon.js";
+import type { MarkerProps } from "./marker-props.js";
 
 export type BaseMapProps = {
 	width?: string;

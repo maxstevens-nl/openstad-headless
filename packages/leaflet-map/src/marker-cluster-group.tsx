@@ -1,7 +1,7 @@
 import type { MarkerCluster } from "leaflet";
 import { useCallback, useEffect, useRef } from "react";
 import LeafletMarkerClusterGroup from "react-leaflet-cluster";
-import type { MarkerClusterGroupProps } from "./types/marker-cluster-group-props";
+import type { MarkerClusterGroupProps } from "./types/marker-cluster-group-props.js";
 
 import amapsCreateClusterIcon from "./lib/amaps-cluster-icon.js";
 import Marker from "./marker.jsx";

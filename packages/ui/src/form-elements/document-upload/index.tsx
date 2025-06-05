@@ -155,7 +155,7 @@ const DocumentUploadField: FC<DocumentUploadProps> = ({
 				return resolve(document.querySelector(selector));
 			}
 
-			const observer = new MutationObserver((mutations) => {
+			const observer = new MutationObserver(() => {
 				if (document.querySelector(selector)) {
 					observer.disconnect();
 					resolve(document.querySelector(selector));
@@ -170,7 +170,7 @@ const DocumentUploadField: FC<DocumentUploadProps> = ({
 	}
 
 	useEffect(() => {
-		waitForElm(".filepond--browser").then((elm: any) => {
+		waitForElm(".filepond--browser").then(() => {
 			const label = document.querySelectorAll(".filepond--drop-label > label");
 			const span = document.querySelectorAll(
 				".filepond--drop-label > label > span",
@@ -250,23 +250,25 @@ const DocumentUploadField: FC<DocumentUploadProps> = ({
 							? [acceptAttribute]
 							: acceptAttribute
 					}
-					beforeAddFile={(fileItem) => {
-						return new Promise<boolean>((resolve, reject) => {
-							const forbiddenCharsRegex = /[\\/:\*\?"<>\|]/;
-							const fileName = fileItem.file.name;
-							const forbiddenChar = fileName.match(forbiddenCharsRegex);
+					beforeAddFile={async (fileItem) => {
+						try {
+                            return await new Promise<boolean>((resolve, reject) => {
+                                const forbiddenCharsRegex = /[\\/:\*\?"<>\|]/;
+                                const fileName = fileItem.file.name;
+                                const forbiddenChar = fileName.match(forbiddenCharsRegex);
 
-							if (forbiddenChar) {
-								const forbiddenCharName = forbiddenChar[0];
-								const errorMessage = `Bestandsnaam mag het teken "${forbiddenCharName}" niet bevatten.`;
-								reject(errorMessage);
-							} else {
-								resolve(true);
-							}
-						}).catch((error) => {
-							notifyFailed(error);
-							return false;
-						});
+                                if (forbiddenChar) {
+                                    const forbiddenCharName = forbiddenChar[0];
+                                    const errorMessage = `Bestandsnaam mag het teken "${forbiddenCharName}" niet bevatten.`;
+                                    reject(errorMessage);
+                                } else {
+                                    resolve(true);
+                                }
+                            });
+                        } catch (error) {
+                            notifyFailed(error as string);
+                            return false;
+                        }
 					}}
 					{...filePondSettings}
 				/>

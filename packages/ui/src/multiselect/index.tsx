@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-// import { Checkbox } from '../checkbox';
 import { Icon } from "../icon";
 import "./index.css";
 
@@ -58,7 +57,7 @@ export function MultiSelect({
 
 			{isOpen && (
 				<section className="multiselect-container">
-					{options.map((option, index) => {
+					{options.map((option) => {
 						return (
 							<div
 								onClick={() => {

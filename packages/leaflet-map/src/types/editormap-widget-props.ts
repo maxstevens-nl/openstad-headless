@@ -1,7 +1,7 @@
 import type { BaseProps, ProjectSettingProps } from "@openstad-headless/types";
-import type { MapPropsType } from "../types/index";
-import type { MarkerIconType } from "./marker-icon";
-import type { MarkerProps } from "./marker-props";
+import type { MapPropsType } from "../types/index.js";
+import type { MarkerIconType } from "./marker-icon.js";
+import type { MarkerProps } from "./marker-props.js";
 
 export type EditorMapWidgetProps = BaseProps &
 	ProjectSettingProps &

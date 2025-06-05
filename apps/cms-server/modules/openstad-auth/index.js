@@ -97,17 +97,18 @@ module.exports = {
 
             const setUserData = function (req, next) {
 
-              const requiredRoles = [ 'member', 'moderator', 'admin', 'editor' ];
+              const requiredRoles = [ 'superuser', 'member', 'moderator', 'admin', 'editor' ];
               const user = req.session.openstadUser;
               req.data.loggedIn = user && user.role && requiredRoles.includes(user.role);
               req.data.openstadUser = user;
-              req.data.isAdmin = user.role === 'admin'; // user;
-              req.data.isEditor = user.role === 'editor'; // user;
-              req.data.isModerator = user.role === 'moderator'; // user;
+              req.data.isSuperuser = user.role === 'superuser'; 
+              req.data.isAdmin = user.role === 'admin';
+              req.data.isEditor = user.role === 'editor';
+              req.data.isModerator = user.role === 'moderator';
               req.data.jwt = jwt;
               req.data.globalOpenStadUser = { id: user.id, role: user.role, jwt };
 
-              if (req.data.isAdmin || req.data.isEditor || req.data.isModerator) {
+              if (req.data.isSuperuser || req.data.isAdmin || req.data.isEditor || req.data.isModerator) {
                 req.data.hasModeratorRights = true;
               }
 

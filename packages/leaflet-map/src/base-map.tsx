@@ -6,15 +6,14 @@ import { useCallback, useEffect, useState } from "react";
 import type { PropsWithChildren } from "react";
 import { MapContainer } from "react-leaflet/MapContainer";
 import { useMapEvents } from "react-leaflet/hooks";
-import { loadWidget } from "../../lib/load-widget";
-import { Area, isPointInArea } from "./area";
-import parseLocation from "./lib/parse-location";
-import { MapConsumer, useMapRef } from "./map-consumer";
-import Marker from "./marker";
-import MarkerClusterGroup from "./marker-cluster-group";
-import TileLayer from "./tile-layer";
-import type { BaseMapWidgetProps } from "./types/basemap-widget-props";
-// ToDo: import { searchAddressByLatLng, suggestAddresses, LookupLatLngByAddressId } from './lib/search.js';
+import { loadWidget } from "../../lib/load-widget.js";
+import { Area, isPointInArea } from "./area.js";
+import parseLocation from "./lib/parse-location.js";
+import { MapConsumer, useMapRef } from "./map-consumer.js";
+import Marker from "./marker.js";
+import MarkerClusterGroup from "./marker-cluster-group.js";
+import TileLayer from "./tile-layer.js";
+import type { BaseMapWidgetProps } from "./types/basemap-widget-props.js";
 
 function isRdCoordinates(x: number, y: number) {
 	return x > 0 && x < 300000 && y > 300000 && y < 620000; // Typische ranges voor RD-coördinaten
@@ -102,8 +101,8 @@ const rdToWgs84 = (x: number, y: number) => {
 import "leaflet/dist/leaflet.css";
 import "./css/base-map.css";
 import L from "leaflet";
-import type { LocationType } from "./types/location";
-import type { MarkerProps } from "./types/marker-props";
+import type { LocationType } from "./types/location.js";
+import type { MarkerProps } from "./types/marker-props.js";
 
 const BaseMap = ({
 	iconCreateFunction = undefined,

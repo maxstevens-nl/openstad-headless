@@ -127,7 +127,7 @@ const ImageUploadField: FC<ImageUploadProps> = ({
 				return resolve(document.querySelector(selector));
 			}
 
-			const observer = new MutationObserver((mutations) => {
+			const observer = new MutationObserver(() => {
 				if (document.querySelector(selector)) {
 					observer.disconnect();
 					resolve(document.querySelector(selector));
@@ -142,7 +142,7 @@ const ImageUploadField: FC<ImageUploadProps> = ({
 	}
 
 	useEffect(() => {
-		waitForElm(".filepond--browser").then((elm: any) => {
+		waitForElm(".filepond--browser").then(() => {
 			const label = document.querySelectorAll(".filepond--drop-label > label");
 			label.forEach((item: any) => {
 				item.setAttribute("aria-hidden", "false");
@@ -212,7 +212,7 @@ const ImageUploadField: FC<ImageUploadProps> = ({
 						revert: null,
 					}}
 					onremovefile={(
-						error: FilePondErrorDescription | null,
+						_error: FilePondErrorDescription | null,
 						file: FilePondFile,
 					) => {
 						const fileName = file?.file?.name;

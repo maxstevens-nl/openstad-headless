@@ -1,14 +1,14 @@
 import type { LeafletMouseEvent } from "leaflet";
 import { useEffect, useState } from "react";
 import type { PropsWithChildren } from "react";
-import { loadWidget } from "../../lib/load-widget";
-import parseLocation from "./lib/parse-location";
+import { loadWidget } from "../../lib/load-widget.jsx";
+import parseLocation from "./lib/parse-location.js";
 
 import "leaflet/dist/leaflet.css";
 import "./css/base-map.css";
-import { BaseMap } from "./base-map";
-import type { EditorMapWidgetProps } from "./types/editormap-widget-props";
-import type { MarkerProps } from "./types/marker-props";
+import { BaseMap } from "./base-map.jsx";
+import type { EditorMapWidgetProps } from "./types/editormap-widget-props.js";
+import type { MarkerProps } from "./types/marker-props.js";
 
 const EditorMap = ({
 	fieldName = "location",

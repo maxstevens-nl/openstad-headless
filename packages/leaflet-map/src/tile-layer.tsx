@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { TileLayer as LeafletTileLayer } from "react-leaflet";
-import type { MapTilesProps } from "./types/map-tiles-props";
+import type { MapTilesProps } from "./types/map-tiles-props.js";
 
 export default function TileLayer({
 	tilesVariant = "default",

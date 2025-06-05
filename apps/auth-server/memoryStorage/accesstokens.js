@@ -59,7 +59,6 @@ exports.save = (token, expirationDate, userID, clientID, scope) => {
 			scope,
 		})
 			.then((token) => {
-				console.log("Savedddd access token");
 				if (!token) {
 					resolve(undefined);
 				}

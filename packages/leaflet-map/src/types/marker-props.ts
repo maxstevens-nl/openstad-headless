@@ -1,6 +1,6 @@
 import type { LeafletMouseEvent } from "leaflet";
-import type { LocationType } from "./location";
-import type { MarkerIconType } from "./marker-icon";
+import type { LocationType } from "./location.js";
+import type { MarkerIconType } from "./marker-icon.js";
 
 export type MarkerProps = LocationType & {
 	markerId?: string;

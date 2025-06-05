@@ -217,7 +217,7 @@ export function Filters({
 				Array.isArray(tagGroups) &&
 				tagGroups.length > 0 ? (
 					<>
-						{tagGroups.map((tagGroup, index) => {
+						{tagGroups.map((tagGroup) => {
 							if (tagGroup.multiple) {
 								return (
 									<MultiSelectTagFilter

@@ -23,7 +23,7 @@ describe("Grant Type Authorization Code", () => {
 			.then(() => {
 				return agent.get(
 					`${authorization}?redirect_uri=${redirect}&response_type=code&client_id=${clientId}&scope=`,
-				); 
+				);
 			})
 			.then((response) => {
 				return expect(response.req.path.indexOf("/?code=")).toEqual(-1);

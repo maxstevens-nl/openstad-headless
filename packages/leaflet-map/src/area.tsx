@@ -2,12 +2,12 @@ import DataStore from "@openstad-headless/data-store/src";
 import { LatLng } from "leaflet";
 import { useEffect, useState } from "react";
 import { Polygon, Popup } from "react-leaflet";
-import type { AreaProps } from "./types/area-props";
+import type { AreaProps } from "./types/area-props.js";
 
-import type { BaseProps } from "@openstad-headless/types/base-props";
+import type { BaseProps } from "@openstad-headless/types";
 import { difference, polygon as tPolygon } from "turf";
 
-function createCutoutPolygonMulti(areas: any) {
+function createCutoutPolygonMulti(areas: { lat: number; lng: number }[][]) {
 	const outerBoxCoordinates = [
 		[-180, -90],
 		[180, -90],
@@ -20,10 +20,8 @@ function createCutoutPolygonMulti(areas: any) {
 
 	const cutOutCoordinates = [outerBoxCoordinates];
 
-	areas.forEach((area: any) => {
-		const innerPolygon = tPolygon([
-			area.map(({ lat, lng }: { lat: number; lng: number }) => [lng, lat]),
-		]);
+	areas.forEach((area) => {
+		const innerPolygon = tPolygon([area.map(({ lat, lng }) => [lng, lat])]);
 		const newCutOut = difference(outerBox, innerPolygon) || outerBox;
 
 		if (

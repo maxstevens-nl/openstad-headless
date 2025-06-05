@@ -1,6 +1,6 @@
 import { LatLng } from "leaflet";
-import type { LocationType } from "../types/location";
-import type { MarkerProps } from "../types/marker-props";
+import type { LocationType } from "../types/location.js";
+import type { MarkerProps } from "../types/marker-props.js";
 
 export default function parseLocation(
 	point: LocationType | MarkerProps | Array<LocationType | MarkerProps>,
