@@ -1,11 +1,11 @@
 {
 	"name": "@openstad-headless/leaflet-map",
-	"private": true,
 	"version": "0.0.0",
+	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
 		"build": "tsc && vite build --config vite.config.base-map.ts && vite build --config vite.config.editor-map.ts && vite build --config vite.config.resource-detail-map.ts && vite build --config vite.config.resource-overview-map.ts",
+		"dev": "vite",
 		"preview": "vite preview",
 		"typecheck": "tsc --noEmit"
 	},

@@ -1,8 +1,6 @@
 const express = require("express");
-const config = require("config");
-const fetch = require("node-fetch");
+require("config");
 const merge = require("merge");
-const Sequelize = require("sequelize");
 const db = require("../../db");
 const auth = require("../../middleware/sequelize-authorization-middleware");
 const pagination = require("../../middleware/pagination");

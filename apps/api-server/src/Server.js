@@ -2,7 +2,6 @@ const config = require("config");
 const express = require("express");
 
 // Misc
-const util = require("./util");
 const log = require("debug")("app:http");
 const morgan = require("morgan");
 

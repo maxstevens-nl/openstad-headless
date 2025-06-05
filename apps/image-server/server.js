@@ -326,4 +326,5 @@ app.use((err, req, res, next) => {
 
 app.listen(argv.port, () => {
 	console.log("Application listen on port %d...", argv.port);
+	console.log(process.env.APP_URL);
 });

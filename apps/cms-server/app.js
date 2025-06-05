@@ -21,7 +21,7 @@ const startUpQueue = [];
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/:sitePrefix?/config-reset", async (req, res, next) => {
+app.use("{/:sitePrefix}/config-reset", async (req, res, next) => {
 	await loadProjects();
 	next();
 });
@@ -392,7 +392,7 @@ app.use((req, res, next) => {
 	next();
 });
 
-app.use("/:privileged(admin)?/login", (req, res, next) => {
+app.use("{/:privileged}/login", (req, res, next) => {
 	const domainAndPath =
 		req.openstadDomain + (req.sitePrefix ? `/${req.sitePrefix}` : "");
 	const i = req.url.indexOf("?");
@@ -400,6 +400,9 @@ app.use("/:privileged(admin)?/login", (req, res, next) => {
 	const protocol = req.headers["x-forwarded-proto"] || req.protocol;
 	const url = `${protocol}://${domainAndPath}/auth/login`;
 	if (req.params.privileged) {
+		if (req.params.privileged !== "admin") {
+			throw new Error("Invalid privileged parameter, must be admin");
+		}
 		query += `${query ? "&" : ""}loginPriviliged=1`;
 	}
 	return res.redirect(url && query ? `${url}?${query}` : url);

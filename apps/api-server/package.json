@@ -2,20 +2,20 @@
 	"name": "api-server",
 	"version": "1.0.0",
 	"description": "OpenStad API server",
-	"main": "server.js",
 	"license": "ISC",
+	"main": "server.js",
 	"scripts": {
-		"start": "node server.js",
+		"build-packages": "node ./scripts/build-packages.js",
 		"predev": "./scripts/predev.sh",
 		"dev": "node --watch server.js",
-		"test": "npm run test:unit",
-		"test:unit": "jest --no-cache --config jest.config.js",
-		"test:unit:watch": "jest --watch --no-cache",
-		"test:e2e": "jest --no-cache --config jest-e2e.config.js --forceExit",
-		"test:e2e:debug": "jest --no-cache --config jest-e2e.config.js --verbose --forceExit",
 		"init-database": "node ./scripts/init-database.js",
 		"migrate-database": "node ./scripts/migrate-database.js",
-		"build-packages": "node ./scripts/build-packages.js"
+		"start": "node server.js",
+		"test": "npm run test:unit",
+		"test:e2e": "jest --no-cache --config jest-e2e.config.js --forceExit",
+		"test:e2e:debug": "jest --no-cache --config jest-e2e.config.js --verbose --forceExit",
+		"test:unit": "jest --no-cache --config jest.config.js",
+		"test:unit:watch": "jest --watch --no-cache"
 	},
 	"dependencies": {
 		"@azure/identity": "^4.6.0",

@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"private": true,
 	"description": "Data layer for the base components used in openstad headless",
+	"main": "index.jt",
 	"scripts": {
 		"rollup": "rollup -c",
 		"typecheck": "tsc --noEmit"
@@ -24,6 +25,5 @@
 	"peerDependencies": {
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"
-	},
-	"main": "index.jt"
+	}
 }

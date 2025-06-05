@@ -2,28 +2,28 @@
 	"name": "openstad-headless",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"build": "turbo run build",
-		"dev": "turbo run dev --filter admin-server --filter api-server --filter auth-server --filter cms-server --filter image-server",
-		"lint": "turbo run lint",
-		"typecheck": "turbo run typecheck",
-		"check": "biome check . --reporter=summary",
-		"fix": "biome check . --write",
-		"create-docker-config": "node ./scripts/create-docker-config.js",
-		"setup": "node ./scripts/setup-all.js",
-		"init-databases": "node ./scripts/init-databases.js"
+	"homepage": "https://github.com/openstad/openstad-headless#readme",
+	"bugs": {
+		"url": "https://github.com/openstad/openstad-headless/issues"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/openstad/openstad-headless.git"
 	},
-	"author": "OpenStad",
 	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/openstad/openstad-headless/issues"
+	"author": "OpenStad",
+	"main": "index.js",
+	"scripts": {
+		"build": "turbo run build",
+		"check": "biome check . --reporter=summary",
+		"create-docker-config": "node ./scripts/create-docker-config.js",
+		"dev": "turbo run dev --filter admin-server --filter api-server --filter auth-server --filter cms-server --filter image-server",
+		"fix": "biome check . --write",
+		"init-databases": "node ./scripts/init-databases.js",
+		"lint": "turbo run lint",
+		"setup": "node ./scripts/setup-all.js",
+		"typecheck": "turbo run typecheck"
 	},
-	"homepage": "https://github.com/openstad/openstad-headless#readme",
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
 		"dotenv": "^16.4.7",

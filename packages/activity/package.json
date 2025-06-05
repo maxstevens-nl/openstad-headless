@@ -1,13 +1,13 @@
 {
 	"name": "@openstad-headless/activity",
-	"private": true,
 	"version": "0.0.0",
+	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
 		"build": "tsc && vite build",
-		"typecheck": "tsc --noEmit",
-		"preview": "vite preview"
+		"dev": "vite",
+		"preview": "vite preview",
+		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@openstad-headless/data-store": "workspace:*",
