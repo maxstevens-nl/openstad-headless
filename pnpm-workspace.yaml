@@ -1,0 +1,6 @@
+workspaces:
+  - apps/*
+  - packages/*
+
+onlyBuiltDependencies:
+  - '@biomejs/biome'

@@ -8,10 +8,8 @@
 		"dev": "turbo run dev --filter admin-server --filter api-server --filter auth-server --filter cms-server --filter image-server",
 		"lint": "turbo run lint",
 		"typecheck": "turbo run typecheck",
-
 		"check": "biome check . --reporter=summary",
 		"fix": "biome check . --write",
-
 		"create-docker-config": "node ./scripts/create-docker-config.js",
 		"setup": "node ./scripts/setup-all.js",
 		"init-databases": "node ./scripts/init-databases.js"
@@ -30,7 +28,7 @@
 		"@biomejs/biome": "1.9.4",
 		"dotenv": "^16.4.7",
 		"mysql2": "^3.11.3",
-		"turbo": "^2.4.4"
+		"turbo": "^2.5.4"
 	},
 	"packageManager": "pnpm@10.11.1+sha512.e519b9f7639869dc8d5c3c5dfef73b3f091094b0a006d7317353c72b124e80e1afd429732e28705ad6bfa1ee879c1fce46c128ccebd3192101f43dd67c667912"
 }
