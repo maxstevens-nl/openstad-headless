@@ -10,8 +10,8 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@openstad-headless/data-store": "*",
-		"@openstad-headless/ui": "*",
+		"@openstad-headless/data-store": "workspace:*",
+		"@openstad-headless/ui": "workspace:*",
 		"@utrecht/component-library-css": "^2.0.0",
 		"filepond": "^4.30.6",
 		"filepond-plugin-file-validate-type": "^1.2.9",

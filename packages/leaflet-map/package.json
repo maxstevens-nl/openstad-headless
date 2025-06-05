@@ -10,9 +10,9 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@openstad-headless/data-store": "*",
-		"@openstad-headless/lib": "*",
-		"@openstad-headless/ui": "*",
+		"@openstad-headless/data-store": "workspace:*",
+		"@openstad-headless/lib": "workspace:*",
+		"@openstad-headless/ui": "workspace:*",
 		"@utrecht/component-library-css": "^3.0.1-alpha.18",
 		"@utrecht/component-library-react": "^3.0.1-alpha.18",
 		"@utrecht/design-tokens": "^1.0.0-alpha.631",
@@ -24,7 +24,7 @@
 		"turf": "^3.0.14"
 	},
 	"devDependencies": {
-		"@openstad-headless/types": "*",
+		"@openstad-headless/types": "workspace:*",
 		"@types/leaflet": "^1.9.8",
 		"@types/leaflet.markercluster": "^1.5.4",
 		"@types/react": "^18.2.78",

@@ -10,10 +10,10 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@openstad-headless/data-store": "*",
-		"@openstad-headless/lib": "*",
-		"@openstad-headless/types": "*",
-		"@openstad-headless/ui": "*",
+		"@openstad-headless/data-store": "workspace:*",
+		"@openstad-headless/lib": "workspace:*",
+		"@openstad-headless/types": "workspace:*",
+		"@openstad-headless/ui": "workspace:*",
 		"@utrecht/component-library-css": "^3.0.1-alpha.18",
 		"@utrecht/component-library-react": "^3.0.1-alpha.18",
 		"@utrecht/design-tokens": "^1.0.0-alpha.631",

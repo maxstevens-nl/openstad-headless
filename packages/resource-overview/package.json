@@ -10,11 +10,11 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@openstad-headless/data-store": "*",
-		"@openstad-headless/leaflet-map": "*",
-		"@openstad-headless/lib": "*",
-		"@openstad-headless/types": "*",
-		"@openstad-headless/ui": "*",
+		"@openstad-headless/data-store": "workspace:*",
+		"@openstad-headless/leaflet-map": "workspace:*",
+		"@openstad-headless/lib": "workspace:*",
+		"@openstad-headless/types": "workspace:*",
+		"@openstad-headless/ui": "workspace:*",
 		"@types/nunjucks": "^3.2.6",
 		"@utrecht/component-library-css": "^3.0.1-alpha.18",
 		"@utrecht/component-library-react": "^3.0.1-alpha.18",

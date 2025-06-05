@@ -10,10 +10,10 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@openstad-headless/data-store": "*",
-		"@openstad-headless/lib": "*",
-		"@openstad-headless/types": "*",
-		"@openstad-headless/ui": "*",
+		"@openstad-headless/data-store": "workspace:*",
+		"@openstad-headless/lib": "workspace:*",
+		"@openstad-headless/types": "workspace:*",
+		"@openstad-headless/ui": "workspace:*",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-hot-toast": "^2.4.1"

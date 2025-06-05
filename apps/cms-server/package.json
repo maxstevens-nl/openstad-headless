@@ -39,18 +39,18 @@
 		"verbose": true,
 		"watch": [
 			"./app.js",
-			"./modules/**/*",
-			"./lib/**/*.js",
-			"./views/**/*.html"
+			"./modules/workspace:*workspace:*/workspace:*",
+			"./lib/workspace:*workspace:*/workspace:*.js",
+			"./views/workspace:*workspace:*/workspace:*.html"
 		],
 		"ignoreRoot": [".git"],
 		"ignore": [
-			"**/ui/apos/",
-			"**/ui/src/",
-			"**/ui/public/",
-			"locales/*.json",
+			"workspace:*workspace:*/ui/apos/",
+			"workspace:*workspace:*/ui/src/",
+			"workspace:*workspace:*/ui/public/",
+			"locales/workspace:*.json",
 			"public/uploads/",
-			"public/apos-frontend/*.js",
+			"public/apos-frontend/workspace:*.js",
 			"data/"
 		],
 		"ext": "json, js, html, scss, vue"
