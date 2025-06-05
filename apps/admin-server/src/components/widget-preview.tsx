@@ -82,7 +82,7 @@ export default function WidgetPreview({ type, config, projectId }: Props) {
 				Preview
 			</Heading>
 			<Separator className="mb-4" />
-			<div id={`widget-preview-script-holder-${randomId}`}></div>
+			<div id={`widget-preview-script-holder-${randomId}`} />
 		</div>
 	);
 }

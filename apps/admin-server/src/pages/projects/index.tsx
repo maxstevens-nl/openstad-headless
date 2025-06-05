@@ -39,7 +39,7 @@ export default function Projects() {
 							</Button>
 						</Link>
 					}
-				></PageLayout>
+				/>
 			</div>
 		);
 

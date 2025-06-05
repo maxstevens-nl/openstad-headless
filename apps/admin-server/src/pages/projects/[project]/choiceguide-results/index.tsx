@@ -50,7 +50,11 @@ export default function ProjectChoiceGuideResults() {
 		try {
 			const projectNumber = Number.parseInt(project as string);
 
-			if (isNaN(projectNumber) || isNaN(page) || isNaN(pageLimit)) {
+			if (
+				Number.isNaN(projectNumber) ||
+				Number.isNaN(page) ||
+				Number.isNaN(pageLimit)
+			) {
 				toast.error("Invalid project");
 				return;
 			}
@@ -101,7 +105,7 @@ export default function ProjectChoiceGuideResults() {
 	}, [page, selectedWidget, project]);
 
 	useEffect(() => {
-		if (!!widgetData) {
+		if (widgetData) {
 			const widgets: { id: number; name: string }[] = [];
 
 			widgetData.forEach((widget: any) => {
@@ -259,7 +263,7 @@ export default function ProjectChoiceGuideResults() {
 										Datum aangemaakt
 									</button>
 								</ListHeading>
-								<ListHeading className="hidden lg:flex lg:col-span-1 ml-auto"></ListHeading>
+								<ListHeading className="hidden lg:flex lg:col-span-1 ml-auto" />
 							</div>
 							<ul>
 								{filterData?.map((choiceguideResult: any) => {

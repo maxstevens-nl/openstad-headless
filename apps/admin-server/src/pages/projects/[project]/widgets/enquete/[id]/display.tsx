@@ -99,7 +99,7 @@ export default function WidgetEnqueteDisplay(
 								<FormMessage />
 							</FormItem>
 						)}
-					></FormField>
+					/>
 
 					<Button className="w-fit col-span-full" type="submit">
 						Opslaan

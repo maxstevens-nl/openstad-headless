@@ -34,9 +34,8 @@ export default function useComments(
 			const updatedList = existingData.filter((ed) => ed.id !== id);
 			commentListSwr.mutate(updatedList);
 			return updatedList;
-		} else {
-			throw new Error("Could not remove this comment");
 		}
+		throw new Error("Could not remove this comment");
 	}
 
 	return { ...commentListSwr, removeComment };

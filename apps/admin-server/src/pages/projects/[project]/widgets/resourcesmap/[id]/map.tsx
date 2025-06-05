@@ -23,7 +23,6 @@ import { useFieldDebounce } from "@/hooks/useFieldDebounce";
 import type { EditFieldProps } from "@/lib/form-widget-helpers/EditFieldProps";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import type { ResourceOverviewMapWidgetTabProps } from ".";
@@ -88,7 +87,7 @@ export default function WidgetResourcesMapMap(
 			const fetchedTags = tags as Array<Tag>;
 			let groupNames = fetchedTags.map((tag) => tag.type);
 			groupNames = groupNames.filter((value, index, array) => {
-				return array.indexOf(value) == index;
+				return array.indexOf(value) === index;
 			});
 			setGroupedNames(groupNames);
 		}
@@ -292,7 +291,11 @@ export default function WidgetResourcesMapMap(
 							render={({ field }) => (
 								<FormItem className="col-span-1">
 									<FormLabel>Aangepaste URL</FormLabel>
-									<FormDescription>{`Voer de URL in voor de aangepaste kaartweergave. Bijvoorbeeld: https://example.com/tiles/{z}/{x}/{y}.png`}</FormDescription>
+									<FormDescription>
+										{
+											"Voer de URL in voor de aangepaste kaartweergave. Bijvoorbeeld: https://example.com/tiles/{z}/{x}/{y}.png"
+										}
+									</FormDescription>
 									<FormControl>
 										<Input
 											placeholder="https://example.com/tiles/{z}/{x}/{y}.png"

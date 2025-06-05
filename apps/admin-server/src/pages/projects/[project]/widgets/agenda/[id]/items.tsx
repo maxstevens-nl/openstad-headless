@@ -271,7 +271,7 @@ export default function WidgetAgendaItems(
 													<div
 														key={index}
 														className={`flex cursor-pointer justify-between border border-secondary ${
-															item.trigger == selectedItem?.trigger &&
+															item.trigger === selectedItem?.trigger &&
 															"bg-secondary"
 														}`}
 													>
@@ -404,7 +404,7 @@ export default function WidgetAgendaItems(
 														<div
 															key={index}
 															className={`flex cursor-pointer justify-between border border-secondary ${
-																link.trigger == selectedLink?.trigger &&
+																link.trigger === selectedLink?.trigger &&
 																"bg-secondary"
 															}`}
 														>

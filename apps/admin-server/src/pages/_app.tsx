@@ -29,14 +29,13 @@ export default function App({ Component, pageProps }: AppProps) {
 						fetch(resource, init).then(async (res) => {
 							if (res.ok) {
 								return res.json();
-							} else {
-								const rejectedReason = await res.json();
-								const error = new Error();
-								error.message = JSON.stringify(rejectedReason);
-								error.name = "Something went wrong";
-								error.cause = resource.toString();
-								throw error;
 							}
+							const rejectedReason = await res.json();
+							const error = new Error();
+							error.message = JSON.stringify(rejectedReason);
+							error.name = "Something went wrong";
+							error.cause = resource.toString();
+							throw error;
 						}),
 				}}
 			>

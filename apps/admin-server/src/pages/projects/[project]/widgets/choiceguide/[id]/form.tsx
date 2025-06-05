@@ -340,7 +340,9 @@ export default function ChoicesSelectorForm(props: ChoiceGuide) {
 									Waarschuwing voor minimaal aantal karakters
 								</FormLabel>
 								<FormDescription>
-									{`Dit is de tekst die getoond wordt als het aantal karakters onder de minimum waarde ligt. Gebruik {minCharacters} zodat het aantal karakters automatisch wordt ingevuld.`}
+									{
+										"Dit is de tekst die getoond wordt als het aantal karakters onder de minimum waarde ligt. Gebruik {minCharacters} zodat het aantal karakters automatisch wordt ingevuld."
+									}
 								</FormDescription>
 								<Input {...field} />
 								<FormMessage />
@@ -357,7 +359,9 @@ export default function ChoicesSelectorForm(props: ChoiceGuide) {
 									Waarschuwing voor maximaal aantal karakters
 								</FormLabel>
 								<FormDescription>
-									{`Dit is de tekst die getoond wordt als het aantal karakters boven de maximum waarde ligt. Gebruik {maxCharacters} zodat het aantal karakters automatisch wordt ingevuld.`}
+									{
+										"Dit is de tekst die getoond wordt als het aantal karakters boven de maximum waarde ligt. Gebruik {maxCharacters} zodat het aantal karakters automatisch wordt ingevuld."
+									}
 								</FormDescription>
 								<Input {...field} />
 								<FormMessage />
@@ -374,7 +378,9 @@ export default function ChoicesSelectorForm(props: ChoiceGuide) {
 									Foutmelding voor minimaal aantal karakters
 								</FormLabel>
 								<FormDescription>
-									{`Dit is de tekst van de foutmelding die getoond wordt als het aantal karakters onder de minimum waarde ligt na het versturen van het formulier. Gebruik {minCharacters} zodat het aantal karakters automatisch wordt ingevuld.`}
+									{
+										"Dit is de tekst van de foutmelding die getoond wordt als het aantal karakters onder de minimum waarde ligt na het versturen van het formulier. Gebruik {minCharacters} zodat het aantal karakters automatisch wordt ingevuld."
+									}
 								</FormDescription>
 								<Input {...field} />
 								<FormMessage />
@@ -391,7 +397,9 @@ export default function ChoicesSelectorForm(props: ChoiceGuide) {
 									Foutmelding voor maximaal aantal karakters
 								</FormLabel>
 								<FormDescription>
-									{`Dit is de tekst van de foutmelding die getoond wordt als het aantal karakters boven de maximum waarde ligt na het versturen van het formulier. Gebruik {maxCharacters} zodat het aantal karakters automatisch wordt ingevuld.`}
+									{
+										"Dit is de tekst van de foutmelding die getoond wordt als het aantal karakters boven de maximum waarde ligt na het versturen van het formulier. Gebruik {maxCharacters} zodat het aantal karakters automatisch wordt ingevuld."
+									}
 								</FormDescription>
 								<Input {...field} />
 								<FormMessage />

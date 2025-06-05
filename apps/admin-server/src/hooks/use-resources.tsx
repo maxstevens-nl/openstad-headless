@@ -21,9 +21,8 @@ export default function useResources(projectId?: string) {
 			const data = await res.json();
 			resourcesListSwr.mutate([...resourcesListSwr.data, data]);
 			return data;
-		} else {
-			throw new Error("Could not create the plan");
 		}
+		throw new Error("Could not create the plan");
 	}
 
 	async function update(id: number, body: any) {
@@ -44,9 +43,8 @@ export default function useResources(projectId?: string) {
 			updatedList.push(data);
 			resourcesListSwr.mutate(updatedList);
 			return data;
-		} else {
-			throw new Error("Could not update the plan");
 		}
+		throw new Error("Could not update the plan");
 	}
 
 	async function remove(id: number) {
@@ -64,9 +62,8 @@ export default function useResources(projectId?: string) {
 			const updatedList = existingData.filter((ed) => ed.id !== id);
 			resourcesListSwr.mutate(updatedList);
 			return updatedList;
-		} else {
-			throw new Error("Could not remove the plan");
 		}
+		throw new Error("Could not remove the plan");
 	}
 	return { ...resourcesListSwr, create, update, remove };
 }

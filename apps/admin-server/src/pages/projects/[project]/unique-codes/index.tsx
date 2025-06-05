@@ -161,9 +161,9 @@ export default function ProjectCodes() {
 										{code.code || null}
 									</Paragraph>
 									<Paragraph className="flex truncate -mr-16">
-										{!!code.userId ? `Gebruikt (userId=${code.userId})` : ""}
+										{code.userId ? `Gebruikt (userId=${code.userId})` : ""}
 									</Paragraph>
-									{!!code.userId ? (
+									{code.userId ? (
 										<div
 											className="hidden lg:flex ml-auto"
 											onClick={(e) => e.preventDefault()}

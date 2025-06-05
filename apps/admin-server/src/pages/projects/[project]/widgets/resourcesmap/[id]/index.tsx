@@ -51,9 +51,9 @@ export default function WidgetResourcesMap({ apiUrl }: WithApiUrlProps) {
 					...previewConfig,
 					[key]: value,
 				};
-				if (key == "categorize.categorizeByField")
+				if (key === "categorize.categorizeByField")
 					updatedConfig.categorize = { categorizeByField: value };
-				if (key == "clustering.isActive")
+				if (key === "clustering.isActive")
 					updatedConfig.clustering = { isActive: value };
 				updatePreview(updatedConfig);
 			}

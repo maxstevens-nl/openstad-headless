@@ -94,10 +94,10 @@ export default function Projects() {
 												)}
 											</Paragraph>
 											<Paragraph className="hidden lg:flex -mr-16">
-												{project.issue ==
+												{project.issue ===
 													"Project has ended but is not yet anonymized" &&
 													"De gebruikers van het project moeten geanonimiseerd worden."}
-												{project.issue ==
+												{project.issue ===
 													"Project endDate is in the past but projectHasEnded is not set" &&
 													"De einddatum van het project ligt in het verleden maar het project is nog niet beëindigd"}
 											</Paragraph>

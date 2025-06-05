@@ -473,7 +473,7 @@ export default function WidgetResourceOverviewDisplay(
 							</FormItem>
 						)}
 					/>
-					<div></div>
+					<div />
 
 					<FormField
 						control={form.control}

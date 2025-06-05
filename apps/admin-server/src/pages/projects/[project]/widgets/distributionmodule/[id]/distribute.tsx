@@ -57,13 +57,13 @@ export default function WidgetDistributionModuleDistribute(
 		defaultValue: string | number,
 		fallback: string | number,
 	) => {
-		if (!!props[key]) {
+		if (props[key]) {
 			return props[key];
-		} else if (typeof props[key] === "undefined") {
-			return defaultValue;
-		} else {
-			return fallback;
 		}
+		if (typeof props[key] === "undefined") {
+			return defaultValue;
+		}
+		return fallback;
 	};
 
 	const form = useForm<FormData>({

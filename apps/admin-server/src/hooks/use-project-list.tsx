@@ -5,10 +5,10 @@ type paramsType = {
 };
 
 export default function useProjectList(params?: paramsType) {
-	let projectListSwrKey = `/api/openstad/api/project?includeConfig=1`;
+	let projectListSwrKey = "/api/openstad/api/project?includeConfig=1";
 
 	if (params?.projectsWithIssues) {
-		projectListSwrKey = `/api/openstad/api/project/issues`;
+		projectListSwrKey = "/api/openstad/api/project/issues";
 	}
 
 	const projectListSwr = useSWR(projectListSwrKey);

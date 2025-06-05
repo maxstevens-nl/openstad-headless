@@ -82,20 +82,19 @@ export function useProject(scopes?: Array<string>) {
 			projectSwr.mutate(data);
 
 			return await data;
-		} else {
-			const res = await fetch(`/api/openstad/api/project/${projectNumber}`, {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ config }),
-			});
-			const data = await res.json();
-
-			projectSwr.mutate(data);
-
-			return await data;
 		}
+		const res = await fetch(`/api/openstad/api/project/${projectNumber}`, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ config }),
+		});
+		const data = await res.json();
+
+		projectSwr.mutate(data);
+
+		return await data;
 	}
 
 	async function updateProjectEmails(emailConfig: any) {

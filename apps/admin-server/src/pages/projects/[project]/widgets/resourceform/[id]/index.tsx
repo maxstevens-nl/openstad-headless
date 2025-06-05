@@ -63,7 +63,7 @@ export default function WidgetResourceForm({ apiUrl }: WithApiUrlProps) {
 							<TabsTrigger value="info">Weergave</TabsTrigger>
 							<TabsTrigger value="publish">Publiceren</TabsTrigger>
 						</TabsList>
-						<TabsContent value="preview" className="p-0"></TabsContent>
+						<TabsContent value="preview" className="p-0" />
 						<TabsContent value="general" className="p-0">
 							<WidgetResourceFormGeneral />
 						</TabsContent>

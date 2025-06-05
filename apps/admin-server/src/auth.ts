@@ -67,7 +67,7 @@ async function authMiddleware(req: NextRequest, res: NextResponse) {
 
 	// session
 	const session = await getSession(req, res);
-	let jwt = session[`project-${targetProjectId}`] || session[`project-1`];
+	let jwt = session[`project-${targetProjectId}`] || session["project-1"];
 
 	// store login token
 	const searchParams = req.nextUrl?.searchParams;
@@ -77,10 +77,10 @@ async function authMiddleware(req: NextRequest, res: NextResponse) {
 		session[`project-${targetProjectId}`] = jwt;
 		await session.save();
 		let path = req.nextUrl.pathname;
-		if (path == "" || path == "/") path = "/projects";
-		let query = searchParams ? "?" + searchParams.toString() : "";
+		if (path === "" || path === "/") path = "/projects";
+		let query = searchParams ? `?${searchParams.toString()}` : "";
 		query = query.replace(/openstadlogintoken=(?:.(?!&|$))+./, "");
-		if (query == "?") query = "";
+		if (query === "?") query = "";
 		const newUrl = `${process.env.URL}${path}${query}`;
 		return NextResponse.redirect(newUrl, { headers: res.headers });
 	}
@@ -105,8 +105,8 @@ async function authMiddleware(req: NextRequest, res: NextResponse) {
 						req.nextUrl.pathname.match(/^\/(?:projects)?\/?$/) &&
 						hasRole(result, "member")
 					) && // project overview is available for members; anything else requires
-					result.role != "superuser" &&
-					result.role != "admin"
+					result.role !== "superuser" &&
+					result.role !== "admin"
 				) {
 					forceNewLogin = true;
 					throw "no user";
@@ -135,7 +135,7 @@ async function authMiddleware(req: NextRequest, res: NextResponse) {
 	// api requests: add jwt
 	if (jwt && req.nextUrl.pathname.startsWith("/api/openstad")) {
 		const path = req.nextUrl.pathname.replace("/api/openstad", "");
-		let query = searchParams ? "?" + searchParams.toString() : "";
+		let query = searchParams ? `?${searchParams.toString()}` : "";
 		query = query.replace(/openstadlogintoken=(?:.(?!&|$))+./, "");
 		const rewrittenUrl = `${process.env.API_URL_INTERNAL || process.env.API_URL}${path}${query}`;
 		return NextResponse.rewrite(rewrittenUrl, {
@@ -148,7 +148,7 @@ async function authMiddleware(req: NextRequest, res: NextResponse) {
 	// email assets requests: add jwt
 	if (jwt && req.nextUrl.pathname.startsWith("/email-assets")) {
 		const path = req.nextUrl.pathname.replace("/email-assets", "");
-		let query = searchParams ? "?" + searchParams.toString() : "";
+		let query = searchParams ? `?${searchParams.toString()}` : "";
 		query = query.replace(/openstadlogintoken=(?:.(?!&|$))+./, "");
 		const rewrittenUrl = `${process.env.EMAIL_ASSETS_URL}${path}${query}`;
 		return NextResponse.rewrite(rewrittenUrl, {
@@ -172,14 +172,14 @@ async function signIn(
 		session.destroy();
 	}
 	let path = req.nextUrl.pathname.replace("/api/openstad", "");
-	if (path == "/") path = "/projects";
+	if (path === "/") path = "/projects";
 	const redirectUri = `${process.env.URL}${path}?openstadlogintoken=[[jwt]]`;
 	const loginUrl = `${process.env.API_URL}/auth/project/${projectId}/login?useAuth=default&redirectUri=${redirectUri}${forceNewLogin ? "&forceNewLogin=1" : ""}`;
 	return NextResponse.redirect(loginUrl, { headers: res.headers });
 }
 
 function clientSignIn() {
-	const loginUrl = `/signin`;
+	const loginUrl = "/signin";
 	document.location.href = loginUrl;
 }
 

@@ -58,7 +58,7 @@ export default function CreateUser() {
 				},
 				{
 					name: "Gebruiker toevoegen",
-					url: `/users/create`,
+					url: "/users/create",
 				},
 			]}
 		>

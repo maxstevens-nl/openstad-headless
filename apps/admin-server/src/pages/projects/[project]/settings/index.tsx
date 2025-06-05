@@ -199,7 +199,7 @@ export default function ProjectSettings() {
 	const [cssUrl, setCssUrl] = useState("");
 
 	useEffect(() => {
-		if (!data || typeof data == "undefined") return;
+		if (!data || typeof data === "undefined") return;
 
 		const cssUrl = data?.config?.project?.cssUrl;
 

@@ -153,7 +153,7 @@ export default function ProjectResources() {
 									Datum aangemaakt
 								</button>
 							</ListHeading>
-							<ListHeading className="hidden lg:flex lg:col-span-1 ml-auto"></ListHeading>
+							<ListHeading className="hidden lg:flex lg:col-span-1 ml-auto" />
 						</div>
 						<ul>
 							{filterData?.map((resource: any) => (

@@ -7,17 +7,14 @@ export default function useUniqueCodes(projectId?: string) {
 	const params = new URLSearchParams();
 	params.set("useAuth", "openstad");
 
-	const url =
-		`/api/openstad/auth/project/${projectNumber}/uniquecode?` +
-		params.toString();
+	const url = `/api/openstad/auth/project/${projectNumber}/uniquecode?${params.toString()}`;
 
 	const uniqueCodesListSwr = useSWR(projectNumber ? url : null);
 
 	async function createUniqueCodes(amount?: string) {
 		try {
 			const res = await fetch(
-				`/api/openstad/auth/project/${projectNumber}/uniquecode?` +
-					params.toString(),
+				`/api/openstad/auth/project/${projectNumber}/uniquecode?${params.toString()}`,
 				{
 					method: "POST",
 					headers: {
@@ -33,9 +30,7 @@ export default function useUniqueCodes(projectId?: string) {
 	}
 
 	async function resetUniqueCode(id: number) {
-		const url =
-			`/api/openstad/auth/project/${projectNumber}/uniquecode/${id}/reset?` +
-			params.toString();
+		const url = `/api/openstad/auth/project/${projectNumber}/uniquecode/${id}/reset?${params.toString()}`;
 		const res = await fetch(url, {
 			method: "POST",
 			headers: {
@@ -49,9 +44,8 @@ export default function useUniqueCodes(projectId?: string) {
 			updatedList.push(data);
 			uniqueCodesListSwr.mutate({ data: updatedList });
 			return updatedList;
-		} else {
-			throw new Error("Could not reset this voting code");
 		}
+		throw new Error("Could not reset this voting code");
 	}
 
 	return { ...uniqueCodesListSwr, createUniqueCodes, resetUniqueCode };

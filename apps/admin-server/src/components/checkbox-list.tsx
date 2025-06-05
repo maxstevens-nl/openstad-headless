@@ -46,7 +46,7 @@ export const CheckboxList = <T extends { [key: string]: any }>({
 
 	if (!keyForGrouping) {
 		return (
-			<section className={`grid gap-x-3 gap-y-4 flex-col my-4 content-start`}>
+			<section className={"grid gap-x-3 gap-y-4 flex-col my-4 content-start"}>
 				<FormLabel>{fieldLabel}</FormLabel>
 				<fieldset className="p-0 rounded grid grid-cols-1 space-y-1">
 					<legend className="sr-only">{fieldLabel}</legend>
@@ -66,7 +66,9 @@ export const CheckboxList = <T extends { [key: string]: any }>({
 											return (
 												<FormItem
 													key={`checkbox-${keyPerItem(item)}`}
-													className={`gap-x-0 gap-y-4 grid grid-cols-2 space-x-3 space-y-0 flex-col [grid-template-columns:min-content_auto]`}
+													className={
+														"gap-x-0 gap-y-4 grid grid-cols-2 space-x-3 space-y-0 flex-col [grid-template-columns:min-content_auto]"
+													}
 												>
 													<FormControl>
 														<Checkbox
@@ -77,7 +79,7 @@ export const CheckboxList = <T extends { [key: string]: any }>({
 														/>
 													</FormControl>
 													<FormLabel className="font-normal">
-														{label && label(item)}
+														{label?.(item)}
 													</FormLabel>
 												</FormItem>
 											);
@@ -98,13 +100,15 @@ export const CheckboxList = <T extends { [key: string]: any }>({
 			control={form.control}
 			name={fieldName}
 			render={({ field }) => (
-				<FormItem className={`col-span-full flex flex-row flex-wrap`}>
-					<div className={`gap-x-4 gap-y-4 grid grid-cols-3`}>
+				<FormItem className={"col-span-full flex flex-row flex-wrap"}>
+					<div className={"gap-x-4 gap-y-4 grid grid-cols-3"}>
 						{(groupNames || []).map((groupName, index) => {
 							return (
 								<Fragment key={`checklist-group-${groupName}`}>
 									<section
-										className={`grid gap-x-3 gap-y-4 flex-col my-4 content-start`}
+										className={
+											"grid gap-x-3 gap-y-4 flex-col my-4 content-start"
+										}
 									>
 										<FormLabel className="font-normal">
 											{`${
@@ -126,7 +130,9 @@ export const CheckboxList = <T extends { [key: string]: any }>({
 																return (
 																	<FormItem
 																		key={`checkbox-${keyPerItem(item)}`}
-																		className={`gap-x-0 gap-y-4 grid grid-cols-2 space-x-3 space-y-0 flex-col [grid-template-columns:min-content_auto]`}
+																		className={
+																			"gap-x-0 gap-y-4 grid grid-cols-2 space-x-3 space-y-0 flex-col [grid-template-columns:min-content_auto]"
+																		}
 																	>
 																		<FormControl>
 																			<Checkbox
@@ -137,7 +143,7 @@ export const CheckboxList = <T extends { [key: string]: any }>({
 																			/>
 																		</FormControl>
 																		<FormLabel className="font-normal">
-																			{label && label(item)}
+																			{label?.(item)}
 																		</FormLabel>
 																	</FormItem>
 																);

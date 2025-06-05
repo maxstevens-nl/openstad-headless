@@ -37,9 +37,8 @@ export function useWidgetsHook(projectId?: string) {
 			const updatedList = existingData.filter((ed) => ed.id !== id);
 			widgetsSwr.mutate(updatedList);
 			return updatedList;
-		} else {
-			throw new Error("Could not remove the widget");
 		}
+		throw new Error("Could not remove the widget");
 	}
 
 	async function updateWidget(id: number, body: any) {
@@ -62,9 +61,8 @@ export function useWidgetsHook(projectId?: string) {
 
 			console.log({ new: widgetsSwr.data });
 			return widgetsSwr.data;
-		} else {
-			throw new Error("Could not update the widget");
 		}
+		throw new Error("Could not update the widget");
 	}
 
 	return { ...widgetsSwr, createWidget, updateWidget, remove };

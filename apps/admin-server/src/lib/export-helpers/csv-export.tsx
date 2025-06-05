@@ -146,7 +146,7 @@ export const exportDataToCSV = (
 
 	const a = document.createElement("a");
 	a.href = url;
-	a.download = fileName + ".csv";
+	a.download = `${fileName}.csv`;
 	a.click();
 
 	window.URL.revokeObjectURL(url);

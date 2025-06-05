@@ -36,7 +36,7 @@ const cleanCommentsData = (original: Record<string, any>) => {
 			const fullTagsString =
 				typeof cleaned[label] === "undefined"
 					? original[key]
-					: cleaned[label] + ", " + original[key];
+					: `${cleaned[label]}, ${original[key]}`;
 
 			cleaned[label] = JSON.parse(`[${fullTagsString}]`)
 				?.filter(Boolean)

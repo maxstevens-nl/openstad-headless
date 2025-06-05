@@ -40,7 +40,7 @@ export default function CreateUserProjects() {
 				);
 			} else {
 				const role = projectRoles.findIndex(
-					(obj) => obj.projectId == projectId,
+					(obj) => obj.projectId === projectId,
 				);
 				projectRoles[role].roleId = roleId;
 			}
@@ -57,7 +57,7 @@ export default function CreateUserProjects() {
 			let user = users;
 			if (Array.isArray(users)) {
 				user = users.find(
-					(user: any) => user.projectId == projectRole.projectId,
+					(user: any) => user.projectId === projectRole.projectId,
 				);
 			}
 			if (user) {
@@ -110,12 +110,12 @@ export default function CreateUserProjects() {
 								let user;
 								if (!Array.isArray(users)) {
 									user = users;
-									if (user.projectId != project.id) {
+									if (user.projectId !== project.id) {
 										return;
 									}
 								} else {
 									user = users.find(
-										(user: any) => user.projectId == project.id,
+										(user: any) => user.projectId === project.id,
 									);
 								}
 

@@ -3,7 +3,7 @@
 		"composite": true,
 		"skipLibCheck": true,
 		"module": "nodenext",
-		"moduleResolution": "nodenext",
+		"moduleResolution": "nodenext"
 	},
 	"include": ["vite.config.ts"]
 }

@@ -266,7 +266,11 @@ export default function ProjectSettingsMap() {
 									render={({ field }) => (
 										<FormItem className="col-span-1">
 											<FormLabel>Aangepaste URL</FormLabel>
-											<FormDescription>{`Voer de URL in voor de aangepaste kaartweergave. Bijvoorbeeld: https://example.com/tiles/{z}/{x}/{y}.png`}</FormDescription>
+											<FormDescription>
+												{
+													"Voer de URL in voor de aangepaste kaartweergave. Bijvoorbeeld: https://example.com/tiles/{z}/{x}/{y}.png"
+												}
+											</FormDescription>
 											<FormControl>
 												<Input
 													placeholder="https://example.com/tiles/{z}/{x}/{y}.png"

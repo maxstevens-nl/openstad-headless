@@ -50,9 +50,8 @@ export default function useTag(projectId?: string) {
 			const updatedList = existingData.filter((ed) => ed.id !== id);
 			tagListSwr.mutate(updatedList);
 			return updatedList;
-		} else {
-			throw new Error("Could not remove this tag");
 		}
+		throw new Error("Could not remove this tag");
 	}
 
 	return { ...tagListSwr, createTag, removeTag };

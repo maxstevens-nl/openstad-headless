@@ -53,7 +53,7 @@ export default function ChoiceGuideResultSettings(
 	);
 
 	useEffect(() => {
-		if (!!widgetData) {
+		if (widgetData) {
 			const widgets: { id: number; name: string }[] = [];
 
 			widgetData.forEach((widget: any) => {

@@ -62,7 +62,7 @@ export function Sidenav({
 						{narrow ? "" : "Projecten"}
 					</Button>
 				</Link>
-				{sessionData?.role == "superuser" ? (
+				{sessionData?.role === "superuser" ? (
 					<Link href="/users">
 						<Button
 							variant={location.startsWith("/users") ? "secondary" : "ghost"}
@@ -83,7 +83,7 @@ export function Sidenav({
 						</Button>
 					</Link>
 				) : null}
-				{sessionData?.role == "superuser" ? (
+				{sessionData?.role === "superuser" ? (
 					<Link href="/issues">
 						<Button
 							variant={location.startsWith("/issues") ? "secondary" : "ghost"}
@@ -105,7 +105,7 @@ export function Sidenav({
 					</Link>
 				) : null}
 			</div>
-			<div className="flex-grow"></div>
+			<div className="flex-grow" />
 			<div
 				className={cn(
 					"p-4 flex flex-col gap-2",

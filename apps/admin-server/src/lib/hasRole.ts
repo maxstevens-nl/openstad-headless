@@ -11,10 +11,10 @@ export default function hasRole(
 	minRoles = minRoles || "admin"; // admin can do anything
 	if (!Array.isArray(minRoles)) minRoles = [minRoles];
 
-	const userRole = (user && user.role) || "all";
+	const userRole = user?.role || "all";
 
 	const valid = minRoles.find((minRole) => {
-		return roles[userRole] && roles[userRole].indexOf(minRole) != -1;
+		return roles[userRole] && roles[userRole].indexOf(minRole) !== -1;
 	});
 
 	return valid;

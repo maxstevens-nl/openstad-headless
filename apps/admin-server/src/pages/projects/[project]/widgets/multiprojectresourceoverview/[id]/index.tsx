@@ -12,7 +12,6 @@ import LikesDisplay from "@/pages/projects/[project]/widgets/likes/[id]/weergave
 import WidgetMultiProjectSettings from "@/pages/projects/[project]/widgets/multiprojectresourceoverview/[id]/settings";
 import type { ResourceOverviewWidgetProps } from "@openstad-headless/resource-overview/src/resource-overview";
 import { useRouter } from "next/router";
-import React from "react";
 import { PageLayout } from "../../../../../../components/ui/page-layout";
 import {
 	Tabs,

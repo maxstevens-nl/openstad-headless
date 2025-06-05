@@ -60,7 +60,7 @@ export const ImageUploader: React.FC<{
 		if (file && fileUrl !== file.url) {
 			setFileUrl(file.url);
 			form.setValue(fieldName, file.url);
-			onImageUploaded && onImageUploaded(file);
+			onImageUploaded?.(file);
 		}
 	}, [file, form, fieldName, onImageUploaded]);
 

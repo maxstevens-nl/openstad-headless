@@ -33,7 +33,13 @@
 		},
 		"build": {
 			"dependsOn": ["^build"],
-			"outputs": [".next/**", "!.next/cache/**", "dist/**", "apos-build", "public/apos-frontend"]
+			"outputs": [
+				".next/**",
+				"!.next/cache/**",
+				"dist/**",
+				"apos-build",
+				"public/apos-frontend"
+			]
 		},
 		"test": {
 			"dependsOn": ["^build"]

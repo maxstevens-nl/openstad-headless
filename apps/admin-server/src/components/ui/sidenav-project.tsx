@@ -340,7 +340,7 @@ export function SidenavProject({ className }: { className?: string }) {
 					</Button>
 				</Link>
 			</div>
-			<div className="flex-grow"></div>
+			<div className="flex-grow" />
 		</nav>
 	);
 }

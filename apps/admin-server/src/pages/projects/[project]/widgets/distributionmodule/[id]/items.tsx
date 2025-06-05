@@ -179,7 +179,7 @@ export default function WidgetDistributionModuleItems(
 													<div
 														key={index}
 														className={`flex cursor-pointer justify-between border border-secondary ${
-															item.trigger == selectedItem?.trigger &&
+															item.trigger === selectedItem?.trigger &&
 															"bg-secondary"
 														}`}
 													>

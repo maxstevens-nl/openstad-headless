@@ -465,7 +465,7 @@ export default function WidgetChoiceGuideItems(
 													<div
 														key={index}
 														className={`flex cursor-pointer justify-between border border-secondary ${
-															item.trigger == selectedItem?.trigger &&
+															item.trigger === selectedItem?.trigger &&
 															"bg-secondary"
 														}`}
 													>
@@ -664,7 +664,7 @@ export default function WidgetChoiceGuideItems(
 															<div
 																key={index}
 																className={`flex cursor-pointer justify-between border border-secondary ${
-																	option.trigger == selectedOption?.trigger &&
+																	option.trigger === selectedOption?.trigger &&
 																	"bg-secondary"
 																}`}
 															>
@@ -805,7 +805,7 @@ export default function WidgetChoiceGuideItems(
 														<FormMessage />
 													</FormItem>
 												)}
-											></FormField>
+											/>
 											<FormField
 												control={form.control}
 												name="trigger"

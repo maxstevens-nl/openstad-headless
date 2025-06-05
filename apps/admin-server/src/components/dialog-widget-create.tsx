@@ -71,7 +71,7 @@ export function CreateWidgetDialog({ projectId }: Props) {
 			setOpen(false);
 			if (widget) {
 				toast.success("Widget aangemaakt!");
-				router.push(router.asPath + `/${widget.type}/${widget.id}`);
+				router.push(`${router.asPath}/${widget.type}/${widget.id}`);
 			}
 		} catch (error) {
 			toast.error("Widget kon niet worden aangemaakt!");

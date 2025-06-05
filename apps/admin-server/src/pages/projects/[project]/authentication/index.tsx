@@ -246,7 +246,7 @@ export default function ProjectAuthentication() {
 																		<Checkbox
 																			checked={field.value?.includes(item.id)}
 																			onCheckedChange={(checked: any) => {
-																				if (item.id == "Url")
+																				if (item.id === "Url")
 																					setShowEmailFields(checked);
 																				return checked
 																					? field.onChange([

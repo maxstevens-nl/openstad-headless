@@ -103,6 +103,6 @@ export const SimpleCalendar: React.FC<{
 					<FormMessage />
 				</FormItem>
 			)}
-		></FormField>
+		/>
 	);
 };

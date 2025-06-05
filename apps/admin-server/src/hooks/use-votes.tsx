@@ -21,9 +21,8 @@ export default function useVotes(projectId?: string) {
 			const updatedList = existingData.filter((ed) => ed.id !== id);
 			mutate(updatedList);
 			return updatedList;
-		} else {
-			throw new Error("Could not remove the vote");
 		}
+		throw new Error("Could not remove the vote");
 	}
 
 	return { data, isLoading, error, remove };

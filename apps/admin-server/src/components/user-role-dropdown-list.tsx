@@ -25,7 +25,7 @@ const UserRoleDropdownList = ({
 				<SelectValue placeholder="" />
 			</SelectTrigger>
 			<SelectContent>
-				{roleId ? null : <SelectItem value={""}></SelectItem>}
+				{roleId ? null : <SelectItem value={""} />}
 				<SelectItem value={"admin"}>Administrator</SelectItem>
 				{/* currently not available
         <SelectItem value={'editor'}>Editor</SelectItem>

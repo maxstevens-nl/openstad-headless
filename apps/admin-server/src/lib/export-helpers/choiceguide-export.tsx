@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { InitializeWeights } from "../../../../../packages/choiceguide/src/parts/init-weights";
 import { calculateScoreForItem } from "../../../../../packages/choiceguide/src/parts/scoreUtils";
 
@@ -19,9 +18,9 @@ export const exportChoiceGuideToCSV = (
 		if (
 			!selectedWidget ||
 			!selectedWidget?.id ||
-			isNaN(projectNumber) ||
-			isNaN(limit) ||
-			isNaN(page)
+			Number.isNaN(projectNumber) ||
+			Number.isNaN(limit) ||
+			Number.isNaN(page)
 		) {
 			return [];
 		}
@@ -49,10 +48,9 @@ export const exportChoiceGuideToCSV = (
 					console.log(`Retrying batch ${page}, attempt ${retries + 1}...`);
 					await new Promise((resolve) => setTimeout(resolve, retryDelay));
 					return fetchBatch(page, retries + 1);
-				} else {
-					console.error(`Batch ${page} failed after ${maxRetries} retries`);
-					return [];
 				}
+				console.error(`Batch ${page} failed after ${maxRetries} retries`);
+				return [];
 			}
 		};
 
@@ -72,12 +70,7 @@ export const exportChoiceGuideToCSV = (
 	fetchResults().then((data) => {
 		data = data || [];
 
-		if (
-			selectedWidget &&
-			selectedWidget?.config &&
-			selectedWidget?.config?.items &&
-			!!data
-		) {
+		if (selectedWidget?.config?.items && !!data) {
 			const items = selectedWidget?.config?.items || [];
 			const choiceOptions =
 				selectedWidget?.config?.choiceOption?.choiceOptions || [];
@@ -104,7 +97,7 @@ export const exportChoiceGuideToCSV = (
 					title = `${title}   ${explanationA} - ${explanationB}`;
 				}
 
-				const newKey = item.type + "-" + item.trigger;
+				const newKey = `${item.type}-${item.trigger}`;
 
 				fieldKeyToTitleMap.set(newKey, title);
 
@@ -159,7 +152,7 @@ export const exportChoiceGuideToCSV = (
 				fieldKeyToTitleMap.forEach((value, key) => {
 					const index = Array.from(fieldKeyToTitleMap.keys()).indexOf(key);
 
-					if (row?.result && row?.result[key]) {
+					if (row?.result?.[key]) {
 						rowMap.set(index, { result: row?.result[key], value: value });
 					} else {
 						rowMap.set(index, { result: "-", value: value });
@@ -210,11 +203,11 @@ export const exportChoiceGuideToCSV = (
 			if (value && typeof value === "object") {
 				if (value.skipQuestion) {
 					return value?.skipQuestionExplanation || "-";
-				} else if (value?.lat && value?.lng) {
-					return `${value?.lat}, ${value?.lng}`;
-				} else {
-					return value?.value || "-";
 				}
+				if (value?.lat && value?.lng) {
+					return `${value?.lat}, ${value?.lng}`;
+				}
+				return value?.value || "-";
 			}
 
 			if (typeof value === "string") {
@@ -255,7 +248,7 @@ export const exportChoiceGuideToCSV = (
 
 		const a = document.createElement("a");
 		a.href = url;
-		a.download = fileName + ".csv";
+		a.download = `${fileName}.csv`;
 		a.click();
 
 		window.URL.revokeObjectURL(url);

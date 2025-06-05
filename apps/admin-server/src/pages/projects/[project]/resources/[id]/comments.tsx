@@ -61,7 +61,7 @@ export default function ProjectResourceArguments() {
 						<ListHeading className="hidden lg:flex">Argument</ListHeading>
 						<ListHeading className="hidden lg:flex">Geplaatst op</ListHeading>
 						<ListHeading className="hidden lg:flex">Sentiment</ListHeading>
-						<ListHeading className="hidden lg:flex lg:col-span-1 ml-auto"></ListHeading>
+						<ListHeading className="hidden lg:flex lg:col-span-1 ml-auto" />
 					</div>
 					<ul>
 						{comments?.map((comment: any) => (

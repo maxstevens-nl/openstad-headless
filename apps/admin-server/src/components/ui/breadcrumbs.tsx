@@ -11,7 +11,7 @@ export function Breadcrumbs({ breadcrumbs }: { breadcrumbs: any }) {
 			{breadcrumbs.map(
 				(breadcrumb: any, index: number, { length }: { length: any }) => (
 					<React.Fragment key={index}>
-						{index != 0 ? (
+						{index !== 0 ? (
 							<Paragraph className="mx-1 text-muted-foreground leading-none">
 								/
 							</Paragraph>

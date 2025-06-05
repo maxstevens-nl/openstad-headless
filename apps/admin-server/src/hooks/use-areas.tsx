@@ -4,7 +4,7 @@ import useSWR from "swr";
 export default function useAreas(projectId?: string) {
 	const projectNumber: number | undefined = validateProjectNumber(projectId);
 
-	const url = `/api/openstad/api/area`;
+	const url = "/api/openstad/api/area";
 
 	const areasSwr = useSWR(projectNumber ? url : null);
 
@@ -34,9 +34,8 @@ export default function useAreas(projectId?: string) {
 			const updatedList = existingData.filter((ed) => ed.id !== id);
 			areasSwr.mutate(updatedList);
 			return updatedList;
-		} else {
-			throw new Error("Could not remove this area");
 		}
+		throw new Error("Could not remove this area");
 	}
 
 	return { ...areasSwr, createArea, removeArea };

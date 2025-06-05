@@ -21,9 +21,8 @@ export default function useSubmissions(projectId?: string) {
 			const updatedList = existingData.filter((ed) => ed.id !== id);
 			mutate(updatedList);
 			return updatedList;
-		} else {
-			throw new Error("Could not remove the submission");
 		}
+		throw new Error("Could not remove the submission");
 	}
 
 	return { data, isLoading, error, remove };

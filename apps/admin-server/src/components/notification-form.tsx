@@ -254,7 +254,7 @@ export function NotificationForm({
 		async function setUserNameInMailContext() {
 			const user = await fetchSessionUser();
 
-			if (user && user.name) {
+			if (user?.name) {
 				setMailContext((prev: MailContextType) => {
 					return {
 						...prev,
@@ -473,7 +473,7 @@ export function NotificationForm({
 								srcDoc={mjmlHtml}
 								height={500}
 								width={500}
-							></iframe>
+							/>
 						</div>
 					</div>
 				</Form>

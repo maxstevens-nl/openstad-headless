@@ -3,7 +3,7 @@ import {
 	ResourceOverview,
 	type ResourceOverviewWidgetProps,
 } from "@openstad-headless/resource-overview/src/resource-overview";
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../../resource-overview/src/resource-overview.css";
 
 export type MultiProjectResourceOverviewProps = ResourceOverviewWidgetProps & {
@@ -34,11 +34,9 @@ function MultiProjectResourceOverview({
 		const fetchResources = async () => {
 			try {
 				const newProjects =
-					(props.selectedProjects &&
-						props.selectedProjects.filter(
-							(project) => !resourceCache.current.has(project.id),
-						)) ||
-					[];
+					props.selectedProjects?.filter(
+						(project) => !resourceCache.current.has(project.id),
+					) || [];
 
 				if (newProjects.length === 0) return;
 

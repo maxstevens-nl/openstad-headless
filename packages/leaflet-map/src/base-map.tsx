@@ -10,8 +10,8 @@ import { loadWidget } from "../../lib/load-widget.js";
 import { Area, isPointInArea } from "./area.js";
 import parseLocation from "./lib/parse-location.js";
 import { MapConsumer, useMapRef } from "./map-consumer.js";
-import Marker from "./marker.js";
 import MarkerClusterGroup from "./marker-cluster-group.js";
+import Marker from "./marker.js";
 import TileLayer from "./tile-layer.js";
 import type { BaseMapWidgetProps } from "./types/basemap-widget-props.js";
 

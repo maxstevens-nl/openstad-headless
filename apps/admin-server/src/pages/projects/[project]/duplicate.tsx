@@ -149,7 +149,7 @@ export default function ProjectDuplicate() {
 			skipDefaultStatuses: true,
 		};
 
-		if (duplicateData.config && duplicateData.config.uniqueId) {
+		if (duplicateData.config?.uniqueId) {
 			delete duplicateData.config.uniqueId;
 		}
 
@@ -188,7 +188,7 @@ export default function ProjectDuplicate() {
 			duplicateData.config.resources.descriptionMinLength = 1;
 		}
 
-		const response = await fetch(`/api/openstad/api/project`, {
+		const response = await fetch("/api/openstad/api/project", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

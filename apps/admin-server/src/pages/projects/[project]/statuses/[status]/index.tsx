@@ -248,7 +248,7 @@ export default function ProjectStatusEdit() {
 																			border: "1px solid black",
 																			marginRight: "8px",
 																		}}
-																	></span>
+																	/>
 																	{color.label}
 																</SelectItem>
 															))}
@@ -293,7 +293,7 @@ export default function ProjectStatusEdit() {
 																			border: "1px solid black",
 																			marginRight: "8px",
 																		}}
-																	></span>
+																	/>
 																	{color.label}
 																</SelectItem>
 															))}
@@ -403,7 +403,7 @@ export default function ProjectStatusEdit() {
 													</FormLabel>
 													<Select
 														onValueChange={(value) => {
-															const val = value == "true" ? true : false;
+															const val = value === "true";
 															field.onChange(val);
 														}}
 														value={field.value ? "true" : "false"}
@@ -432,7 +432,7 @@ export default function ProjectStatusEdit() {
 													</FormLabel>
 													<Select
 														onValueChange={(value) => {
-															const val = value == "true" ? true : false;
+															const val = value === "true";
 															field.onChange(val);
 														}}
 														value={field.value ? "true" : "false"}

@@ -143,22 +143,19 @@ export default function ProjectStatusEdit() {
 			>
 				<div className="container py-6">
 					<div className="p-6 bg-white rounded-md">
-						{data &&
-							data.map((submission: any) => {
-								if (submission.id === dataId) {
-									return (
-										<div key={submission.id}>
-											<h2 className="text-xl font-bold mb-4">Informatie</h2>
-											<Header sub={submission} />
+						{data?.map((submission: any) => {
+							if (submission.id === dataId) {
+								return (
+									<div key={submission.id}>
+										<h2 className="text-xl font-bold mb-4">Informatie</h2>
+										<Header sub={submission} />
 
-											<h2 className="text-xl font-bold mb-4">
-												Ingezonden data
-											</h2>
-											<Content sub={submission.submittedData} />
-										</div>
-									);
-								}
-							})}
+										<h2 className="text-xl font-bold mb-4">Ingezonden data</h2>
+										<Content sub={submission.submittedData} />
+									</div>
+								);
+							}
+						})}
 					</div>
 				</div>
 			</PageLayout>

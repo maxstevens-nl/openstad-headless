@@ -16,9 +16,8 @@ export default async function middleware(req: NextRequest) {
 		// home
 		if (session.user) {
 			return NextResponse.redirect(`${process.env.URL}/projects`);
-		} else {
-			return res;
 		}
+		return res;
 	}
 
 	// signin

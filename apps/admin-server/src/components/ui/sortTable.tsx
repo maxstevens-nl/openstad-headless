@@ -86,13 +86,12 @@ export const searchTable = (setData: Function, type?: string, delay = 250) => {
 						return String(value || "")
 							.toLowerCase()
 							.includes(searchTerm.toLowerCase());
-					} else {
-						return Object.values(item).some((val) =>
-							String(val || "")
-								.toLowerCase()
-								.includes(searchTerm.toLowerCase()),
-						);
 					}
+					return Object.values(item).some((val) =>
+						String(val || "")
+							.toLowerCase()
+							.includes(searchTerm.toLowerCase()),
+					);
 				});
 				setData(searchResult);
 			} else {

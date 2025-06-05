@@ -252,23 +252,23 @@ const DocumentUploadField: FC<DocumentUploadProps> = ({
 					}
 					beforeAddFile={async (fileItem) => {
 						try {
-                            return await new Promise<boolean>((resolve, reject) => {
-                                const forbiddenCharsRegex = /[\\/:\*\?"<>\|]/;
-                                const fileName = fileItem.file.name;
-                                const forbiddenChar = fileName.match(forbiddenCharsRegex);
+							return await new Promise<boolean>((resolve, reject) => {
+								const forbiddenCharsRegex = /[\\/:\*\?"<>\|]/;
+								const fileName = fileItem.file.name;
+								const forbiddenChar = fileName.match(forbiddenCharsRegex);
 
-                                if (forbiddenChar) {
-                                    const forbiddenCharName = forbiddenChar[0];
-                                    const errorMessage = `Bestandsnaam mag het teken "${forbiddenCharName}" niet bevatten.`;
-                                    reject(errorMessage);
-                                } else {
-                                    resolve(true);
-                                }
-                            });
-                        } catch (error) {
-                            notifyFailed(error as string);
-                            return false;
-                        }
+								if (forbiddenChar) {
+									const forbiddenCharName = forbiddenChar[0];
+									const errorMessage = `Bestandsnaam mag het teken "${forbiddenCharName}" niet bevatten.`;
+									reject(errorMessage);
+								} else {
+									resolve(true);
+								}
+							});
+						} catch (error) {
+							notifyFailed(error as string);
+							return false;
+						}
 					}}
 					{...filePondSettings}
 				/>

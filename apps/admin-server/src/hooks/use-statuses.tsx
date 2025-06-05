@@ -44,9 +44,8 @@ export default function useStatus(projectId?: string) {
 			const updatedList = existingData.filter((ed) => ed.id !== id);
 			statusListSwr.mutate(updatedList);
 			return updatedList;
-		} else {
-			throw new Error("Could not remove this status");
 		}
+		throw new Error("Could not remove this status");
 	}
 
 	return { ...statusListSwr, createStatus, removeStatus };

@@ -38,9 +38,8 @@ export default function useNotificationTemplate(projectId?: string) {
 			console.log(data);
 			notificationTemplateSwr.mutate([...notificationTemplateSwr.data, data]);
 			return data;
-		} else {
-			throw new Error("Could not create the template");
 		}
+		throw new Error("Could not create the template");
 	}
 
 	async function update(
@@ -66,9 +65,8 @@ export default function useNotificationTemplate(projectId?: string) {
 			const data = await res.json();
 			notificationTemplateSwr.mutate([...notificationTemplateSwr.data, data]);
 			return data;
-		} else {
-			throw new Error("Could not edit the template");
 		}
+		throw new Error("Could not edit the template");
 	}
 
 	return { ...notificationTemplateSwr, create, update };

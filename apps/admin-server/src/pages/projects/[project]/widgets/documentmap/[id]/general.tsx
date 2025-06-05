@@ -84,15 +84,15 @@ export default function DocumentGeneral(
 
 		if (minZoomValue && maxZoomValue && zoomValue) {
 			const minZoom =
-				typeof minZoomValue == "string"
+				typeof minZoomValue === "string"
 					? Number.parseInt(minZoomValue)
 					: minZoomValue;
 			const maxZoom =
-				typeof maxZoomValue == "string"
+				typeof maxZoomValue === "string"
 					? Number.parseInt(maxZoomValue)
 					: maxZoomValue;
 			const zoom =
-				typeof zoomValue == "string" ? Number.parseInt(zoomValue) : zoomValue;
+				typeof zoomValue === "string" ? Number.parseInt(zoomValue) : zoomValue;
 
 			if (zoom > maxZoom || zoom < minZoom) {
 				form.setError("zoom", {
@@ -141,7 +141,7 @@ export default function DocumentGeneral(
 					label={(resource) => `${resource.id} ${resource.title}`}
 					onFieldChanged={(e, key) => {
 						props.onFieldChanged;
-						setToggle(e + "_" + key);
+						setToggle(`${e}_${key}`);
 					}}
 					noSelection="Niet koppelen - beschrijf het path of gebruik queryparam openstadResourceId"
 				/>

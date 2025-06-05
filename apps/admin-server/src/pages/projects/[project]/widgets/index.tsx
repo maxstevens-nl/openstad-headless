@@ -140,7 +140,7 @@ export default function ProjectWidgets() {
 											<Paragraph className="hidden lg:flex truncate my-auto lg:-mr-16">
 												{new Date(widget.updatedAt).toLocaleDateString("nl-NL")}
 											</Paragraph>
-											<div></div>
+											<div />
 											<div className="flex">
 												<div
 													className="hidden lg:flex ml-auto"

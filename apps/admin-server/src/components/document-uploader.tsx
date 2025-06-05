@@ -60,7 +60,7 @@ export const DocumentUploader: React.FC<{
 		if (document && documentUrl !== document.url) {
 			setDocumentUrl(document.url);
 			form.setValue(fieldName, document.url);
-			onDocumentUploaded && onDocumentUploaded(document);
+			onDocumentUploaded?.(document);
 		}
 	}, [document, form, fieldName, onDocumentUploaded]);
 

@@ -66,7 +66,7 @@ export function RemoveResourceDialog({
 							variant={"destructive"}
 							onClick={(e) => {
 								e.preventDefault();
-								onDeleteAccepted && onDeleteAccepted();
+								onDeleteAccepted?.();
 								setOpen(false);
 							}}
 						>

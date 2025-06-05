@@ -4,7 +4,7 @@ import useSWR from "swr";
 export default function useDatalayers(projectId?: string) {
 	const projectNumber: number | undefined = validateProjectNumber(projectId);
 
-	const url = `/api/openstad/api/datalayer`;
+	const url = "/api/openstad/api/datalayer";
 
 	const datalayerSwr = useSWR(projectNumber ? url : null);
 
@@ -34,9 +34,8 @@ export default function useDatalayers(projectId?: string) {
 			const updatedList = existingData.filter((ed) => ed.id !== id);
 			datalayerSwr.mutate(updatedList);
 			return updatedList;
-		} else {
-			throw new Error("Could not remove this area");
 		}
+		throw new Error("Could not remove this area");
 	}
 
 	return { ...datalayerSwr, createDatalayer, removeDatalayer };
