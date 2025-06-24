@@ -11,3 +11,7 @@ secrets.yaml
 /.idea
 
 *.agekey
+
+*.pub
+.env.*
+.turbo
